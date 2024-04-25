@@ -26,6 +26,6 @@ export default defineConfig(({ mode }) => ({
         rewrite: (path) => path.replace(/^\/api/, '')
       }
     },
-    port: 8081,
+    port: 8083,
   }
 }))

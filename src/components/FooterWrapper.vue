@@ -26,17 +26,7 @@
                     </el-col>
                 </el-row>
                 <el-row class="footerbox-center">
-                    <el-col :span="6" :xs="24" :sm="12" :md="6" :lg="6">
-                        <div class="grid-content ep-bg-purple footer-center">
-                            <h2>Powered by BNB Beacon Chain</h2>
-                            <el-button @click="addWork" style="width: 50%;" type="info" plain>
-                                <svg-icon name="fox" width="0.8rem" height="0.8rem"
-                                    style="margin-right: 10px"></svg-icon>
-                                Add BSC Network
-                            </el-button>
-                        </div>
-                    </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="6">
+                    <el-col :span="6" :xs="24" :sm="12" :md="6" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
                             <h4>Company</h4>
                             <el-link href="https://element-plus.org" :underline="false">Delegate to BscScan</el-link>
@@ -48,7 +38,19 @@
                                 </el-icon> </el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="6">
+                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
+                        <div class="grid-content ep-bg-purple footer-center">
+                            <h4>Company</h4>
+                            <el-link href="https://element-plus.org" :underline="false">Delegate to BscScan</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Brand Assets</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Contact Us</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Terms & Privacy </el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Bug Bounty<el-icon>
+                                    <Promotion />
+                                </el-icon> </el-link>
+                        </div>
+                    </el-col>
+                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
                             <h4>Community</h4>
                             <el-link href="https://element-plus.org" :underline="false">API Documentation</el-link>
@@ -59,7 +61,7 @@
                                 </el-icon> </el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="6">
+                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center footer-Products">
                             <h4>Products & Services</h4>
                             <el-link href="https://element-plus.org" :underline="false">Advertise<el-icon>
@@ -76,12 +78,32 @@
                                 </el-icon> </el-link>
                         </div>
                     </el-col>
+                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
+                        <div class="grid-content ep-bg-purple footer-center">
+                            <h4>Community</h4>
+                            <el-link href="https://element-plus.org" :underline="false">API Documentation</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Knowledge Base</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Network Status</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Learn BSC <el-icon>
+                                    <Promotion />
+                                </el-icon> </el-link>
+                        </div>
+                    </el-col>
+                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
+                        <div class="grid-content ep-bg-purple footer-center">
+                            <h2><svg-icon name="rabbit"></svg-icon>PancakeSwap</h2>
+                        </div>
+                    </el-col>
+                    <div class="footer_icon">
+                               <el-button text plain> <svg-icon name="twitter"></svg-icon></el-button>
+                               <el-button text plain> <svg-icon name="flybook"></svg-icon></el-button>
+                               <el-button text plain> <svg-icon name="github"></svg-icon></el-button>
+                            </div>
                 </el-row>
                 <el-row class="footer-box">
                     <el-col :span="24">
                         <div class="grid-content ep-bg-purple footer-bottom">
-                            <span>Etherscan © 2024 (F1)</span>
-                            <span>Donations: 0x71c765...d8976f </span>
+                            
                         </div>
                     </el-col>
                 </el-row>
@@ -92,44 +114,7 @@
 </template>
 
 <script setup>
-async function addWork() {
-    try {
-        if (typeof ethereum !== 'undefined') {
-            const provider = ethereum;
-            const networkId = 8807;
-            const chainId = "0x2267";
-            const rpcUrl = 'https://test.metabasenet.site/rpc';
-            await provider.request({
-                method: 'wallet_addEthereumChain',
-                params: [
-                    {
-                        chainId: chainId,
-                        rpcUrls: [rpcUrl],
-                        chainName: 'MNT Mainnet',
-                        nativeCurrency: {
-                            name: 'MNT',
-                            symbol: 'MNT',
-                            decimals: 18,
-                        },
-                        // blockExplorerUrls: [`https://test.metabasenet.site/chain/${chainId}`],
-                        blockExplorerUrls: [`https://test.metabasenet.site/`],
-                    },
-                ],
-            });
-            provider.on('chainChanged', (chainId) => {
-                if (chainId === networkId.toString(16)) {
-                    console.log('Network added and activated successfully!');
-                }
-            });
-            await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chainId }] });
-        } else {
-            console.error('MetaMask is not installed!');
-        }
-    } catch (error) {
-        console.error('Error adding network:', error);
 
-    }
-}
 </script>
 
 <style scoped>
@@ -140,8 +125,7 @@ async function addWork() {
 
 @media (min-width: 768px) {
     .responsive-aside {
-        /* width: 10rem; */
-        width: 3vw;
+        width: 10rem;
         opacity: 0.5;
         /* background-color: #fff;  */
     }
@@ -155,7 +139,7 @@ async function addWork() {
     width: 100%;
     /* position: fixed;
   bottom: 0; */
-    background-color: #f8f9fa;
+    background-color: #27262c;
 }
 
 .footer-box {
@@ -164,7 +148,10 @@ async function addWork() {
     margin-right: 1.25rem;
     /* background-color: #f8f9fa; */
 }
-
+.footer_icon{
+    padding-top: 20px;
+    padding-right: 15px;
+}
 .footertop-left .el-icon {
     margin-right: 10px;
 }
@@ -176,7 +163,9 @@ async function addWork() {
     align-items: flex-start;
     padding-top: 10px;
 }
-
+.footer-center h4{
+    color: #a88efc;
+}
 .footer-center .el-button {
     margin-top: 10px;
     font-size: 13px;
@@ -191,8 +180,12 @@ async function addWork() {
 .footer-center .el-link {
     margin-top: 10px;
     font-size: 13px;
+    color: #e9ecef;
 }
-
+.footer-center h2 {
+    
+    color: #e9ecef;
+}
 .footertop {
     display: flex;
     justify-content: space-between;

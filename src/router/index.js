@@ -1,10 +1,10 @@
-import { createRouter, createWebHashHistory,createWebHistory  } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes =  [
 
     {
       path: '/',
-      redirect: '/'
+      redirect: '/swap'
     },
     {
       path: '/login',
@@ -26,9 +26,21 @@ const routes =  [
       },
     },
     {
-      path: '',
-      name: 'home',
-      component: () => import('../pages/HomeMain.vue')
+      path: '/swap',
+      name: 'swap',
+      component: () => import('../pages/swap/SwapMain.vue'),
+      children: [
+        {
+          path: 'twap',
+          name: 'twap',
+          component: () => import('../pages/swap/Twapabout.vue'),
+        },
+        {
+          path: 'limit',
+          name: 'limit',
+          component: () => import('../pages/swap/Limitabout.vue'),
+        }
+      ]
     },
     {
       path: '/blocks',
@@ -104,8 +116,7 @@ const routes =  [
   ];
 
 const router = createRouter({
-  // history: createWebHashHistory(),
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
   scrollBehavior () {
     return {
