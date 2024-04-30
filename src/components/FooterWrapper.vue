@@ -119,13 +119,13 @@
 
 <style scoped>
 .responsive-aside {
-    width: 0rem;
+    width: 3vw;
     transition: width 0.5s ease;
 }
 
 @media (min-width: 768px) {
     .responsive-aside {
-        width: 10rem;
+        width: 3vw;
         opacity: 0.5;
         /* background-color: #fff;  */
     }
