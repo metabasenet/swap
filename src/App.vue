@@ -30,7 +30,8 @@ export default {
 <style>
 body{
   font-family: "Roboto",system-ui,-apple-system,"Segoe UI","Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  font-size: 0.9rem;
+  /* font-family: Kanit, sans-serif; */
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
   /* color: #212529; */

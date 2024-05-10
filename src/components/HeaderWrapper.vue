@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="10">
       <div class="header-top">
-        <el-col :span="11">
+        <el-col :span="11" :xs="3" :sm="3" :md="11" :lg="11">
           <el-menu :default-active="$route.path" class="el-menu-demo" router mode="horizontal" ellipsis
             style="max-width: 800px" @select="handleSelect">
             <el-menu-item index="0">
@@ -69,19 +69,18 @@
           </el-menu>
         </el-col>
         <!-- <div class="flex-grow"></div> -->
-        <el-col :span="10">
+        <el-col :span="10" :xs="19" :sm="19" :md="10" :lg="10">
           <div class="header-right">
             <el-button text size="large"><svg-icon name="rabbit"></svg-icon><span
                 class="price_header">$2.801</span></el-button>
-
             <el-button text>
-              <svg-icon name="globe"></svg-icon>
+              <svg-icon name="globe" width="1.6rem" height="1.6rem"></svg-icon>
             </el-button>
-            <el-button text><svg-icon name="settings"></svg-icon></el-button>
-            <el-button text><svg-icon name="notification"></svg-icon></el-button>
+            <el-button text><svg-icon name="settings" width="1.6rem" height="1.6rem"></svg-icon></el-button>
+            <el-button text><svg-icon name="notification" width="1.6rem" height="1.6rem"></svg-icon></el-button>
             <el-dropdown>
-              <el-button color="#eff4f5" round style="margin-right:10px;width:10rem">
-                <svg-icon name="bnb" style="margin-right:5px"></svg-icon><h3 style="color: black;">BNB Chain</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
+              <el-button color="#eff4f5" round style="margin-right:10px;width:100%">
+                <svg-icon name="bnb" style="margin-right:5px"></svg-icon><h3 class="button_h3">BNB Chain</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -96,7 +95,7 @@
             <el-button v-if="!isConnect" color="#1fc7d4" class="custom-button" @click="connectWallet" round>
               <h3 style="color: #fff;">Connect Wallet</h3>
             </el-button>
-            <el-dropdown v-else>
+            <el-dropdown v-else style="width:130px">
               <el-button color="#eff4f5" class="custom-buttons" round>
               <svg-icon name="purse" style="margin-right:5px"></svg-icon><h3 style="color: black;">{{ isConnect }}</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
             </el-button>
@@ -152,17 +151,19 @@ const connectWallet = async () => {
         const lastPart = account.substring(account.length - 4);
         const result = firstPart + "..." + lastPart;
         isConnect.value = result;
-        console.log(isConnect.value);
       }
   } catch (error) {
 
   }
   }
-  
 }
+connectWallet()
 </script>
 
 <style scoped>
+.el-row{
+  width: 100%;
+}
 .mobile-menu {
   max-width: 100%;
   overflow-x: auto;
@@ -203,7 +204,9 @@ const connectWallet = async () => {
   color: #7645d9;
   font-weight: 700;
 }
-
+.button_h3{
+  color: black;
+}
 :deep(.el-menu-item.is-active) {
   color: #7645d9 !important;
   font-weight: 700;
@@ -231,12 +234,14 @@ const connectWallet = async () => {
   font-weight: 700;
   color: #7a6eaa;
   font-size: 16px;
+  margin-left: 7px;
 }
 
 .PancakeSwap {
   font-weight: 700;
   color: black;
   font-size: 16px;
+  margin-left: 7px;
 }
 .custom-buttons{
   width: 9.365rem;
@@ -247,6 +252,9 @@ const connectWallet = async () => {
 @media (max-width: 768px) {
   .header-top {
   padding-right: 0;
+}
+.button_h3{
+  display: none;
 }
 }
 </style>

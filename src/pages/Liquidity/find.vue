@@ -266,5 +266,8 @@ const tableData = ref([
     .liquidity-box {
         padding: 13px;
     }
+    :deep(.el-dialog) {
+    width: 100%;
+  }
 }
 </style>

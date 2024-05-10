@@ -11,5 +11,5 @@ const API = {
 //         params
 //     })
 // }
-export const reqLogin = (data)=> request.post(API.LOGIN_URL,data)
-export const reqUserInfo = ()=> request.get(API.USERINFO_URL)
+// export const reqLogin = (data)=> request.post(API.LOGIN_URL,data)
+// export const reqUserInfo = ()=> request.get(API.USERINFO_URL)

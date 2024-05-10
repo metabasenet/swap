@@ -57,7 +57,6 @@
                                                 <span class="button_More">More<el-icon>
                                                         <ArrowDown />
                                                     </el-icon></span>
-
                                             </el-button>
                                         </el-button>
                                         <p class="add_leftP">DEPOSIT AMOUNT</p>
@@ -476,5 +475,8 @@ const connectWallet = async () => {
     .liquidity-box {
         padding: 13px;
     }
+    :deep(.el-dialog) {
+    width: 100%;
+  }
 }
 </style>

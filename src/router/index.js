@@ -58,55 +58,9 @@ const routes = [
     component: () => import('../pages/Liquidity/V2liquidty.vue')
   },
   {
-    path: '/tx/:hash',
-    name: 'tx',
-    component: () => import('../pages/TransDetails.vue'),
-    props: true
-  },
-  {
-    path: '/tokens',
-    name: 'tokens',
-    component: () => import('../pages/TokenTracker.vue')
-  },
-  {
-    path: '/token/:address',
-    name: 'token',
-    component: () => import('../pages/TokenBinance.vue'),
-    props: true
-  },
-  {
-    path: '/address/:address?',
-    name: 'address',
-    component: () => import('../pages/AddressFrom.vue'),
-    props: true
-  },
-  {
-    path: '/accounts',
-    name: 'accounts',
-    component: () => import('../pages/Accounts.vue')
-  },
-  {
-    path: '/tokentxns',
-    name: 'tokentxns',
-    component: () => import('../pages/TokenTransfers.vue')
-  },
-  {
-    path: '/verifyContract/:address',
-    name: 'verifyContract',
-    component: () => import('../views/verifyContract/index.vue'),
-    props: true
-  },
-  {
-    path: '/verifyContractSolc/:address',
-    name: 'verifyContractSolc',
-    component: () => import('../views/verifyContractSolc/index.vue'),
-    props: true
-  },
-  {
-    path: '/bytecode/:address',
-    name: 'bytecode',
-    component: () => import('../views/bytecode/index.vue'),
-    props: true
+    path: '/linechart',
+    name: 'linechart',
+    component: () => import('../pages/lineChart/lineChart.vue'),
   },
   {
     path: '/:pathMatch(.*)*',

@@ -5,10 +5,10 @@
 // let byteCode = await provider.getCode(contractAddress); return byteCode; 
 // }
 
-import express from 'express';
+// import express from 'express';
 import { ethers } from 'ethers';
-const app = express();
-const PORT = 8081;
+// const app = express();
+// const PORT = 8081;
 
 export  async function getBytecode(address) {
     const provider = new ethers.JsonRpcProvider("https://test.metabasenet.site/rpc");
@@ -38,6 +38,6 @@ export  async function getBytecode(address) {
 //     }
 // });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });

@@ -1,10 +1,9 @@
 <template>
   <div class="common-layout">
     <el-container class="container-xxl">
-      <div class="container_bgc"></div>
       <el-aside class="responsive-aside"></el-aside>
       <el-main>
-        <el-row :gutter="10">
+        <el-row :gutter="10" style="margin-left: 0;margin-right: 0;">
           <el-col :span="showSecondaryNavigation ? 16 : 0" v-if="showSecondaryNavigation" :xs="0" :sm="16" :md="16"
             :lg="16">
             <div class="main_left">
@@ -23,13 +22,18 @@
                   <div>
                     <el-row :gutter="10">
                       <el-col :span="24" class="swap_header">
-                        <h1 style="color:black">Swap</h1>
+                        <h1 style="color:black;font-size:20px">Swap</h1>
                         <p>Trade tokens in an instant</p>
                         <div class="swap_header_button">
                           <el-tooltip effect="dark" content="Buy crypto with fiat." placement="bottom">
-                            <el-button text><svg-icon name="money"></svg-icon></el-button>
+                            <el-button text>
+                              <!-- <svg-icon name="money"></svg-icon> -->
+                              <img style="width:21px;height:22px;" src="/moneyBangs.svg" alt="">
+                            </el-button>
                           </el-tooltip>
-                          <el-button text><svg-icon name="brokeline"></svg-icon></el-button>
+                          <el-button text>
+                            <router-link to="/linechart"><svg-icon name="brokeline"></svg-icon></router-link>
+                          </el-button>
                           <el-tooltip effect="dark" content="Check out the top traded tokens" placement="bottom">
                             <el-button text><svg-icon name="fueloil"></svg-icon></el-button>
                           </el-tooltip>
@@ -144,10 +148,12 @@
                       </el-col>
                       <el-col :span="24">
                         <div class="swap_footer_button">
-                          <el-button text plain><span style="color:#a88efc;font-weight:bold">Slippage
-                              Tolerance</span><el-icon>
-                              <EditPen />
-                            </el-icon></el-button>
+                          <div>
+                            <span style="color:#a88efc;font-weight:bold;font-size:14px">Slippage
+                              Tolerance</span><el-button text plain><el-icon>
+                                <EditPen />
+                              </el-icon></el-button>
+                          </div>
                           <span style="color:#1fc7d4;font-weight:bold">1%</span>
                         </div>
                         <div v-if="!isConnect">
@@ -268,8 +274,11 @@
                         </div>
                       </el-col>
                     </el-row>
-                    <el-dialog v-model="dialogVisible" title="Select a Token">
-                      <el-row :gutter="10">
+                    <el-dialog v-model="dialogVisible">
+                      <template #header>
+                        <h2 class="dialog_title">Select a Token</h2>
+                      </template>
+                      <el-row :gutter="10" class="dialog_row">
                         <el-col :span="24">
                           <el-input size="large" v-model="seachDialog"
                             placeholder="Search name or paste address"></el-input>
@@ -306,8 +315,10 @@
                     <el-row :gutter="10">
                       <el-col :span="24" class="twap_header">
                         <div class="swap_footer_button">
-                          <h1 style="color:black">TWAP</h1>
-                          <el-button text><svg-icon name="brokeline"></svg-icon></el-button>
+                          <h1 style="color:black;font-size:20px">TWAP</h1>
+                          <el-button text>
+                            <router-link to="/linechart"><svg-icon name="brokeline"></svg-icon></router-link>
+                          </el-button>
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="!isSorted">
@@ -585,8 +596,10 @@
                     <el-row :gutter="10">
                       <el-col :span="24" class="twap_header">
                         <div class="swap_footer_button">
-                          <h1 style="color:black">LIMIT</h1>
-                          <el-button text><svg-icon name="brokeline"></svg-icon></el-button>
+                          <h1 style="color:black;font-size:20px">LIMIT</h1>
+                          <el-button text>
+                            <router-link to="/linechart"><svg-icon name="brokeline"></svg-icon></router-link>
+                          </el-button>
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="!isSorted">
@@ -862,14 +875,26 @@ const sortAssets = () => {
 const connectWallet = async () => {
   if (typeof window.ethereum !== "undefined") {
     try {
-    const { provider, signer, account } = await MetamaskService.connectWallet();
+      const { provider, signer, account } = await MetamaskService.connectWallet();
       isConnect.value = account;
-  } catch (error) {
+      // // get chainId
+      // const chainId = await provider.getNetwork();
+      // console.log(chainId);
+      // // get chain name
+      // const chainName = await provider.getNetwork();
+      // console.log(chainName);
+      // get account balance
+      const accountBalance = await provider.getBalance(account);
+      console.log(accountBalance);
+      console.log("Balance in wei:", accountBalance.toString());
+      console.log("Balance in Ether:", ethers.utils.formatEther(accountBalance));
+    } catch (error) {
 
+    }
   }
-  }
-  
+
 }
+connectWallet()
 const handleClick = (tab) => {
   showSecondaryNavigation.value = tab === 'MARKET' ? false : true;
   if (tab === 'TWAP') {
@@ -893,13 +918,13 @@ onMounted(() => {
   padding: 10px 10px;
 }
 
-.swap_footer_refresh {
+/* .swap_footer_refresh {
   padding-left: 9px;
-}
+} */
 
 .container-xxl {
   position: relative;
-  background-color: #ebf6ff;
+  background: linear-gradient(to right, #e5fdff, #f3efff);
 }
 
 .main_header {
@@ -1104,12 +1129,24 @@ onMounted(() => {
   margin-left: 7px;
 }
 
+.dialog_row {
+  border-top: 1px solid #e7e3eb;
+  padding-top: 10px;
+}
+
 .sort_box {
   display: flex;
   justify-content: center;
   height: 4.0625rem;
   align-items: center;
   margin-top: 10px;
+}
+
+.dialog_title {
+  font-size: 20px;
+  font-weight: 600;
+  color: black;
+  padding-bottom: 10px;
 }
 
 @media (min-width: 768px) {
@@ -1130,16 +1167,18 @@ onMounted(() => {
   }
 
   .input_width_div {
-    width: 51%;
+    width: 37%;
   }
 
   :deep(.el-dialog) {
     width: 100%;
   }
-  .el-main{
-    --el-main-padding:0;
+
+  .el-main {
+    --el-main-padding: 0;
   }
-  .el-tabs--border-card>.el-tabs__content{
+
+  :deep(.el-tabs--border-card>.el-tabs__content) {
     padding: 0;
   }
 }

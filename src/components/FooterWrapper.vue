@@ -26,72 +26,62 @@
                     </el-col>
                 </el-row>
                 <el-row class="footerbox-center">
-                    <el-col :span="6" :xs="24" :sm="12" :md="6" :lg="4">
+                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>Company</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Delegate to BscScan</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Brand Assets</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Contact Us</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Terms & Privacy </el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Bug Bounty<el-icon>
-                                    <Promotion />
-                                </el-icon> </el-link>
+                            <h4>ECOSYSTEM</h4>
+                            <el-link href="https://element-plus.org" :underline="false">Trade</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Earn</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Game</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">NFT</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Tokenomics</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">CAKE Emission Projection</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Merchandise</el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
+                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>Company</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Delegate to BscScan</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Brand Assets</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Contact Us</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Terms & Privacy </el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Bug Bounty<el-icon>
-                                    <Promotion />
-                                </el-icon> </el-link>
+                            <h4>BUSINESS</h4>
+                            <el-link href="https://element-plus.org" :underline="false">Farms And Syrup Pools</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">IFO</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">NFT Marketplace</el-link>
+                            
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
+                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>Community</h4>
-                            <el-link href="https://element-plus.org" :underline="false">API Documentation</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Knowledge Base</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Network Status</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Learn BSC <el-icon>
-                                    <Promotion />
-                                </el-icon> </el-link>
+                            <h4>DEVELOPERS</h4>
+                            <el-link href="https://element-plus.org" :underline="false">Contributing</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Github</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Bug Bounty.</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">V4</el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
+                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center footer-Products">
-                            <h4>Products & Services</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Advertise<el-icon>
+                            <h4>SUPPORT</h4>
+                            <el-link href="https://element-plus.org" :underline="false">Contact<el-icon>
                                     <Position />
                                 </el-icon></el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Explorer-as-a-Service
-                                (EaaS)<el-icon>
+                            <el-link href="https://element-plus.org" :underline="false">Troubleshooting<el-icon>
                                     <Position />
                                 </el-icon></el-link>
-                            <el-link href="https://element-plus.org" :underline="false">API Plans </el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Priority Support</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Blockscan <el-icon>
+                            <el-link href="https://element-plus.org" :underline="false">Documentation</el-link>
+                        </div>
+                    </el-col>
+                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                        <div class="grid-content ep-bg-purple footer-center">
+                            <h4>ABOUT</h4>
+                            <el-link href="https://element-plus.org" :underline="false">Terms Of Service</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Blog</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Brand Assets</el-link>
+                            <el-link href="https://element-plus.org" :underline="false">Careers<el-icon>
                                     <Promotion />
                                 </el-icon> </el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
-                        <div class="grid-content ep-bg-purple footer-center">
-                            <h4>Community</h4>
-                            <el-link href="https://element-plus.org" :underline="false">API Documentation</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Knowledge Base</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Network Status</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Learn BSC <el-icon>
-                                    <Promotion />
-                                </el-icon> </el-link>
-                        </div>
-                    </el-col>
-                    <el-col :span="6" :xs="12" :sm="12" :md="6" :lg="4">
-                        <div class="grid-content ep-bg-purple footer-center">
-                            <h2><svg-icon name="rabbit"></svg-icon>PancakeSwap</h2>
+                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                        <div class="grid-content ep-bg-purple footer-center rabbits">
+                            <svg-icon name="rabbits" width="2rem" height="2rem"></svg-icon><h2>PancakeSwap</h2>
                         </div>
                     </el-col>
                     <div class="footer_icon">
@@ -162,13 +152,14 @@
     text-align: center;
     align-items: flex-start;
     padding-top: 10px;
+    font-size: 16px;
 }
 .footer-center h4{
     color: #a88efc;
 }
 .footer-center .el-button {
     margin-top: 10px;
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .footer-center .el-text {
@@ -178,8 +169,8 @@
 }
 
 .footer-center .el-link {
-    margin-top: 10px;
-    font-size: 13px;
+    margin-top: 5px;
+    font-size: 16px;
     color: #e9ecef;
 }
 .footer-center h2 {
@@ -193,7 +184,11 @@
     padding: 1rem 0;
     border-bottom: 1px solid #e9ecef;
 }
-
+.rabbits{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .footerbox-center {
     padding: 2rem 0;
     border-bottom: 1px solid #e9ecef;
