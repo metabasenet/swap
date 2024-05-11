@@ -71,8 +71,6 @@ const downColor = '#00da3c';
 //     }
 //     return result;
 // }
-
-
 function changePeriod(period) {
 
     // fetchData(period).then(newData => {

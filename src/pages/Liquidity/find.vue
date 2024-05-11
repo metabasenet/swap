@@ -22,9 +22,9 @@
                             </div>
                             <div>
                                 <el-button color="#eeeaf4" class="custom-button" round style="width:100%;"
-                                    @click="dialogVisible = true">
+                                    @click="openDialog(true)">
                                     <div class="icon-title">
-                                        <svg-icon name="bnb"></svg-icon><span class="find_span">BNB</span>
+                                        <svg-icon name="bnb"></svg-icon><span class="find_span">{{ tokenA }}</span>
                                     </div>
                                     <el-icon class="right_icon">
                                         <ArrowDown />
@@ -36,9 +36,10 @@
                                     </el-icon>
                                 </div>
                                 <el-button color="#eeeaf4" class="custom-button" round style="width:100%;"
-                                    @click="dialogVisible = true">
+                                    @click="openDialog(false)">
                                     <div class="icon-title">
-                                        <span class="find_span">Select a Token</span>
+                                        <span class="find_span">{{ tokenB }}</span>
+                                        <!-- <span class="find_span">Select a Token</span> -->
                                     </div>
                                     <el-icon class="right_icon">
                                         <ArrowDown />
@@ -48,7 +49,8 @@
                             <div class="addbutton">
                                 <p style="color:#280d5f;font-size:16px">You don’t have liquidity in this pair yet.</p>
                                 <el-button size="large" round color="#1fc7d4">
-                                    <router-link style="text-decoration: none;" to="/v2add"><span class="button_span">Add Liquidity</span></router-link>
+                                    <router-link style="text-decoration: none;" to="/v2add"><span
+                                            class="button_span">Add Liquidity</span></router-link>
                                 </el-button>
                             </div>
                         </div>
@@ -57,7 +59,7 @@
                 <el-dialog v-model="dialogVisible" title="Select a Token">
                     <el-row :gutter="10">
                         <el-col :span="24">
-                            <el-input size="large" v-model="seachDialog"
+                            <el-input size="large" v-model="searchDialog"
                                 placeholder="Search name or paste address"></el-input>
                             <div class="dialog_button">
                                 <div>
@@ -86,9 +88,23 @@
                                             class="dialog_span">BTCB</span></el-button>
                                 </div>
                             </div>
-                            <el-table :data="tableData" style="width: 100%;margin-top:20px">
-                                <el-table-column label="" prop="date" align="left" />
-                                <el-table-column label="" prop="name" align="right" />
+                            <el-table :data="tableData" highlight-current-row @cell-click="handleCurrentChange"
+                                style="width: 100%;margin-top:20px">
+                                <el-table-column prop="ercsymbol" align="left">
+                                    <template v-slot="scope">
+                                        <div style="display:flex;align-items: center;">
+                                            <div style="margin-left:8px">
+                                                <div>
+                                                    <span class="top_span">{{ scope.row.ercsymbol }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="b-flex_span">{{ scope.row.ercname }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <!-- <el-table-column label="" prop="decimals" align="right" /> -->
                             </el-table>
                             <div class="dialog_button">
                                 <el-button color="#1fc7d4" class="find-button" round style="width:100%;">
@@ -106,26 +122,47 @@
 
 <script setup>
 import { ref } from 'vue'
+import { getSwapPairs, getTokens } from '@/api/Liquiditys'
+import { ElMessage } from 'element-plus';
 const dialogVisible = ref(false);
-const seachDialog = ref('');
-const tableData = ref([
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-    },
-])
+const searchDialog = ref('');
+const page = ref(1)
+const pageSize = ref(1000)
+const tokenA = ref('BNB')
+const tokenB = ref('Select a Token')
+const tableData = ref([])
+const isTokenA = ref(false)
+const openDialog = (isTokenAVal) => {
+    console.log(isTokenAVal);
+    dialogVisible.value = true;
+    isTokenA.value = isTokenAVal;
+    getTokenList();
+}
+// const getSwapPair = async()=>{
+//     const res = await getSwapPairs(page.value,pageSize.value);
+//     tableData.value = res.data.list;
+//     console.log(tableData.value);
+// }
+const getTokenList = async () => {
+    try {
+        const res = await getTokens();
+        tableData.value = res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+const handleCurrentChange = (value) => {
+    let tokenToCheck = isTokenA.value ? tokenB : tokenA;
+    let tokenToUpdate = isTokenA.value ? tokenA : tokenB;
+    if (tokenToCheck.value !== 'Select a Token' && value.ercsymbol === tokenToCheck.value) {
+        // alert("This token is already selected for the other field.");
+        ElMessage.warning('This token is already selected for the other field.')
+        return; 
+    }
+    tokenToUpdate.value = value.ercsymbol;
+    console.log(tokenToUpdate.value);
+    dialogVisible.value = false;
+}
 </script>
 
 <style scoped>
@@ -249,6 +286,25 @@ const tableData = ref([
     background-color: rgb(238, 234, 244);
     border-radius: 15px;
 }
+
+.top_span {
+    color: black;
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.b-flex_span {
+    color: #7a6eaa;
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    font-family: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 @media (min-width: 768px) {
     .responsive-aside {
         width: 3vw;
@@ -266,8 +322,9 @@ const tableData = ref([
     .liquidity-box {
         padding: 13px;
     }
+
     :deep(.el-dialog) {
-    width: 100%;
-  }
+        width: 100%;
+    }
 }
 </style>

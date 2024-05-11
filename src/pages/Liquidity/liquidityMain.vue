@@ -17,7 +17,7 @@
                             <div class="liquidity_p">
                                 <p>List of your liquidity positions</p>
                             </div>
-                            <div>
+                            <!-- <div>
                                 <el-checkbox size="large" value="Online activities" name="type" style="padding:10px 0">
                                     Hide closed positions
                                 </el-checkbox>
@@ -51,12 +51,15 @@
                                         </div>
                                     </el-tab-pane>
                                 </el-tabs>
-                            </div>
+                            </div> -->
                             <div class="addLiquidity">
-                                <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
+                                <router-link style="text-decoration: none;" to="/find">
+                                    <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
                                     >
                                     <el-icon size="large" color="#fff"><Plus /></el-icon><h2 style="color: #fff;padding:10px">Add Liquidity</h2>
                                 </el-button>
+                                </router-link>
+                               
                             </div>
                         </div>
                     </el-col>
