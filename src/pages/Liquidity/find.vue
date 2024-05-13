@@ -122,12 +122,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import { getSwapPairs, getTokens } from '@/api/Liquiditys'
+import {getTokens } from '@/api/Liquiditys'
 import { ElMessage } from 'element-plus';
 const dialogVisible = ref(false);
 const searchDialog = ref('');
-const page = ref(1)
-const pageSize = ref(1000)
+
 const tokenA = ref('BNB')
 const tokenB = ref('Select a Token')
 const tableData = ref([])
