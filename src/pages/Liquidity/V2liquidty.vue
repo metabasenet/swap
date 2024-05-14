@@ -148,12 +148,20 @@
                                                 <p>USDT per BNB</p>
                                             </div>
                                         </div>
-                                        <el-button v-if="!isConnect" color="#1fc7d4" class="amount_button" round style="width:90%;"
+                                        <!-- <el-button v-if="!isConnect" color="#1fc7d4" class="amount_button" round style="width:90%;"
                                             @click="connectWallet">
                                             <h2 style="color: #fff;">Connect Wallet</h2>
                                         </el-button>
                                         <el-button v-else color="#e9eaeb" class="amount_button" round style="width:90%;">
                                             <h2 style="color: #bdc2c4;">Enter an amount</h2>
+                                        </el-button> -->
+                                        <el-button  color="#1fc7d4" class="amount_button" round style="width:40%;"
+                                            @click="connectWallet">
+                                            <h2 style="color: #fff;">Add Liquidity</h2>
+                                        </el-button>
+                                        <el-button  color="#1fc7d4" class="amount_button" round style="width:40%;"
+                                            @click="connectWallet">
+                                            <h2 style="color: #fff;">Add Liquidity</h2>
                                         </el-button>
                                     </div>
                                 </el-col>

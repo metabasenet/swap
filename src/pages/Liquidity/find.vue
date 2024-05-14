@@ -21,7 +21,7 @@
                                 <el-button text><svg-icon name="settings"></svg-icon></el-button>
                             </div>
                             <div>
-                                <el-button color="#eeeaf4" class="custom-button" round style="width:100%;"
+                                <!-- <el-button color="#eeeaf4" class="custom-button" round style="width:100%;"
                                     @click="openDialog(true)">
                                     <div class="icon-title">
                                         <svg-icon name="bnb"></svg-icon><span class="find_span">{{ tokenA }}</span>
@@ -29,28 +29,53 @@
                                     <el-icon class="right_icon">
                                         <ArrowDown />
                                     </el-icon>
-                                </el-button>
+                                </el-button> -->
+                                <el-select v-model="reserve0" @change="monitorValueA" size="default"
+                                    style="width: 100%;margin-top:10px">
+                                    <template #prefix>
+                                        <div>
+                                            <svg-icon name="bnb" width="1.5rem" height="1.5rem"
+                                                style="margin-top:5px"></svg-icon>
+                                        </div>
+                                    </template>
+                                    <el-option v-for="item in optionsA" :key="item.contractaddress"
+                                        :label="item.ercsymbol" :value="item.contractaddress" />
+                                </el-select>
                                 <div class="addPlus">
                                     <el-icon size="large">
                                         <Plus />
                                     </el-icon>
                                 </div>
-                                <el-button color="#eeeaf4" class="custom-button" round style="width:100%;"
+                                <!-- <el-button color="#eeeaf4" class="custom-button" round style="width:100%;"
                                     @click="openDialog(false)">
                                     <div class="icon-title">
                                         <span class="find_span">{{ tokenB }}</span>
-                                        <!-- <span class="find_span">Select a Token</span> -->
                                     </div>
                                     <el-icon class="right_icon">
                                         <ArrowDown />
                                     </el-icon>
-                                </el-button>
+                                </el-button> -->
+                                <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select"
+                                    size="default" style="width: 100%">
+                                    <template #prefix>
+                                        <div>
+                                            <svg-icon name="bnb" width="1.5rem" height="1.5rem"
+                                                style="margin-top:5px"></svg-icon>
+                                        </div>
+                                    </template>
+                                    <el-option v-for="item in optionsB" :key="item.contractaddress"
+                                        :label="item.ercsymbol" :value="item.contractaddress" />
+                                </el-select>
                             </div>
                             <div class="addbutton">
                                 <p style="color:#280d5f;font-size:16px">You don’t have liquidity in this pair yet.</p>
                                 <el-button size="large" round color="#1fc7d4">
-                                    <router-link style="text-decoration: none;" to="/v2add"><span
-                                            class="button_span">Add Liquidity</span></router-link>
+                                    <router-link style="text-decoration: none;" :to="{
+                              name: 'v2add',
+                              params: { tokenA: reserve0,tokenB: reserve1 },
+                            }"><span
+                                            class="button_span">Add
+                                            Liquidity</span></router-link>
                                 </el-button>
                             </div>
                         </div>
@@ -122,7 +147,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import {getTokens } from '@/api/Liquiditys'
+import { getTokens } from '@/api/Liquiditys'
 import { ElMessage } from 'element-plus';
 const dialogVisible = ref(false);
 const searchDialog = ref('');
@@ -130,7 +155,26 @@ const searchDialog = ref('');
 const tokenA = ref('BNB')
 const tokenB = ref('Select a Token')
 const tableData = ref([])
+const optionsA = ref([])
+const optionsB = ref([])
+const reserve0 = ref("0x70de61B87C6BEC577C30B8A37810C652Ead68ea5");//USDT
+const reserve1 = ref("0xAf5eFec32837E3A609e7272C0A2fE19652Cf3e56");//MNB
 const isTokenA = ref(false)
+const monitorValueA = (newValue) => {
+    if (newValue === reserve1.value) {
+        reserve0.value = '';
+        ElMessage.warning('This token is already selected for the other field.')
+        return;
+    }
+
+}
+const monitorValueB = (newValue) => {
+    if (newValue === reserve0.value) {
+        reserve1.value = '';
+        ElMessage.warning('This token is already selected for the other field.')
+        return;
+    }
+}
 const openDialog = (isTokenAVal) => {
     console.log(isTokenAVal);
     dialogVisible.value = true;
@@ -145,18 +189,20 @@ const openDialog = (isTokenAVal) => {
 const getTokenList = async () => {
     try {
         const res = await getTokens();
-        tableData.value = res.data;
+        optionsA.value = res.data;
+        optionsB.value = res.data;
     } catch (error) {
         console.log(error);
     }
 }
+getTokenList();
 const handleCurrentChange = (value) => {
     let tokenToCheck = isTokenA.value ? tokenB : tokenA;
     let tokenToUpdate = isTokenA.value ? tokenA : tokenB;
     if (tokenToCheck.value !== 'Select a Token' && value.ercsymbol === tokenToCheck.value) {
         // alert("This token is already selected for the other field.");
         ElMessage.warning('This token is already selected for the other field.')
-        return; 
+        return;
     }
     tokenToUpdate.value = value.ercsymbol;
     console.log(tokenToUpdate.value);
@@ -238,6 +284,7 @@ const handleCurrentChange = (value) => {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin-top: 10px;
     height: 125px;
 }
 
@@ -302,6 +349,23 @@ const handleCurrentChange = (value) => {
     text-overflow: ellipsis;
     font-size: 12px;
     font-family: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+:deep(.el-select__placeholder) {
+    color: #280d5f;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+:deep(.el-select__caret) {
+    color: #280d5f;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+:deep(.el-select__wrapper) {
+    background-color: #eeeaf4;
+    border-radius: 15px;
 }
 
 @media (min-width: 768px) {

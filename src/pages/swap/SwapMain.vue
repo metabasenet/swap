@@ -50,24 +50,26 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button> -->
-                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default" style="width: 160px">
+                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
+                            style="width: 160px">
                             <template #prefix>
                               <div>
                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
                               </div>
                             </template>
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress"/>
+                              :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap">
+                          <!-- <div class="result-area" v-if="reserve0swap">
                             <span>~{{ reserve0swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
@@ -80,31 +82,33 @@
                                 </el-icon></h2>
                             </el-button> -->
 
-                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default" style="width: 160px">
+                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
+                              style="width: 160px">
                               <template #prefix>
                                 <div>
                                   <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
                                 </div>
                               </template>
                               <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress" />
+                                :value="item.contractaddress" />
                             </el-select>
                             <el-tooltip content="Copy TokenAddress" placement="top">
                               <el-button text plain size="default" @click="copyTokenAddress"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button>
-                          </el-tooltip>
-                            
+                                  <CopyDocument />
+                                </el-icon></el-button>
+                            </el-tooltip>
+
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalance
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve1swap">
                             <span>~{{ reserve1swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24">
@@ -121,30 +125,32 @@
                                   <CaretBottom />
                                 </el-icon></h2>
                             </el-button> -->
-                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default" style="width: 160px">
+                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
+                              style="width: 160px">
                               <template #prefix>
                                 <div>
                                   <svg-icon name="bnb" width="1.6rem" height="1.6rem" style="margin-top:5px"></svg-icon>
                                 </div>
                               </template>
                               <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress" />
+                                :value="item.contractaddress" />
                             </el-select>
                             <el-tooltip content="Copy TokenAddress" placement="top">
                               <el-button text plain size="large" @click="copyTokenAddress"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button>
-                          </el-tooltip>
+                                  <CopyDocument />
+                                </el-icon></el-button>
+                            </el-tooltip>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve1swap">
                             <span>~{{ reserve1swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
@@ -155,7 +161,8 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button> -->
-                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default" style="width: 160px">
+                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
+                            style="width: 160px">
                             <template #prefix>
                               <div>
                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
@@ -164,26 +171,27 @@
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
                               :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap">
+                          <!-- <div class="result-area" v-if="reserve0swap">
                             <span>~{{ reserve0swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24">
-                        <div v-if="reserve0swap ||reserve1swap" class="swap_footer_button swap_footer_refresh">
+                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button swap_footer_refresh">
                           <span style="color:#a88efc;font-weight:bold">Price</span>
                           <div>
-                            <span v-if="showConversion" style="color:black;">1 {{priceB}} <svg-icon name="conversion"
-                                width="0.8rem" height="0.8rem"></svg-icon> {{topriceB}} {{priceA}}</span>
-                            <span v-else style="color:black;">1 {{priceA}} <svg-icon name="conversion" width="0.8rem"
+                            <span v-if="showConversion" style="color:black;">1 {{ priceB }} <svg-icon name="conversion"
+                                width="0.8rem" height="0.8rem"></svg-icon> {{ topriceB }} {{ priceA }}</span>
+                            <span v-else style="color:black;">1 {{ priceA }} <svg-icon name="conversion" width="0.8rem"
                                 height="0.8rem"></svg-icon>
-                              {{topriceA}} {{priceB}}</span>
+                              {{ topriceA }} {{ priceB }}</span>
                             <el-button text plain icon="Refresh" @click="clickRefresh"></el-button>
                           </div>
                         </div>
@@ -214,8 +222,7 @@
                           </el-button>
                         </div>
                         <div v-else-if="isConnect && reserve0swap && !isAdequacy">
-                          <el-button color="#e9eaeb" class="custom-button" round style="width:100%;"
-                            >
+                          <el-button color="#e9eaeb" class="custom-button" round style="width:100%;">
                             <h2 style="color: #bdc2c4;">Insufficient balance</h2>
                           </el-button>
                           <div class="Crypto">
@@ -228,10 +235,10 @@
                             <h2 style="color: #fff;">Trading</h2>
                           </el-button>
                         </div>
-                        
-                        
+
+
                       </el-col>
-                      <el-col :span="24" v-if="reserve0swap ||reserve1swap">
+                      <el-col :span="24" v-if="reserve0swap || reserve1swap">
                         <div class="swap_footer_button">
                           <div>
                             <span class="el-dropdown_span" style="color:#7a6eaa">Minimum received</span>
@@ -378,24 +385,26 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button> -->
-                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default" style="width: 160px">
+                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
+                            style="width: 160px">
                             <template #prefix>
                               <div>
                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
                               </div>
                             </template>
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress"/>
+                              :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap">
+                          <!-- <div class="result-area" v-if="reserve0swap">
                             <span>~{{ reserve0swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
@@ -410,30 +419,32 @@
                             <el-button text plain size="large"><el-icon>
                                 <CopyDocument />
                               </el-icon></el-button> -->
-                              <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default" style="width: 160px">
+                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
+                              style="width: 160px">
                               <template #prefix>
                                 <div>
                                   <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
                                 </div>
                               </template>
                               <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress" />
+                                :value="item.contractaddress" />
                             </el-select>
                             <el-tooltip content="Copy TokenAddress" placement="top">
                               <el-button text plain size="default" @click="copyTokenAddress"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button>
-                          </el-tooltip>
+                                  <CopyDocument />
+                                </el-icon></el-button>
+                            </el-tooltip>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalance
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve1swap">
                             <span>~{{ reserve1swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24">
@@ -453,30 +464,32 @@
                             <el-button text plain size="large"><el-icon>
                                 <CopyDocument />
                               </el-icon></el-button> -->
-                              <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default" style="width: 160px">
+                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
+                              style="width: 160px">
                               <template #prefix>
                                 <div>
                                   <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
                                 </div>
                               </template>
                               <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress" />
+                                :value="item.contractaddress" />
                             </el-select>
                             <el-tooltip content="Copy TokenAddress" placement="top">
                               <el-button text plain size="default" @click="copyTokenAddress"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button>
-                          </el-tooltip>
+                                  <CopyDocument />
+                                </el-icon></el-button>
+                            </el-tooltip>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve1swap">
                             <span>~{{ reserve1swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
@@ -487,24 +500,26 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button> -->
-                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default" style="width: 160px">
+                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
+                            style="width: 160px">
                             <template #prefix>
                               <div>
                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
                               </div>
                             </template>
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress"/>
+                              :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap">
+                          <!-- <div class="result-area" v-if="reserve0swap">
                             <span>~{{ reserve0swap }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header">
@@ -549,18 +564,18 @@
                           input-style="background-color:#eeeaf4;" style="width: 100%;" :rows="2" placeholder="0.0">
                         </el-input>
 
-                        <div v-if="reserve0swap ||reserve1swap" class="swap_footer_button swap_footer_refresh">
+                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button swap_footer_refresh">
                           <span style="color:#a88efc;font-weight:bold">Price</span>
                           <div>
-                            <span v-if="showConversion" style="color:black;">1 {{priceB}} <svg-icon name="conversion"
-                                width="0.8rem" height="0.8rem"></svg-icon> 0.00461927 {{priceA}}</span>
-                            <span v-else style="color:black;">1 {{priceA}} <svg-icon name="conversion" width="0.8rem"
+                            <span v-if="showConversion" style="color:black;">1 {{ priceB }} <svg-icon name="conversion"
+                                width="0.8rem" height="0.8rem"></svg-icon> 0.00461927 {{ priceA }}</span>
+                            <span v-else style="color:black;">1 {{ priceA }} <svg-icon name="conversion" width="0.8rem"
                                 height="0.8rem"></svg-icon>
-                              216.27 {{priceB}}</span>
+                              216.27 {{ priceB }}</span>
 
                           </div>
                         </div>
-                        <div v-if="reserve0swap ||reserve1swap" class="swap_footer_button">
+                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button">
                           <div>
                             <span class="el-dropdown_span" style="color:black">Total trades</span>
                             <el-tooltip effect="dark" content="" placement="top">
@@ -581,7 +596,7 @@
                             </el-tooltip>
                           </div>
                         </div>
-                        <div v-if="reserve0swap ||reserve1swap" class="slider_box">
+                        <div v-if="reserve0swap || reserve1swap" class="slider_box">
                           <el-slider v-model="sliderValue" :max="11" style="width:60%" />
                           <el-tooltip effect="dark" content="" placement="top">
                             <template #content>
@@ -595,7 +610,7 @@
                             <span style="font-weight:bold;color:black">{{ sliderValue }}</span>
                           </el-tooltip>
                         </div>
-                        <div v-if="reserve0swap ||reserve1swap" class="swap_footer_button">
+                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button">
                           <div>
                             <span class="el-dropdown_span" style="color:black">Total trades</span>
                             <el-tooltip effect="dark" content="T" placement="top">
@@ -680,8 +695,7 @@
                           </el-button>
                         </div>
                         <div v-else-if="isConnect && reserve0swap && !isAdequacy">
-                          <el-button color="#e9eaeb" class="custom-button" round style="width:100%;"
-                            >
+                          <el-button color="#e9eaeb" class="custom-button" round style="width:100%;">
                             <h2 style="color: #bdc2c4;">Insufficient balance</h2>
                           </el-button>
                           <div class="Crypto">
@@ -728,15 +742,16 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap ||reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
                             <span>~{{ inputValue }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
@@ -752,15 +767,16 @@
                                 <CopyDocument />
                               </el-icon></el-button>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap ||reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
                             <span>~{{ inputValue }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24">
@@ -781,15 +797,16 @@
                                 <CopyDocument />
                               </el-icon></el-button>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap ||reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
                             <span>~{{ inputValue }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
@@ -800,15 +817,16 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{userBalance}}</span></el-button>
+                          <el-button text plain><span
+                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <div class="result-area" v-if="reserve0swap ||reserve1swap">
+                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
                             <span>~{{ inputValue }} USD</span>
-                          </div>
+                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header">
@@ -848,7 +866,7 @@
                         </el-input>
                       </el-col>
                       <el-col :span="24">
-                        <div v-if="reserve0swap ||reserve1swap" class="swap_footer_button swap_footer_refresh">
+                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button swap_footer_refresh">
                           <span style="color:#a88efc;font-weight:bold">Price</span>
                           <div>
                             <span v-if="showConversion" style="color:black;">1 CAKE <svg-icon name="conversion"
@@ -997,7 +1015,6 @@ const reserve1swap = ref('')
 const reserve0 = ref("0x70de61B87C6BEC577C30B8A37810C652Ead68ea5");//USDT
 const reserve1 = ref("0xAf5eFec32837E3A609e7272C0A2fE19652Cf3e56");//MNB
 const Router02 = new ethers.Contract(config.router02_addr, config.router02, provider);
-
 const priceA = ref('');
 const priceB = ref('');
 const topriceA = ref(0);
@@ -1008,45 +1025,61 @@ let state = 1;
 const sortAssets = () => {
   isSorted.value = !isSorted.value
 }
-const monitorValueA =(newValue)=>{
+const monitorValueA = async(newValue) => {
   reserve0swap.value = '';
   reserve1swap.value = '';
-  if(reserve0.value === newValue){
-    if(newValue === reserve1.value){
+  if (reserve0.value === newValue) {
+    if (newValue === reserve1.value) {
       reserve0.value = '';
       ElMessage.warning('This token is already selected for the other field.')
-        return; 
+      return;
     }
   }
+  const signer = await provider.getSigner();
+  const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, signer);
+  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  if(p_addr === ethers.ZeroAddress){
+    ElMessage.warning('当前交易对池子没有建立');
+    reserve0.value='';
+    return
+  }
 }
-const monitorValueB =(newValue)=>{
+const monitorValueB = async(newValue) => {
   reserve0swap.value = '';
   reserve1swap.value = '';
- if(reserve1.value === newValue){
-    if(newValue === reserve0.value){
+  if (reserve1.value === newValue) {
+    if (newValue === reserve0.value) {
       reserve1.value = '';
       ElMessage.warning('This token is already selected for the other field.')
-        return; 
+      return;
     }
   }
-}
-const copyTokenAddress=()=>{
-  if(!reserve1.value){
-    ElMessage.warning('Please select a token to swap.');
-    reserve1swap.value ='';
+  const signer = await provider.getSigner();
+  const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, signer);
+  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  if(p_addr === ethers.ZeroAddress){
+    ElMessage.warning('当前交易对池子没有建立');
+    reserve1.value='';
     return
-  }else{
+  }
+}
+const copyTokenAddress = () => {
+  if (!reserve1.value) {
+    ElMessage.warning('Please select a token to swap.');
+    reserve1swap.value = '';
+    return
+  } else {
     copiedText.value = getCurrentAddressB()
     navigator.clipboard.writeText(copiedText.value)
-    .then(() => {
-      ElMessage.success('Copy successful!');
-    })
-    .catch(err => {
-      console.error('Copy failed:', err);
-      ElMessage.error('Copy failed, please copy manually!');
-    });
+      .then(() => {
+        ElMessage.success('Copy successful!');
+      })
+      .catch(err => {
+        console.error('Copy failed:', err);
+        ElMessage.error('Copy failed, please copy manually!');
+      });
   }
-  
+
 }
 const getSwapPair = async () => {
   const res = await getTokens();
@@ -1115,38 +1148,39 @@ const getCurrentercsymbolB = () => {
 }
 const update0 = async (value) => {
   console.log(value);
-  priceA.value =  getCurrentercsymbolA();
-  priceB.value =  getCurrentercsymbolB();
+  priceA.value = getCurrentercsymbolA();
+  priceB.value = getCurrentercsymbolB();
   if (reserve0swap.value == "" || reserve0swap.value == 0) {
     reserve1swap.value = "";
     return;
-  }else if(!reserve0.value || !reserve1.value){
+  } else if (!reserve0.value || !reserve1.value) {
     ElMessage.warning('Please select a token to swap.');
-    reserve0swap.value ='';
+    reserve0swap.value = '';
     return
   }
   const signer = await provider.getSigner();
-  const factory = new ethers.Contract(config.factoryAddr,config.UniswapV2Factory,signer);
-  console.log('----------------------------',factory);
-  console.log(getCurrentAddressA(),getCurrentAddressB());
+  const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, signer);
   const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
-  console.log(p_addr);
   const uniswapV2Pair1 = new ethers.Contract(p_addr, config.UniswapV2Pair, signer);
-      const res = await uniswapV2Pair1.getReserves();
-      const reserveA_Number = Number(res[0]);
-      const reserveB_Number = Number(res[1]);
-      topriceA.value = reserveA_Number / reserveB_Number;
-      console.log(topriceA.value);
-      topriceB.value = reserveB_Number / reserveA_Number;
-      console.log(topriceB.value);
+  const res = await uniswapV2Pair1.getReserves();
+  const reserveA_Number = Number(res[0]);
+  const reserveB_Number = Number(res[1]);
+  topriceA.value = reserveA_Number / reserveB_Number;
+  topriceB.value = reserveB_Number / reserveA_Number;
   const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
   const accountBalance = await provider.getBalance(accounts[0]);
+  
   try {
     const amountIn = parseEther(reserve0swap.value);
-    if(accountBalance >= amountIn){
-      isAdequacy.value =true
-    }else{
-      isAdequacy.value =false;
+    if (accountBalance >= amountIn) {
+      isAdequacy.value = true
+      
+    } else {
+      isAdequacy.value = false;
+      reserve0swap.value = '';
+      reserve1swap.value = '';
+      ElMessage.warning('用户余额不足')
+      return
     }
     console.log(amountIn);
     const path = ["", ""];
@@ -1166,6 +1200,7 @@ const update0 = async (value) => {
       state = 3;
     }
     const amounts = await Router02.getAmountsOut(amountIn, path);
+    console.log('---------------------',amounts);
     const amountOutMin = amounts[1];
     reserve1swap.value = formatEther(amountOutMin);
     if (reserve0swap.value == "" || reserve0swap.value == 0) {
@@ -1174,27 +1209,44 @@ const update0 = async (value) => {
     }
   } catch (err) {
     console.log(err);
+    ElMessage.Danger("输入的金额不对")
   }
 }
 const update1 = async (value) => {
-  priceA.value =  getCurrentercsymbolA();
-  priceB.value =  getCurrentercsymbolB();
+  priceA.value = getCurrentercsymbolA();
+  priceB.value = getCurrentercsymbolB();
   if (reserve1swap.value == "" || reserve1swap.value == 0) {
     reserve0swap.value = "";
     return;
-  }else if(!reserve1.value || !reserve0.value){
+  } else if (!reserve1.value || !reserve0.value) {
     ElMessage.warning('Please select a token to swap.');
-    reserve1swap.value ='';
+    reserve1swap.value = '';
     return
   }
+  const signer = await provider.getSigner();
+  const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, signer);
+  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  const uniswapV2Pair1 = new ethers.Contract(p_addr, config.UniswapV2Pair, signer);
+  const res = await uniswapV2Pair1.getReserves();
+  const reserveA_Number = Number(res[0]);
+  const reserveB_Number = Number(res[1]);
+  topriceA.value = reserveA_Number / reserveB_Number;
+  topriceB.value = reserveB_Number / reserveA_Number;
   const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
   const accountBalance = await provider.getBalance(accounts[0]);
+  if(p_addr === ethers.ZeroAddress){
+    ElMessage.warning('当前交易对没有匹配');
+  }
   try {
     const amountOut = parseEther(reserve1swap.value);
-    if(accountBalance >= amountOut){
-      isAdequacy.value =true
-    }else{
-      isAdequacy.value =false;
+    if (accountBalance >= amountOut) {
+      isAdequacy.value = true
+    } else {
+      isAdequacy.value = false;
+      reserve0swap.value = '';
+      reserve1swap.value = '';
+      ElMessage.warning('用户余额不足')
+      return
     }
     const path = ["", ""];
     if (reserve0.value == "USDT" && reserve1.value == "MNT") {
@@ -1210,7 +1262,9 @@ const update1 = async (value) => {
       path[1] = getCurrentAddressA();
       state = 6;
     }
+    console.log(path);
     const amounts = await Router02.getAmountsIn(amountOut, path);
+    console.log('--------------------------',amounts);
     const amountInMax = amounts[0];
     reserve0swap.value = formatEther(amountInMax);
     if (reserve1swap.value == "" || reserve1swap.value == 0) {
@@ -1219,6 +1273,9 @@ const update1 = async (value) => {
     }
   } catch (err) {
     console.log(err);
+    ElMessage.error("输入的金额不对")
+    reserve0swap.value ='';
+    reserve1swap.value = '';
   }
 }
 const clickRefresh = () => {
@@ -1254,14 +1311,14 @@ const trading = async () => {
       //const amounts = await Router02.getAmountsOut(amountIn, path)
       const amountOutMin = 0; // amounts[1]
       tx = await routerForTransactions.swapExactTokensForETH(amountIn, amountOutMin, path, userAddress.value, ethers.MaxUint256);
-      
+
     } else if (state == 2) {
       const path = [getCurrentAddressA(), getCurrentAddressB()];
       //const amounts = await Router02.getAmountsOut(constants.WeiPerEther, path)
       const amountOutMin = 0; // amounts[1]
-      tx = await routerForTransactions.swapExactETHForTokens(amountOutMin,amountIn, path, userAddress.value, ethers.MaxUint256
-       );
-      
+      tx = await routerForTransactions.swapExactETHForTokens(amountOutMin, amountIn, path, userAddress.value, ethers.MaxUint256
+      );
+
     } else if (state == 3) {
       const path = [getCurrentAddressA(), getCurrentAddressB()];
       //const ret = await Router02.getAmountsIn(amountOut, path)
@@ -1269,7 +1326,7 @@ const trading = async () => {
       const amountOutMin = amounts[1];
       tx = await routerForTransactions.swapExactTokensForTokens(amountIn, amountOutMin, path, userAddress.value, ethers.MaxUint256)
 
-      
+
     } else if (state == 4) {
 
       const path = [getCurrentAddressB(), getCurrentAddressA()];
@@ -1282,7 +1339,7 @@ const trading = async () => {
       const path = [getCurrentAddressB(), getCurrentAddressA()];
       const amounts = await Router02.getAmountsIn(amountOut, path);
       tx = await routerForTransactions.swapETHForExactTokens(amountOut, path, userAddress.value, ethers.MaxUint256,
-        { value: amounts[0]}
+        { value: amounts[0] }
       );
     }
     else if (state == 6) {
@@ -1548,16 +1605,19 @@ onMounted(() => {
   color: black;
   padding-bottom: 10px;
 }
-:deep(.el-select__placeholder){
+
+:deep(.el-select__placeholder) {
   color: #280d5f;
   font-weight: 600;
   font-size: 16px;
 }
-:deep(.el-select__caret){
+
+:deep(.el-select__caret) {
   color: #280d5f;
   font-weight: 600;
   font-size: 16px;
 }
+
 @media (min-width: 768px) {
   .responsive-aside {
     width: 3vw;

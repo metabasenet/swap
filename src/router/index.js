@@ -55,7 +55,8 @@ const routes = [
   {
     path: '/v2add',
     name: 'v2add',
-    component: () => import('../pages/Liquidity/V2liquidty.vue')
+    component: () => import('../pages/Liquidity/V2liquidty.vue'),
+    props:true
   },
   {
     path: '/linechart',
