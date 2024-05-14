@@ -1194,13 +1194,14 @@ const update0 = async (value) => {
       path[1] = getCurrentAddressB();
       state = 2;
     } else {
+      // ['0x70de61B87C6BEC577C30B8A37810C652Ead68ea5', '0xAf5eFec32837E3A609e7272C0A2fE19652Cf3e56']
       path[0] = getCurrentAddressA();
       path[1] = getCurrentAddressB();
       console.log(path);
       state = 3;
     }
     const amounts = await Router02.getAmountsOut(amountIn, path);
-    console.log('---------------------',amounts);
+    console.log(amounts);
     const amountOutMin = amounts[1];
     reserve1swap.value = formatEther(amountOutMin);
     if (reserve0swap.value == "" || reserve0swap.value == 0) {
@@ -1264,7 +1265,6 @@ const update1 = async (value) => {
     }
     console.log(path);
     const amounts = await Router02.getAmountsIn(amountOut, path);
-    console.log('--------------------------',amounts);
     const amountInMax = amounts[0];
     reserve0swap.value = formatEther(amountInMax);
     if (reserve1swap.value == "" || reserve1swap.value == 0) {

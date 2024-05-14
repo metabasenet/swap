@@ -24,7 +24,7 @@
                                     <div class="add_left">
                                         <p class="add_leftP">CHOOSE TOKEN PAIR</p>
                                         <div class="addv2_button">
-                                            <el-button color="#eeeaf4" class="custom-button" round style="width:45%;"
+                                            <!-- <el-button color="#eeeaf4" class="custom-button" round style="width:45%;"
                                                 @click="dialogVisible = true">
                                                 <div class="icon-title">
                                                     <svg-icon name="bnb"></svg-icon><span class="find_span">BNB</span>
@@ -32,13 +32,24 @@
                                                 <el-icon class="right_icon">
                                                     <ArrowDown />
                                                 </el-icon>
-                                            </el-button>
+                                            </el-button> -->
+                                            <el-select v-model="tokenA" @change="monitorValueA" size="default"
+                                                style="width:45%;">
+                                                <template #prefix>
+                                                    <div>
+                                                        <svg-icon name="bnb" width="1.5rem" height="1.5rem"
+                                                            style="margin-top:5px"></svg-icon>
+                                                    </div>
+                                                </template>
+                                                <el-option v-for="item in optionsA" :key="item.contractaddress"
+                                                    :label="item.ercsymbol" :value="item.contractaddress" />
+                                            </el-select>
                                             <div class="addPlus">
                                                 <el-icon size="large">
                                                     <Plus />
                                                 </el-icon>
                                             </div>
-                                            <el-button color="#eeeaf4" class="custom-button" round style="width:45%;"
+                                            <!-- <el-button color="#eeeaf4" class="custom-button" round style="width:45%;"
                                                 @click="dialogVisible = true">
                                                 <div class="icon-title">
                                                     <svg-icon name="bnb"></svg-icon><span class="find_span">BNB</span>
@@ -46,7 +57,18 @@
                                                 <el-icon class="right_icon">
                                                     <ArrowDown />
                                                 </el-icon>
-                                            </el-button>
+                                            </el-button> -->
+                                            <el-select v-model="tokenB" @change="monitorValueB" placeholder="Select"
+                                                size="default" style="width: 100%">
+                                                <template #prefix>
+                                                    <div>
+                                                        <svg-icon name="bnb" width="1.5rem" height="1.5rem"
+                                                            style="margin-top:5px"></svg-icon>
+                                                    </div>
+                                                </template>
+                                                <el-option v-for="item in optionsB" :key="item.contractaddress"
+                                                    :label="item.ercsymbol" :value="item.contractaddress" />
+                                            </el-select>
                                         </div>
                                         <el-button color="#faf9fa" class="custom-button" round style="width:100%;"
                                             @click="dialogVisible = true">
@@ -155,11 +177,11 @@
                                         <el-button v-else color="#e9eaeb" class="amount_button" round style="width:90%;">
                                             <h2 style="color: #bdc2c4;">Enter an amount</h2>
                                         </el-button> -->
-                                        <el-button  color="#1fc7d4" class="amount_button" round style="width:40%;"
+                                        <el-button color="#1fc7d4" class="amount_button" round style="width:40%;"
                                             @click="connectWallet">
                                             <h2 style="color: #fff;">Add Liquidity</h2>
                                         </el-button>
-                                        <el-button  color="#1fc7d4" class="amount_button" round style="width:40%;"
+                                        <el-button color="#1fc7d4" class="amount_button" round style="width:40%;"
                                             @click="connectWallet">
                                             <h2 style="color: #fff;">Add Liquidity</h2>
                                         </el-button>
@@ -220,8 +242,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getTokens } from '@/api/Liquiditys'
 import MetamaskService from '@/components/MetamaskService';
+const route = useRouter();
+const tokenA = ref('');
+const tokenB = ref('')
+const optionsA = ref([])
+const optionsB = ref([])
 const dialogVisible = ref(false);
 const seachDialog = ref('');
 const inputValue = ref('');
@@ -246,16 +275,44 @@ const tableData = ref([
 ])
 
 const connectWallet = async () => {
-  if (typeof window.ethereum !== "undefined") {
-    try {
-    const { provider, signer, account } = await MetamaskService.connectWallet();
-      isConnect.value = account;
-  } catch (error) {
-
-  }
-  }
-  
+    if (typeof window.ethereum !== "undefined") {
+        try {
+            const { provider, signer, account } = await MetamaskService.connectWallet();
+            isConnect.value = account;
+        } catch (error) {
+        }
+    }
 }
+const monitorValueA = (newValue) => {
+    if (newValue === tokenB.value) {
+        tokenA.value = '';
+        ElMessage.warning('This token is already selected for the other field.')
+        return;
+    }
+
+}
+const monitorValueB = (newValue) => {
+    if (newValue === tokenA.value) {
+        tokenB.value = '';
+        ElMessage.warning('This token is already selected for the other field.')
+        return;
+    }
+}
+const getTokenList = async () => {
+    try {
+        const res = await getTokens();
+        optionsA.value = res.data;
+        optionsB.value = res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+getTokenList();
+onMounted(() => {
+    console.log('-----------',route);
+    // tokenA.value = route.params.tokenA;
+    // tokenB.value = route.params.tokenB;
+})
 </script>
 
 <style scoped>
@@ -483,8 +540,9 @@ const connectWallet = async () => {
     .liquidity-box {
         padding: 13px;
     }
+
     :deep(.el-dialog) {
-    width: 100%;
-  }
+        width: 100%;
+    }
 }
 </style>
