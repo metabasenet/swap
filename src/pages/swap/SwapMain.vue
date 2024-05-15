@@ -1078,7 +1078,8 @@ const monitorValueB = async (newValue) => {
 }
 const ifapprove = async (reserve) => {
   if (isSorted.value) {
-    const token = new ethers.Contract(reserve1.value, config.erc20, writeProvider);
+  // const signer = await writeProvider.getSigner();
+    const token = new ethers.Contract(reserve1.value, config.erc20, readProvider);
     const result = await token.allowance(userAddress.value, config.router02_addr)
     console.log('11111111111111111111', result);
     console.log('22222222222222222222', ethers.MaxUint256);
@@ -1088,7 +1089,9 @@ const ifapprove = async (reserve) => {
       isapprove.value = false;
     }
   } else {
-    const token = new ethers.Contract(reserve0.value, config.erc20, await writeProvider.getSigner());
+    console.log('111111111111111111111');
+    // const signer = await writeProvider.getSigner();
+    const token = new ethers.Contract(reserve0.value, config.erc20, readProvider);
     console.log(reserve0.value);
     const result = await token.allowance(userAddress.value, config.router02_addr)
     console.log('11111111111111111111', result);
@@ -1324,7 +1327,8 @@ const approve = async () => {
 
   if (isSorted.value) {
     const tokenB_addr = getCurrentAddressB()
-    const TokenB = new ethers.Contract(tokenB_addr, config.erc20, writeProvider);
+    const signer = await writeProvider.getSigner();
+    const TokenB = new ethers.Contract(tokenB_addr, config.erc20, signer);
     try {
       const tx = await TokenB.approve(config.router02_addr, ethers.MaxUint256);
       await tx.wait();
@@ -1340,7 +1344,8 @@ const approve = async () => {
   } else {
     const tokenA_addr = getCurrentAddressA()
     console.log(tokenA_addr);
-    const TokenA = new ethers.Contract(tokenA_addr, config.erc20, await writeProvider.getSigner());
+    const signer = await writeProvider.getSigner();
+    const TokenA = new ethers.Contract(tokenA_addr, config.erc20, signer);
     console.log(TokenA);
     try {
       const tx = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
@@ -1361,7 +1366,8 @@ const trading = async () => {
     ElMessage.warning('Please fill in the data')
     return;
   }
-  const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, writeProvider);
+  const signer = await writeProvider.getSigner();
+  const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
   try {
     if (typeof window.ethereum !== 'undefined') {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
