@@ -1,7 +1,7 @@
 import uniswapV2Router02 from './UniswapV2Router02.json';
 import uniswapV2Factory from './UniswapV2Factory.json';
 import uniswapV2Pair from './UniswapV2Pair.json';
-import erc20 from './erc20.json';
+import erc20 from './Erc20.json';
 
 const config = {
     router02: uniswapV2Router02,

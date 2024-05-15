@@ -1031,6 +1031,7 @@ const priceB = ref('');
 const isapprove = ref(false);
 const topriceA = ref(0);
 const topriceB = ref(0);
+
 // const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
 const userAddress = ref('')
 let state = 1;
@@ -1091,8 +1092,8 @@ const ifapprove = async (reserve) => {
   } else {
     console.log('111111111111111111111');
     // const signer = await writeProvider.getSigner();
+    console.log('----------------------------------',config.erc20);
     const token = new ethers.Contract(reserve0.value, config.erc20, readProvider);
-    console.log(reserve0.value);
     const result = await token.allowance(userAddress.value, config.router02_addr)
     console.log('11111111111111111111', result);
     console.log('22222222222222222222', ethers.MaxUint256);
@@ -1135,13 +1136,6 @@ const connectWallet = async () => {
       isConnect.value = account;
       userAddress.value = account;
       // console.log(accountBalance);
-      const provi = new ethers.JsonRpcProvider(config.rpc);
-      const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, provi);
-      const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, provi);
-      const balanceA = await tokenContractA.balanceOf(userAddress.value);
-      const balanceB = await tokenContractB.balanceOf(userAddress.value);
-      userBalanceA.value = formatEther(balanceA);
-      userBalanceB.value = formatEther(balanceB);
     } catch (error) {
 
     }
@@ -1149,6 +1143,35 @@ const connectWallet = async () => {
 
 }
 connectWallet()
+const getBalance =async()=>{
+  console.log(reserve0.value);
+     try {
+      const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
+      const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
+      console.log("000000000000000000000000000");
+      let balanceA ;
+      console.log(reserve0.value.toLocaleLowerCase());
+      console.log(config.wmnt_addr.toLocaleLowerCase());
+      if(reserve0.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()){
+       console.log('111111111111111111111');
+       balanceA = await readProvider.getBalance(userAddress.value)
+       }else{
+        balanceA = await tokenContractA.balanceOf(userAddress.value);
+       }
+      let balanceB;
+    if(reserve0.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()){
+       console.log('222222222222222222222');
+       balanceB = await readProvider.getBalance(userAddress.value);
+      }else{
+        balanceB = await tokenContractB.balanceOf(userAddress.value);
+      }
+      userBalanceA.value = formatEther(balanceA);
+      userBalanceB.value = formatEther(balanceB);
+     } catch (error) {
+      
+     }
+}
+getBalance()
 const handleClick = (tab) => {
   showSecondaryNavigation.value = tab === 'MARKET' ? false : true;
   if (tab === 'TWAP') {
@@ -1186,7 +1209,7 @@ const getCurrentercsymbolB = () => {
 const update0 = async (value) => {
   console.log(reserve0.value);
   console.log(reserve0swap.value);
-  ifapprove();
+  await ifapprove();
   priceA.value = getCurrentercsymbolA();
   priceB.value = getCurrentercsymbolB();
   if (reserve0swap.value == "" || reserve0swap.value == 0) {
