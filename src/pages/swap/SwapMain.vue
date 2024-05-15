@@ -60,8 +60,8 @@
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
                               :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceA
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
@@ -99,7 +99,7 @@
                             </el-tooltip>
 
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalance
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceB
                               }}</span></el-button>
                         </div>
                         <div class="input-with-result">
@@ -141,8 +141,8 @@
                                 </el-icon></el-button>
                             </el-tooltip>
                           </div>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceB
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
@@ -171,8 +171,8 @@
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
                               :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceA
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
@@ -187,11 +187,11 @@
                         <div v-if="reserve0swap || reserve1swap" class="swap_footer_button swap_footer_refresh">
                           <span style="color:#a88efc;font-weight:bold">Price</span>
                           <div>
-                            <span v-if="showConversion" style="color:black;">1 {{ priceB }} <svg-icon name="conversion"
-                                width="0.8rem" height="0.8rem"></svg-icon> {{ topriceB }} {{ priceA }}</span>
-                            <span v-else style="color:black;">1 {{ priceA }} <svg-icon name="conversion" width="0.8rem"
+                            <span v-if="showConversion" style="color:black;">1 {{ priceA }} <svg-icon name="conversion"
+                                width="0.8rem" height="0.8rem"></svg-icon> {{ topriceB }} {{ priceB }}</span>
+                            <span v-else style="color:black;">1 {{ priceB }} <svg-icon name="conversion" width="0.8rem"
                                 height="0.8rem"></svg-icon>
-                              {{ topriceA }} {{ priceB }}</span>
+                              {{ topriceA }} {{ priceA }}</span>
                             <el-button text plain icon="Refresh" @click="clickRefresh"></el-button>
                           </div>
                         </div>
@@ -230,12 +230,17 @@
                             <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
                           </div>
                         </div>
-                        <div v-else>
+                        <!--reserve0 === config.mnt_addr"  -->
+                        <div v-else-if="isapprove || reserve0 === config.wmnt_addr">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
                             <h2 style="color: #fff;">Trading</h2>
                           </el-button>
                         </div>
-
+                        <div v-else>
+                          <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="approve">
+                            <h2 style="color: #fff;">授权</h2>
+                          </el-button>
+                        </div>
 
                       </el-col>
                       <el-col :span="24" v-if="reserve0swap || reserve1swap">
@@ -395,8 +400,7 @@
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
                               :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
@@ -435,8 +439,7 @@
                                 </el-icon></el-button>
                             </el-tooltip>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalance
-                              }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
@@ -480,8 +483,7 @@
                                 </el-icon></el-button>
                             </el-tooltip>
                           </div>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
@@ -510,8 +512,7 @@
                             <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
                               :value="item.contractaddress" />
                           </el-select>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
@@ -742,8 +743,7 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
@@ -767,8 +767,7 @@
                                 <CopyDocument />
                               </el-icon></el-button>
                           </div>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
@@ -797,8 +796,7 @@
                                 <CopyDocument />
                               </el-icon></el-button>
                           </div>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
@@ -817,8 +815,7 @@
                                 <CaretBottom />
                               </el-icon></h2>
                           </el-button>
-                          <el-button text plain><span
-                              style="color:rgb(122, 110, 170)">Balance:{{ userBalance }}</span></el-button>
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="inputValue" type="textarea" resize="none"
@@ -965,7 +962,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElLoading } from 'element-plus'
 import MetamaskService from '@/components/MetamaskService';
 import { ethers, parseEther, formatEther } from "ethers";
 import { config } from "@/const/config";
@@ -987,7 +984,8 @@ const isSorted = ref(false)
 const isConnect = ref("")
 const optionsA = ref([])
 const optionsB = ref([])
-const userBalance = ref('')
+const userBalanceA = ref('')
+const userBalanceB = ref('')
 const tableData = ref([
   {
     date: '2016-05-03',
@@ -1008,24 +1006,26 @@ const tableData = ref([
 ])
 const copiedText = ref("");
 const isAdequacy = ref(false);
-// const provider = new ethers.JsonRpcProvider(config.rpc);
-const provider = new ethers.BrowserProvider(window.ethereum);
+const provider = new ethers.JsonRpcProvider(config.rpc);
+// const provider = new ethers.BrowserProvider(window.ethereum);
 const reserve0swap = ref('')
 const reserve1swap = ref('')
-const reserve0 = ref("0x70de61B87C6BEC577C30B8A37810C652Ead68ea5");//USDT
-const reserve1 = ref("0xAf5eFec32837E3A609e7272C0A2fE19652Cf3e56");//MNB
+const reserve0 = ref(config.usdt_addr);//USDT
+const reserve1 = ref(config.wmnt_addr);//MNB
 const Router02 = new ethers.Contract(config.router02_addr, config.router02, provider);
 const priceA = ref('');
 const priceB = ref('');
+const isapprove = ref(false);
 const topriceA = ref(0);
 const topriceB = ref(0);
 // const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
 const userAddress = ref('')
 let state = 1;
 const sortAssets = () => {
-  isSorted.value = !isSorted.value
+  isSorted.value = !isSorted.value;
+  ifapprove();
 }
-const monitorValueA = async(newValue) => {
+const monitorValueA = async (newValue) => {
   reserve0swap.value = '';
   reserve1swap.value = '';
   if (reserve0.value === newValue) {
@@ -1035,16 +1035,16 @@ const monitorValueA = async(newValue) => {
       return;
     }
   }
-  const signer = await provider.getSigner();
-  const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, signer);
+  const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, provider);
   const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
-  if(p_addr === ethers.ZeroAddress){
+  if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对池子没有建立');
-    reserve0.value='';
+    reserve0.value = '';
     return
   }
+  ifapprove();
 }
-const monitorValueB = async(newValue) => {
+const monitorValueB = async (newValue) => {
   reserve0swap.value = '';
   reserve1swap.value = '';
   if (reserve1.value === newValue) {
@@ -1057,11 +1057,37 @@ const monitorValueB = async(newValue) => {
   const signer = await provider.getSigner();
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, signer);
   const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
-  if(p_addr === ethers.ZeroAddress){
+  if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对池子没有建立');
-    reserve1.value='';
+    reserve1.value = '';
     return
   }
+  ifapprove();
+}
+const ifapprove = async (reserve) => {
+  if (isSorted.value) {
+    const token = new ethers.Contract(reserve1.value, config.erc20, provider);
+    const result = await token.allowance(userAddress.value, config.router02_addr)
+    console.log('11111111111111111111', result);
+    console.log('22222222222222222222', ethers.MaxUint256);
+    if (result === ethers.MaxUint256) {
+      isapprove.value = true;
+    } else {
+      isapprove.value = false;
+    }
+  } else {
+    const token = new ethers.Contract(reserve0.value, config.erc20, provider);
+    console.log(reserve0.value);
+    const result = await token.allowance(userAddress.value, config.router02_addr)
+    console.log('11111111111111111111', result);
+    console.log('22222222222222222222', ethers.MaxUint256);
+    if (result === ethers.MaxUint256) {
+      isapprove.value = true;
+    } else {
+      isapprove.value = false;
+    }
+  }
+
 }
 const copyTokenAddress = () => {
   if (!reserve1.value) {
@@ -1093,16 +1119,25 @@ const connectWallet = async () => {
       const { provider, signer, account } = await MetamaskService.connectWallet();
       isConnect.value = account;
       userAddress.value = account;
+      const accountBalance = await provider.getBalance(account);
+      // console.log(accountBalance);
+      const provi = new ethers.JsonRpcProvider(config.rpc);
+      const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, provi);
+      const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, provi);
+      const balanceA = await tokenContractA.balanceOf(userAddress.value);
+      const balanceB = await tokenContractB.balanceOf(userAddress.value);
+      userBalanceA.value = formatEther(balanceA);
+      userBalanceB.value = formatEther(balanceB);
       // w.value = signer;
       // // get chainId
       // const chainId = await provider.getNetwork();
       // console.log(chainId);
       // // get chain name
       // const chainName = await provider.getNetwork();
-      // console.log(chainName);
+      // console.log(chainName);.value
       // get account balance
-      const accountBalance = await provider.getBalance(account);
-      userBalance.value = formatEther(accountBalance);
+
+      // userBalance.value = formatEther(accountBalance);
       // console.log("Balance in wei:", accountBalance.toString());
       // console.log("Balance in Ether:", formatEther(accountBalance));
     } catch (error) {
@@ -1147,7 +1182,9 @@ const getCurrentercsymbolB = () => {
   }
 }
 const update0 = async (value) => {
-  console.log(value);
+  console.log(reserve0.value);
+  console.log(reserve0swap.value);
+  ifapprove();
   priceA.value = getCurrentercsymbolA();
   priceB.value = getCurrentercsymbolB();
   if (reserve0swap.value == "" || reserve0swap.value == 0) {
@@ -1169,12 +1206,11 @@ const update0 = async (value) => {
   topriceB.value = reserveB_Number / reserveA_Number;
   const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
   const accountBalance = await provider.getBalance(accounts[0]);
-  
   try {
     const amountIn = parseEther(reserve0swap.value);
     if (accountBalance >= amountIn) {
       isAdequacy.value = true
-      
+
     } else {
       isAdequacy.value = false;
       reserve0swap.value = '';
@@ -1184,12 +1220,12 @@ const update0 = async (value) => {
     }
     console.log(amountIn);
     const path = ["", ""];
-    if (reserve0.value == "USDT" && reserve1.value == "MNT") {
+    if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
       path[0] = getCurrentAddressA();
       path[1] = getCurrentAddressB();
       console.log(path);
       state = 1;
-    } else if (reserve0.value == "MNT" && reserve1.value == "USDT") {
+    } else if (reserve0.value == config.wmnt_addr && reserve1.value == config.usdt_addr) {
       path[0] = getCurrentAddressA();
       path[1] = getCurrentAddressB();
       state = 2;
@@ -1214,6 +1250,7 @@ const update0 = async (value) => {
   }
 }
 const update1 = async (value) => {
+  ifapprove();
   priceA.value = getCurrentercsymbolA();
   priceB.value = getCurrentercsymbolB();
   if (reserve1swap.value == "" || reserve1swap.value == 0) {
@@ -1235,7 +1272,7 @@ const update1 = async (value) => {
   topriceB.value = reserveB_Number / reserveA_Number;
   const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
   const accountBalance = await provider.getBalance(accounts[0]);
-  if(p_addr === ethers.ZeroAddress){
+  if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对没有匹配');
   }
   try {
@@ -1250,20 +1287,19 @@ const update1 = async (value) => {
       return
     }
     const path = ["", ""];
-    if (reserve0.value == "USDT" && reserve1.value == "MNT") {
-      path[0] = getCurrentAddressB();
-      path[1] = getCurrentAddressA();
+    if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+      path[0] = getCurrentAddressA();
+      path[1] = getCurrentAddressB();
       state = 4;
-    } else if (reserve0.value == "MNT" && reserve1.value == "USDT") {
-      path[0] = getCurrentAddressB();
-      path[1] = getCurrentAddressA();
+    } else if (reserve0.value == config.wmnt_addr && reserve1.value == config.usdt_addr) {
+      path[0] = getCurrentAddressA();
+      path[1] = getCurrentAddressB();
       state = 5;
     } else {
-      path[0] = getCurrentAddressB();
-      path[1] = getCurrentAddressA();
+      path[0] = getCurrentAddressA();
+      path[1] = getCurrentAddressB();
       state = 6;
     }
-    console.log(path);
     const amounts = await Router02.getAmountsIn(amountOut, path);
     const amountInMax = amounts[0];
     reserve0swap.value = formatEther(amountInMax);
@@ -1274,12 +1310,56 @@ const update1 = async (value) => {
   } catch (err) {
     console.log(err);
     ElMessage.error("输入的金额不对")
-    reserve0swap.value ='';
+    reserve0swap.value = '';
     reserve1swap.value = '';
   }
 }
 const clickRefresh = () => {
   showConversion.value = !showConversion.value
+}
+const approve = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: '正在授权，请稍候...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
+  
+  if (isSorted.value) {
+    const signer = await provider.getSigner();
+    const tokenB_addr = getCurrentAddressB()
+    const TokenB = new ethers.Contract(tokenB_addr, config.erc20, signer);
+    try {
+      const tx = await TokenB.approve(config.router02_addr, ethers.MaxUint256);
+      await tx.wait();
+      // isapprove.value =true;
+      ElMessage.success('授权成功')
+      ifapprove();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // 关闭 loading 动画
+      loading.close();
+    }
+  } else {
+    const signer = await provider.getSigner();
+    console.log(signer);
+    const tokenA_addr = getCurrentAddressA()
+    console.log(tokenA_addr);
+    const TokenA = new ethers.Contract(tokenA_addr, config.erc20, signer);
+    console.log(TokenA);
+    try {
+      const tx = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
+      await tx.wait();
+      // isapprove.value =true;
+      ElMessage.success('授权成功')
+      ifapprove();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // 关闭 loading 动画
+      loading.close();
+    }
+  }
 }
 const trading = async () => {
   if (reserve0swap.value == "" || reserve1swap.value == "") {
@@ -1288,15 +1368,6 @@ const trading = async () => {
   }
   const signer = await provider.getSigner();
   const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
-  const tokenA_addr = getCurrentAddressA()
-  const tokenB_addr = getCurrentAddressB()
-  const TokenA = new ethers.Contract(tokenA_addr, config.erc20, signer);
-  const TokenB = new ethers.Contract(tokenB_addr, config.erc20, signer);
-  // const overrides = {
-  //   gasLimit: 9999999
-  // }
-  await TokenA.approve(config.router02_addr, ethers.MaxUint256)
-  await TokenB.approve(config.router02_addr, ethers.MaxUint256)
   try {
     if (typeof window.ethereum !== 'undefined') {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -1308,20 +1379,21 @@ const trading = async () => {
     const amountOut = parseEther(reserve1swap.value);
     if (state == 1) {
       const path = [getCurrentAddressA(), getCurrentAddressB()];
-      //const amounts = await Router02.getAmountsOut(amountIn, path)
-      const amountOutMin = 0; // amounts[1]
+      console.log(path);
+      // const amounts = await Router02.getAmountsOut(amountIn, path)
+      const amountOutMin = 0; // 0
+      console.log(amountOutMin);
       tx = await routerForTransactions.swapExactTokensForETH(amountIn, amountOutMin, path, userAddress.value, ethers.MaxUint256);
 
     } else if (state == 2) {
       const path = [getCurrentAddressA(), getCurrentAddressB()];
-      //const amounts = await Router02.getAmountsOut(constants.WeiPerEther, path)
-      const amountOutMin = 0; // amounts[1]
+      const amounts = await Router02.getAmountsOut(amountIn, path)
+      const amountOutMin = amounts[1]; // 0
       tx = await routerForTransactions.swapExactETHForTokens(amountOutMin, amountIn, path, userAddress.value, ethers.MaxUint256
       );
 
     } else if (state == 3) {
       const path = [getCurrentAddressA(), getCurrentAddressB()];
-      //const ret = await Router02.getAmountsIn(amountOut, path)
       const amounts = await Router02.getAmountsOut(amountIn, path);
       const amountOutMin = amounts[1];
       tx = await routerForTransactions.swapExactTokensForTokens(amountIn, amountOutMin, path, userAddress.value, ethers.MaxUint256)
@@ -1363,7 +1435,7 @@ const trading = async () => {
     }
   } catch (error) {
     console.error("An error occurred during the transaction:", error);
-    ElMessage.error('Deal failed');
+    ElMessage.error('交易失败');
   }
 }
 onMounted(() => {
@@ -1389,6 +1461,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .input-with-result {

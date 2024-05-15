@@ -6,7 +6,7 @@ export default class MetamaskService {
       try {
         const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
         const account = accounts[0];
-        console.log("Connected", account);
+        // console.log("Connected", account);
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         return {
