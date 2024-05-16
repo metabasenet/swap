@@ -987,24 +987,7 @@ const optionsA = ref([])
 const optionsB = ref([])
 const userBalanceA = ref('')
 const userBalanceB = ref('')
-const tableData = ref([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-  },
-])
+const tableData = ref([])
 const copiedText = ref("");
 const isAdequacy = ref(false);
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
