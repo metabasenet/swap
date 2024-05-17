@@ -53,7 +53,7 @@ const routes = [
     props: true
   },
   {
-    path: '/v2add/:tokenA/:tokenB',
+    path: '/v2add',
     name: 'v2add',
     component: () => import('../pages/Liquidity/V2liquidty.vue'),
     props:true

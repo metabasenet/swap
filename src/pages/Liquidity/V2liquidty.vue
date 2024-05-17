@@ -248,15 +248,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { getTokens } from '@/api/Liquiditys'
 import { ElMessage, ElLoading } from 'element-plus';
 import MetamaskService from '@/components/MetamaskService';
 import { ethers, parseEther, formatEther } from "ethers";
 import { config } from "@/const/config";
-const route = useRoute();
-const reserve0 = ref(route.params.tokenA);
-const reserve1 = ref(route.params.tokenB);
+const reserve0 = ref(config.usdt_addr);
+const reserve1 = ref(config.wmnt_addr);
 const reserve0Input = ref('');
 const reserve1Input = ref('');
 const reserve0Name = ref("");
@@ -265,7 +263,6 @@ const optionsA = ref([])
 const optionsB = ref([])
 const dialogVisible = ref(false);
 const seachDialog = ref('');
-const inputValue = ref('');
 const isConnect = ref("");
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
 const writeProvider = new ethers.BrowserProvider(window.ethereum);
@@ -302,10 +299,12 @@ const findName = async (token) => {
 async function updateTokenNames() {
     reserve0Name.value = await findName(reserve0.value);
     reserve1Name.value = await findName(reserve1.value);
+   await getBalance()
 }
 updateTokenNames()
 const getBalance = async () => {
     try {
+        
         const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
         const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
         let balanceA;
@@ -362,9 +361,6 @@ const monitorValueB = async (newValue) => {
     ifapprove()
 }
 const update0 = async () => {
-    if (!userBalanceA.value) {
-        getBalance()
-    }
     if (reserve0Input.value == "" || reserve0Input.value == 0) {
         reserve0Input.value == ""
         reserve1Input.value = "";
@@ -384,9 +380,6 @@ const update0 = async () => {
     ifapprove()
 }
 const update1 = async () => {
-    if (!userBalanceA.value) {
-        getBalance()
-    }
     if (reserve1Input.value == "" || reserve1Input.value == 0) {
         reserve0Input.value = "";
         reserve1Input.value == "";
@@ -447,9 +440,12 @@ const addToken = async () => {
 }
 //判断代币是否授权
 const ifapprove = async () => {
+    console.log(reserve0.value);
     const tokenA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
+    console.log(tokenA);
     const tokenB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
     const result = await tokenA.allowance(userAddress.value, config.router02_addr)
+    console.log(result);
     const res = await tokenB.allowance(userAddress.value, config.router02_addr)
     console.log(res);
     if (result === ethers.MaxUint256 && res === ethers.MaxUint256) {

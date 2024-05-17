@@ -28,7 +28,6 @@
                           <el-tooltip effect="dark" content="Buy crypto with fiat." placement="bottom">
                             <el-button text>
                               <svg-icon name="moneyBangs" width="1.5rem" height="1.6rem"></svg-icon>
-                              <!-- <img style="width:21px;height:22px;" src="/moneyBangs.svg" alt=""> -->
                             </el-button>
                           </el-tooltip>
                           <el-button text @click="tolineChart">
@@ -45,12 +44,6 @@
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="!isSorted">
                         <div class="main_header">
-                          <!-- <el-button text plain @click="dialogVisible = true">
-                            <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                            <h2 style="color:black">{{ reserve0 }}<el-icon>
-                                <CaretBottom />
-                              </el-icon></h2>
-                          </el-button> -->
                           <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
                             style="width: 170px">
                             <template #prefix>
@@ -68,21 +61,11 @@
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap">
-                            <span>~{{ reserve0swap }} USD</span>
-                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
                         <div class="main_header">
                           <div>
-                            <!-- <el-button text plain @click="dialogVisible = true">
-                              <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                              <h2 style="color:black">{{ reserve1 }}<el-icon>
-                                  <CaretBottom />
-                                </el-icon></h2>
-                            </el-button> -->
-
                             <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
                               style="width: 170px">
                               <template #prefix>
@@ -111,9 +94,6 @@
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve1swap">
-                            <span>~{{ reserve1swap }} USD</span>
-                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24">
@@ -124,12 +104,6 @@
                       <el-col :span="24" class="bnb_header" v-show="!isSorted">
                         <div class="main_header">
                           <div>
-                            <!-- <el-button text plain @click="dialogVisible = true">
-                              <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                              <h2 style="color:black">{{ reserve1 }}<el-icon>
-                                  <CaretBottom />
-                                </el-icon></h2>
-                            </el-button> -->
                             <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
                               style="width: 170px">
                               <template #prefix>
@@ -158,19 +132,10 @@
                           <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve1swap">
-                            <span>~{{ reserve1swap }} USD</span>
-                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" v-show="isSorted">
                         <div class="main_header">
-                          <!-- <el-button text plain @click="dialogVisible = true">
-                            <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                            <h2 style="color:black">{{ reserve0 }}<el-icon>
-                                <CaretBottom />
-                              </el-icon></h2>
-                          </el-button> -->
                           <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
                             style="width: 170px">
                             <template #prefix>
@@ -188,9 +153,6 @@
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap">
-                            <span>~{{ reserve0swap }} USD</span>
-                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24">
@@ -208,13 +170,6 @@
                       </el-col>
                       <el-col :span="24">
                         <div class="swap_footer_button">
-                          <!-- <div>
-                            <span style="color:#a88efc;font-weight:bold;font-size:14px">Slippage
-                              Tolerance</span><el-button text plain><el-icon>
-                                <EditPen />
-                              </el-icon></el-button>
-                          </div>
-                          <span style="color:#1fc7d4;font-weight:bold">1%</span> -->
                         </div>
                         <div v-if="!isConnect">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
@@ -240,7 +195,6 @@
                             <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
                           </div>
                         </div>
-                        <!--reserve0 === config.mnt_addr"  -->
                         <div
                           v-else-if="isapprove || (isSorted ? reserve1 === config.wmnt_addr : reserve0 === config.wmnt_addr)">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
@@ -252,703 +206,8 @@
                             <h2 style="color: #fff;">授权</h2>
                           </el-button>
                         </div>
-
-                      </el-col>
-                      <!-- <el-col :span="24" v-if="reserve0swap || reserve1swap">
-                        <div class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:#7a6eaa">Minimum received</span>
-                            <el-tooltip effect="dark" content="" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    Your transaction will revert if there is a
-                                    large,unfavorable price movement
-                                    before it is confirmed.
-                                  </p>
-
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <span style="color:black">213.3 CAKE</span>
-                        </div>
-                        <div class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:#7a6eaa">Price Impact</span>
-                            <el-tooltip effect="dark" content="" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    AMM:The difference between the
-                                    market price and estimated price due to
-                                    trade size.
-                                    MM:No slippage against quote from
-                                    market maker
-                                  </p>
-
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <span style="color:#31d0aa">0.01%</span>
-                        </div>
-                        <div class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:#7a6eaa">Trading Fee</span>
-                            <el-tooltip effect="dark" content="" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    AMM:Fee ranging from 0.1%to 0.01%
-                                    depending on the pool fee tier.You can check the fee tier by clicking the magnifier
-                                    icon under
-                                    the Route section.
-                                  </p>
-                                  <p class="content_box_p">Fee Breakdown and Tokenomics </p>
-                                  <p>MM:PancakeSwap does not charge any fees for
-                                    trades.However,the market makers charge an implied fee of 0.05%-
-                                    0.25%(non-stablecoin)/0.01% (stablecoin)factored into the quotes provided by them.
-                                  </p>
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <span style="color:black">0.0005 BNB</span>
-                        </div>
-                        <div class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:#7a6eaa">Route</span>
-                            <el-tooltip effect="dark" content="" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    Your transaction will revert if there is a
-                                    large,unfavorable price movement
-                                    before it is confirmed.
-                                  </p>
-
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <el-button text plain><span style="color:black;font-weight:bold">2 Separate Routes <el-icon>
-                                <Search />
-                              </el-icon></span></el-button>
-                        </div>
-                      </el-col> -->
-                    </el-row>
-                    <!-- <el-dialog v-model="dialogVisible">
-                      <template #header>
-                        <h2 class="dialog_title">Select a Token</h2>
-                      </template>
-                      <el-row :gutter="10" class="dialog_row">
-                        <el-col :span="24">
-                          <el-input size="large" v-model="seachDialog"
-                            placeholder="Search name or paste address"></el-input>
-                          <div class="dialog_button">
-                            <p>Common tokens</p>
-                            <div class="dialog_button_div">
-                              <el-button round><svg-icon name="bnb"></svg-icon><span
-                                  class="dialog_span">BNB</span></el-button>
-                              <el-button round><svg-icon name="bnb"></svg-icon><span
-                                  class="dialog_span">USDT</span></el-button>
-                              <el-button round><svg-icon name="bnb"></svg-icon><span
-                                  class="dialog_span">CAKE</span></el-button>
-                              <el-button round><svg-icon name="bnb"></svg-icon><span
-                                  class="dialog_span">BTCB</span></el-button>
-
-                            </div>
-                          </div>
-                          <el-table :data="tableData" style="width: 100%">
-                            <el-table-column label="" prop="date" align="left" />
-                            <el-table-column label="" prop="name" align="right" />
-                          </el-table>
-                          <div class="dialog_button">
-                            <el-button color="#1fc7d4" class="custom-button" round style="width:100%;">
-                              <h2 style="color: #fff;">Manage Tokens</h2>
-                            </el-button>
-                          </div>
-                        </el-col>
-                      </el-row>
-                    </el-dialog> -->
-                  </div>
-                </el-tab-pane>
-                <el-tab-pane label="TWAP" name="TWAP">
-                  <div>
-                    <el-row :gutter="10">
-                      <el-col :span="24" class="twap_header">
-                        <div class="swap_footer_button">
-                          <h1 style="color:black;font-size:20px">TWAP</h1>
-                          <el-button text>
-                            <router-link to="/linechart"><svg-icon name="brokeline"></svg-icon></router-link>
-                          </el-button>
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="!isSorted">
-                        <div class="main_header">
-                          <!-- <el-button text plain @click="dialogVisible = true">
-                            <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                            <h2 style="color:black">BNB<el-icon>
-                                <CaretBottom />
-                              </el-icon></h2>
-                          </el-button> -->
-                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
-                            style="width: 160px">
-                            <template #prefix>
-                              <div>
-                                <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
-                              </div>
-                            </template>
-                            <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress" />
-                          </el-select>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap">
-                            <span>~{{ reserve0swap }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="isSorted">
-                        <div class="main_header">
-                          <div>
-                            <!-- <el-button text plain @click="dialogVisible = true">
-                              <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                              <h2 style="color:black">CAKE<el-icon>
-                                  <CaretBottom />
-                                </el-icon></h2>
-                            </el-button>
-                            <el-button text plain size="large"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button> -->
-                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
-                              style="width: 160px">
-                              <template #prefix>
-                                <div>
-                                  <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
-                                </div>
-                              </template>
-                              <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                                :value="item.contractaddress" />
-                            </el-select>
-                            <el-tooltip content="Copy ContractAddress" placement="top">
-                              <el-button text plain size="default" @click="copyTokenAddress"><el-icon>
-                                  <CopyDocument />
-                                </el-icon></el-button>
-                            </el-tooltip>
-                          </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve1swap">
-                            <span>~{{ reserve1swap }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="sort_box">
-                          <el-button type="success" icon="Sort" circle size="large" @click="sortAssets" />
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="!isSorted">
-                        <div class="main_header">
-                          <div>
-                            <!-- <el-button text plain @click="dialogVisible = true">
-                              <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                              <h2 style="color:black">CAKE<el-icon>
-                                  <CaretBottom />
-                                </el-icon></h2>
-                            </el-button>
-                            <el-button text plain size="large"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button> -->
-                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
-                              style="width: 160px">
-                              <template #prefix>
-                                <div>
-                                  <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
-                                </div>
-                              </template>
-                              <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                                :value="item.contractaddress" />
-                            </el-select>
-                            <el-tooltip content="Copy TokenAddress" placement="top">
-                              <el-button text plain size="default" @click="copyTokenAddress"><el-icon>
-                                  <CopyDocument />
-                                </el-icon></el-button>
-                            </el-tooltip>
-                          </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="reserve1swap" @input="update1" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve1swap">
-                            <span>~{{ reserve1swap }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="isSorted">
-                        <div class="main_header">
-                          <!-- <el-button text plain @click="dialogVisible = true">
-                            <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                            <h2 style="color:black">BNB<el-icon>
-                                <CaretBottom />
-                              </el-icon></h2>
-                          </el-button> -->
-                          <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
-                            style="width: 160px">
-                            <template #prefix>
-                              <div>
-                                <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
-                              </div>
-                            </template>
-                            <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                              :value="item.contractaddress" />
-                          </el-select>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header">
-                        <div class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:black">Limit price</span>
-                            <el-tooltip effect="dark" content="Connect Wallet" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    This sets the lowest price for trades in
-                                    your order.Trades will ONLY be
-                                    executed when this limit price is lower
-                                    than or equal to the available market
-                                    price.Some trades may not be executed
-                                    if the limit price is higher than the
-                                    available market price and your order
-                                    may only be partially filled.
-                                  </p>
-
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                            <el-tooltip v-if="value2" effect="dark" content="Reset to default price" placement="top">
-                              <el-button type="primary" round icon="RefreshRight">
-                                Reset
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <!-- <el-tooltip effect="dark" content="Loding" placement="top">
-                            <svg-icon name="switch" width="3rem" height="3rem"></svg-icon>
-                          </el-tooltip> -->
-                          <div>
-                            <el-switch size="large" v-model="value2" class="ml-2"
-                              style="--el-switch-on-color: #13ce66;" />
-                            <el-button text plain icon="Refresh" @click="clickRefresh"></el-button>
-                          </div>
-                        </div>
-                        <el-input v-if="value2" v-model="textarea" resize="none" size="large"
-                          input-style="background-color:#eeeaf4;" style="width: 100%;" :rows="2" placeholder="0.0">
-                        </el-input>
-
-                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button swap_footer_refresh">
-                          <span style="color:#a88efc;font-weight:bold">Price</span>
-                          <div>
-                            <span v-if="showConversion" style="color:black;">1 {{ priceB }} <svg-icon name="conversion"
-                                width="0.8rem" height="0.8rem"></svg-icon> 0.00461927 {{ priceA }}</span>
-                            <span v-else style="color:black;">1 {{ priceA }} <svg-icon name="conversion" width="0.8rem"
-                                height="0.8rem"></svg-icon>
-                              216.27 {{ priceB }}</span>
-
-                          </div>
-                        </div>
-                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:black">Total trades</span>
-                            <el-tooltip effect="dark" content="" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    The total number of individual trades
-                                    that will be scheduled as part of your
-                                    order.Note that in limit orders,it is
-                                    possible that not all scheduled trades
-                                    will be executed.
-                                  </p>
-
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                        </div>
-                        <div v-if="reserve0swap || reserve1swap" class="slider_box">
-                          <el-slider v-model="sliderValue" :max="11" style="width:60%" />
-                          <el-tooltip effect="dark" content="" placement="top">
-                            <template #content>
-                              <div class="content_box">
-                                <p>
-                                  Individual trades must have a minimum
-                                  trade size of $50 USD.
-                                </p>
-                              </div>
-                            </template>
-                            <span style="font-weight:bold;color:black">{{ sliderValue }}</span>
-                          </el-tooltip>
-                        </div>
-                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:black">Total trades</span>
-                            <el-tooltip effect="dark" content="T" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    his sets the size of each individual
-                                    trade that will be executed over the
-                                    duration of your order.
-                                  </p>
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <el-tooltip effect="dark" content="0.166666666666666666BNB" placement="top">
-                            <span>0.167 BNB</span>
-                          </el-tooltip>
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="twap_trade">
-                          <div class="input_width_div">
-                            <span style="font-size:12px">Trade interval</span>
-                            <el-tooltip effect="dark" content="Connect Wallet" placement="top">
-                              <el-button text plain size="small" circle icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <div class="mt-4">
-                            <el-input size="large" v-model="input3" placeholder="0" class="input-width-select">
-                              <template #append>
-                                <el-select v-model="select" placeholder="MINUTES" class="select_width" size="large">
-                                  <el-option label="Minutes" value="1" />
-                                  <el-option label="Hours" value="2" />
-                                  <el-option label="Days" value="3" />
-                                </el-select>
-                              </template>
-                            </el-input>
-                          </div>
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="twap_trade">
-                          <div class="input_width_div">
-                            <span style="font-size:12px">Max duration</span>
-                            <el-tooltip effect="dark" content="Connect Wallet" placement="top">
-                              <el-button text plain size="small" circle icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <div class="mt-4">
-                            <el-input size="large" v-model="input2" placeholder="0" class="input-width-select">
-                              <template #append>
-                                <el-select v-model="select2" placeholder="MINUTES" class="select_width" size="large">
-                                  <el-option label="Minutes" value="1" />
-                                  <el-option label="Hours" value="2" />
-                                  <el-option label="Days" value="3" />
-                                </el-select>
-                              </template>
-                            </el-input>
-                          </div>
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="swap_footer_button">
-                        </div>
-                        <div v-if="!isConnect">
-                          <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
-                            @click="connectWallet">
-                            <h2 style="color: #fff;">Connect Wallet</h2>
-                          </el-button>
-                          <div class="Crypto">
-                            <span>Insufficient Funds? </span>
-                            <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
-                          </div>
-                        </div>
-                        <div v-else-if="isConnect && !reserve0swap">
-                          <el-button color="#e9eaeb" class="custom-button" round style="width:100%;">
-                            <h2 style="color: #bdc2c4;">Enter an amount</h2>
-                          </el-button>
-                        </div>
-                        <div v-else-if="isConnect && reserve0swap && !isAdequacy">
-                          <el-button color="#e9eaeb" class="custom-button" round style="width:100%;">
-                            <h2 style="color: #bdc2c4;">Insufficient balance</h2>
-                          </el-button>
-                          <div class="Crypto">
-                            <span>Insufficient Funds? </span>
-                            <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
-                          </div>
-                        </div>
-                        <div v-else>
-                          <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
-                            <h2 style="color: #fff;">Trading</h2>
-                          </el-button>
-                        </div>
                       </el-col>
                     </el-row>
-                    <el-dialog v-model="dialogVisible" title="Tips" width="500">
-                      <span>This is a message</span>
-                      <template #footer>
-                        <div class="dialog-footer">
-                          <el-button @click="dialogVisible = false">Cancel</el-button>
-                          <el-button type="primary" @click="dialogVisible = false">
-                            Confirm
-                          </el-button>
-                        </div>
-                      </template>
-                    </el-dialog>
-                  </div>
-                </el-tab-pane>
-                <el-tab-pane label="LIMIT" name="LIMIT">
-                  <div>
-                    <el-row :gutter="10">
-                      <el-col :span="24" class="twap_header">
-                        <div class="swap_footer_button">
-                          <h1 style="color:black;font-size:20px">LIMIT</h1>
-                          <el-button text>
-                            <router-link to="/linechart"><svg-icon name="brokeline"></svg-icon></router-link>
-                          </el-button>
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="!isSorted">
-                        <div class="main_header">
-                          <el-button text plain @click="dialogVisible = true">
-                            <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                            <h2 style="color:black">BNB<el-icon>
-                                <CaretBottom />
-                              </el-icon></h2>
-                          </el-button>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="inputValue" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
-                            <span>~{{ inputValue }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="isSorted">
-                        <div class="main_header">
-                          <div>
-                            <el-button text plain @click="dialogVisible = true">
-                              <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                              <h2 style="color:black">CAKE<el-icon>
-                                  <CaretBottom />
-                                </el-icon></h2>
-                            </el-button>
-                            <el-button text plain size="large"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button>
-                          </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="inputValue" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
-                            <span>~{{ inputValue }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="sort_box">
-                          <el-button type="success" icon="Sort" circle size="large" @click="sortAssets" />
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="!isSorted">
-                        <div class="main_header">
-                          <div>
-                            <el-button text plain @click="dialogVisible = true">
-                              <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                              <h2 style="color:black">CAKE<el-icon>
-                                  <CaretBottom />
-                                </el-icon></h2>
-                            </el-button>
-                            <el-button text plain size="large"><el-icon>
-                                <CopyDocument />
-                              </el-icon></el-button>
-                          </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="inputValue" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
-                            <span>~{{ inputValue }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="isSorted">
-                        <div class="main_header">
-                          <el-button text plain @click="dialogVisible = true">
-                            <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-right:5px"></svg-icon>
-                            <h2 style="color:black">BNB<el-icon>
-                                <CaretBottom />
-                              </el-icon></h2>
-                          </el-button>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
-                        </div>
-                        <div class="input-with-result">
-                          <el-input v-model="inputValue" type="textarea" resize="none"
-                            input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
-                            placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap || reserve1swap">
-                            <span>~{{ inputValue }} USD</span>
-                          </div> -->
-                        </div>
-                      </el-col>
-                      <el-col :span="24" class="bnb_header">
-                        <div class="swap_footer_button">
-                          <div>
-                            <span class="el-dropdown_span" style="color:black">Limit price</span>
-                            <el-tooltip effect="dark" content="Connect Wallet" placement="top">
-                              <template #content>
-                                <div class="content_box">
-                                  <p>
-                                    This sets the lowest price for trades in
-                                    your order.Trades will ONLY be
-                                    executed when this limit price is lower
-                                    than or equal to the available market
-                                    price.Some trades may not be executed
-                                    if the limit price is higher than the
-                                    available market price and your order
-                                    may only be partially filled.
-                                  </p>
-
-                                </div>
-                              </template>
-                              <el-button text plain icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                            <el-button type="primary" round icon="RefreshRight">
-                              Reset
-                            </el-button>
-                          </div>
-                          <!-- <el-tooltip effect="dark" content="Loding" placement="top">
-                            <svg-icon name="switch" width="3rem" height="3rem"></svg-icon>
-                          </el-tooltip> -->
-                          <el-button text plain icon="Refresh" @click="clickRefresh"></el-button>
-                        </div>
-                        <el-input v-model="textarea" size="large" resize="none" input-style="background-color:#eeeaf4;"
-                          style="width: 100%;" :rows="2" placeholder="0.0">
-                        </el-input>
-                      </el-col>
-                      <el-col :span="24">
-                        <div v-if="reserve0swap || reserve1swap" class="swap_footer_button swap_footer_refresh">
-                          <span style="color:#a88efc;font-weight:bold">Price</span>
-                          <div>
-                            <span v-if="showConversion" style="color:black;">1 CAKE <svg-icon name="conversion"
-                                width="0.8rem" height="0.8rem"></svg-icon> 0.00461927 BNB</span>
-                            <span v-else style="color:black;">1 BNB <svg-icon name="conversion" width="0.8rem"
-                                height="0.8rem"></svg-icon>
-                              216.27 CAKE</span>
-
-                          </div>
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="twap_trade">
-                          <div class="input_width_div">
-                            <span style="font-size:12px">Trade interval</span>
-                            <el-tooltip effect="dark" content="Connect Wallet" placement="top">
-                              <el-button text plain size="small" circle icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <div class="mt-4">
-                            <el-input size="large" v-model="input3" placeholder="0" class="input-width-select">
-                              <template #append>
-                                <el-select v-model="select" placeholder="MINUTES" size="large" class="select_width">
-                                  <el-option label="Minutes" value="1" />
-                                  <el-option label="Hours" value="2" />
-                                  <el-option label="Days" value="3" />
-                                </el-select>
-                              </template>
-                            </el-input>
-                          </div>
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="twap_trade">
-                          <div class="input_width_div">
-                            <span style="font-size:12px">Max duration</span>
-                            <el-tooltip effect="dark" content="Connect Wallet" placement="top">
-                              <el-button text plain size="small" circle icon="QuestionFilled">
-                              </el-button>
-                            </el-tooltip>
-                          </div>
-                          <div class="mt-4">
-                            <el-input size="large" v-model="input2" placeholder="0" class="input-width-select">
-                              <template #append>
-                                <el-select v-model="select2" placeholder="MINUTES" size="large" class="select_width">
-                                  <el-option label="Minutes" value="1" />
-                                  <el-option label="Hours" value="2" />
-                                  <el-option label="Days" value="3" />
-                                </el-select>
-                              </template>
-                            </el-input>
-                          </div>
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="swap_footer_button">
-                        </div>
-                        <el-button v-if="!isConnect" color="#1fc7d4" class="custom-button" round style="width:100%;">
-                          <h2 style="color: #fff;">Connect Wallet</h2>
-                        </el-button>
-                        <el-button v-else color="#e9eaed" class="custom-button" round style="width:100%;">
-                          <h2 style="color: #bdc2c4;">Enter an amount</h2>
-                        </el-button>
-                      </el-col>
-                    </el-row>
-                    <el-dialog v-model="dialogVisible" title="Tips" width="500">
-                      <span>This is a message</span>
-                      <template #footer>
-                        <div class="dialog-footer">
-                          <el-button @click="dialogVisible = false">Cancel</el-button>
-                          <el-button type="primary" @click="dialogVisible = false">
-                            Confirm
-                          </el-button>
-                        </div>
-                      </template>
-                    </el-dialog>
                   </div>
                 </el-tab-pane>
               </el-tabs>
@@ -978,23 +237,12 @@ import { getTokens } from '@/api/Liquiditys'
 const showSecondaryNavigation = ref(false);
 const showConversion = ref(false)
 const activeName = ref('MARKET');
-const dialogVisible = ref(false);
-const inputValue = ref('')
-const textarea = ref('');
-const select = ref('')
-const input3 = ref('')
-const select2 = ref('')
-const input2 = ref('')
-const value2 = ref(true)
-const sliderValue = ref(0)
-// const seachDialog = ref('')
 const isSorted = ref(false)
 const isConnect = ref("")
 const optionsA = ref([])
 const optionsB = ref([])
 const userBalanceA = ref('')
 const userBalanceB = ref('')
-// const tableData = ref([])
 const copiedText = ref("");
 const isAdequacy = ref(false);
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
@@ -1074,6 +322,7 @@ const monitorValueA = async (newValue) => {
     return
   }
   ifapprove();
+  await getBalance()
 }
 const monitorValueB = async (newValue) => {
   reserve0swap.value = '';
@@ -1093,6 +342,7 @@ const monitorValueB = async (newValue) => {
     return
   }
   ifapprove();
+  await getBalance()
 }
 //判断某个合约,是否授权
 const ifapprove = async () => {
@@ -1138,6 +388,8 @@ const getSwapPair = async () => {
   const res = await getTokens();
   optionsA.value = res.data;
   optionsB.value = res.data;
+  await getBalance()
+  await ifapprove();
 }
 getSwapPair();
 const connectWallet = async () => {
@@ -1200,8 +452,7 @@ const getCurrentercsymbolB = () => {
   }
 }
 const update0 = async () => {
-  getBalance()
-  await ifapprove();
+ 
   priceA.value = getCurrentercsymbolA();
   priceB.value = getCurrentercsymbolB();
   if (reserve0swap.value == "" || reserve0swap.value == 0) {
@@ -1278,8 +529,6 @@ const update0 = async () => {
   }
 }
 const update1 = async () => {
-  getBalance()
-  ifapprove();
   priceA.value = getCurrentercsymbolA();
   priceB.value = getCurrentercsymbolB();
   if (reserve1swap.value == "" || reserve1swap.value == 0) {
@@ -1371,7 +620,6 @@ const approve = async () => {
     try {
       const tx = await TokenB.approve(config.router02_addr, ethers.MaxUint256);
       await tx.wait();
-      // isapprove.value =true;
       ElMessage.success('授权成功')
       ifapprove();
     } catch (error) {
@@ -1387,7 +635,6 @@ const approve = async () => {
     try {
       const tx = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
       await tx.wait();
-      // isapprove.value =true;
       ElMessage.success('授权成功')
       ifapprove();
     } catch (error) {

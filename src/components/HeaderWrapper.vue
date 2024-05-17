@@ -9,66 +9,11 @@
               <svg-icon name="rabbit"></svg-icon>
               <span class="PancakeSwap">PancakeSwap</span>
             </el-menu-item>
-            <el-sub-menu index="/swap">
-              <template #title>Trade</template>
-              <el-menu-item index="/swap"><span class="menu_header">Swap</span></el-menu-item>
-              <el-menu-item index="/liquidity"><span class="menu_header">Liquidity</span></el-menu-item>
-              <el-menu-item index="3">
-                <div class="menu_quit">
-                  <span class="menu_header">Perpetual</span> <svg-icon name="quit" width="1rem" height="1rem"
-                    style="margin-left: 5px;"></svg-icon>
-                </div>
-              </el-menu-item>
-              <el-menu-item index="4">
-                <div class="menu_quit">
-                  <span class="menu_header">Options</span> <svg-icon name="quit" width="1rem" height="1rem"
-                    style="margin-left: 5px;"></svg-icon>
-                </div>
-              </el-menu-item>
-              <el-menu-item index="5">
-                <div class="menu_quit">
-                  <span class="menu_header">Bridge</span> <svg-icon name="quit" width="1rem" height="1rem"
-                    style="margin-left: 5px;"></svg-icon>
-                </div>
-              </el-menu-item>
-              <el-menu-item index="6"><span class="menu_header">Limit(Deprecated)</span></el-menu-item>
-              <el-menu-item index="7"><span class="menu_header">Trading Reward</span></el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="2">
-              <template #title>Buy</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="3">
-              <template #title>Earn</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="4">
-              <template #title>Game</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="5">
-              <template #title>NFT</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="6">
-              <template #title>V4</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-            </el-sub-menu>
-            <el-menu-item index="4">Info</el-menu-item>
-            <el-menu-item index="5">Orders</el-menu-item>
+            <el-menu-item index="/swap">Swap</el-menu-item>
+          <el-menu-item index="/v2add">Liquidity</el-menu-item>
+          <el-menu-item index="3">Remove liquidity</el-menu-item>
           </el-menu>
         </el-col>
-        <!-- <div class="flex-grow"></div> -->
         <el-col :span="10" :xs="19" :sm="19" :md="10" :lg="10">
           <div class="header-right">
             <el-button text size="large"><svg-icon name="rabbit"></svg-icon><span
@@ -113,31 +58,12 @@
         </el-col>
       </div>
     </el-row>
-    <el-row :gutter="10">
-      <el-col :span="24" class="header_col">
-        <el-menu :default-active="$route.path" router class="mobile-menu" mode="horizontal" :ellipsis="false"
-          @select="handleSelect">
-          <el-menu-item index="/swap">Swap</el-menu-item>
-          <el-menu-item index="/liquidity">Liquidity</el-menu-item>
-          <el-menu-item index="3">Perpetual <svg-icon name="share" width="1rem" height="1rem"
-              style="margin-left: 5px;"></svg-icon> </el-menu-item>
-          <el-menu-item index="4">Options <svg-icon name="share" width="1rem" height="1rem"
-              style="margin-left: 5px;"></svg-icon></el-menu-item>
-          <el-menu-item index="5">Bridge <svg-icon name="share" width="1rem" height="1rem"
-              style="margin-left: 5px;"></svg-icon></el-menu-item>
-          <el-menu-item index="6">Limit(Deprecated)</el-menu-item>
-          <el-menu-item index="7">Trading Reward</el-menu-item>
-        </el-menu>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import MetamaskService from '@/components/MetamaskService';
-const value = ref('')
-const activeIndex = ref('swap')
 const isConnect = ref("")
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath)
