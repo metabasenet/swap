@@ -1012,7 +1012,6 @@ const topriceB = ref(0);
 const BalanceAs = ref(0);
 const BalanceBs = ref(0);
 const getToken = ref({})
-// const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
 const userAddress = ref('')
 let state = 1;
 const sortAssets = () => {
@@ -1068,7 +1067,7 @@ const monitorValueA = async (newValue) => {
     }
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对池子没有建立');
     reserve0.value = '';
@@ -1087,7 +1086,7 @@ const monitorValueB = async (newValue) => {
     }
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对池子没有建立');
     reserve1.value = '';
@@ -1095,8 +1094,8 @@ const monitorValueB = async (newValue) => {
   }
   ifapprove();
 }
-//判断某个合约,需不需要授权
-const ifapprove = async (reserve) => {
+//判断某个合约,是否授权
+const ifapprove = async () => {
   if (isSorted.value) {
     const token = new ethers.Contract(reserve1.value, config.erc20, readProvider);
     const result = await token.allowance(userAddress.value, config.router02_addr)
@@ -1123,7 +1122,7 @@ const copyTokenAddress = () => {
     reserve1swap.value = '';
     return
   } else {
-    copiedText.value = getCurrentAddressB()
+    copiedText.value = reserve1.value
     navigator.clipboard.writeText(copiedText.value)
       .then(() => {
         ElMessage.success('Copy successful!');
@@ -1188,18 +1187,6 @@ const handleClick = (tab) => {
     router.push('/swap')
   }
 }
-const getCurrentAddressA = () => {
-  const selectedOption = optionsA.value.find(option => option.contractaddress === reserve0.value)
-  if (selectedOption) {
-    return selectedOption.contractaddress
-  }
-}
-const getCurrentAddressB = () => {
-  const selectedOptionB = optionsB.value.find(option => option.contractaddress === reserve1.value)
-  if (selectedOptionB) {
-    return selectedOptionB.contractaddress
-  }
-}
 const getCurrentercsymbolA = () => {
   const selectedOption = optionsA.value.find(option => option.contractaddress === reserve0.value)
   if (selectedOption) {
@@ -1212,7 +1199,7 @@ const getCurrentercsymbolB = () => {
     return selectedOption.ercsymbol
   }
 }
-const update0 = async (value) => {
+const update0 = async () => {
   getBalance()
   await ifapprove();
   priceA.value = getCurrentercsymbolA();
@@ -1226,20 +1213,18 @@ const update0 = async (value) => {
     return
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   const uniswapV2Pair1 = new ethers.Contract(p_addr, config.UniswapV2Pair, readProvider);
   const res = await uniswapV2Pair1.getReserves();
   const reserveA_Number = Number(res[0]);
   const reserveB_Number = Number(res[1]);
-  if (getCurrentAddressA() > getCurrentAddressB()) {
+  if (reserve0.value > reserve1.value) {
     topriceB.value = reserveA_Number / reserveB_Number;
     topriceA.value = reserveB_Number / reserveA_Number;
   } else {
     topriceA.value = reserveA_Number / reserveB_Number;
     topriceB.value = reserveB_Number / reserveA_Number;
   }
-  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-  const accountBalance = await readProvider.getBalance(accounts[0]);
   try {
     if (isSorted.value) {
       if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
@@ -1255,7 +1240,7 @@ const update0 = async (value) => {
       }
     }
     // 输入上面 计算下面的值
-    const path = [getCurrentAddressA(), getCurrentAddressB()];
+    const path = [reserve0.value, reserve1.value];
     const amountIn = parseEther(reserve0swap.value);
     const amounts = await Router02.getAmountsOut(amountIn, path);
     const amountOutMin = amounts[1];
@@ -1292,7 +1277,7 @@ const update0 = async (value) => {
     ElMessage.error("输入的金额不对")
   }
 }
-const update1 = async (value) => {
+const update1 = async () => {
   getBalance()
   ifapprove();
   priceA.value = getCurrentercsymbolA();
@@ -1306,15 +1291,13 @@ const update1 = async (value) => {
     return
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(getCurrentAddressA(), getCurrentAddressB())
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   const uniswapV2Pair1 = new ethers.Contract(p_addr, config.UniswapV2Pair, readProvider);
   const res = await uniswapV2Pair1.getReserves();
   const reserveA_Number = Number(res[0]);
   const reserveB_Number = Number(res[1]);
   topriceA.value = reserveA_Number / reserveB_Number;
   topriceB.value = reserveB_Number / reserveA_Number;
-  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-  const accountBalance = await readProvider.getBalance(accounts[0]);
   if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对没有匹配');
   }
@@ -1332,7 +1315,7 @@ const update1 = async (value) => {
         state = 6;
       }
     }
-    const path = [getCurrentAddressA(), getCurrentAddressB()];
+    const path = [reserve0.value, reserve1.value];
     const amountOut = parseEther(reserve1swap.value);
     const amounts = await Router02.getAmountsIn(amountOut, path);
     const amountInMax = amounts[0];
@@ -1382,7 +1365,7 @@ const approve = async () => {
   });
 
   if (isSorted.value) {
-    const tokenB_addr = getCurrentAddressB()
+    const tokenB_addr = reserve1.value
     const signer = await writeProvider.getSigner();
     const TokenB = new ethers.Contract(tokenB_addr, config.erc20, signer);
     try {
@@ -1398,7 +1381,7 @@ const approve = async () => {
       loading.close();
     }
   } else {
-    const tokenA_addr = getCurrentAddressA()
+    const tokenA_addr = reserve0.value;
     const signer = await writeProvider.getSigner();
     const TokenA = new ethers.Contract(tokenA_addr, config.erc20, signer);
     try {
@@ -1420,6 +1403,11 @@ const trading = async () => {
     ElMessage.warning('Please fill in the data')
     return;
   }
+  const loading = ElLoading.service({
+    lock: true,
+    text: '正在交易，请稍候...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   const signer = await writeProvider.getSigner();
   const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
   try {
@@ -1433,14 +1421,14 @@ const trading = async () => {
     const amountOut = parseEther(reserve1swap.value);
     if (state == 1) {
       //不精确买入  usdt上面  mnt下面
-      const path = [getCurrentAddressA(), getCurrentAddressB()];
+      const path = [reserve0.value, reserve1.value];
       const amounts = await Router02.getAmountsOut(amountIn, path)
       const amountOutMin = amounts[1]; // 0
       tx = await routerForTransactions.swapExactTokensForETH(amountIn, amountOutMin, path, userAddress.value, ethers.MaxUint256);
 
     } else if (state == 2) {
       //精确卖出ETH  mnt上面 usdt下面
-      const path = [getCurrentAddressB(), getCurrentAddressA()];
+      const path = [reserve1.value, reserve0.value];
       const amounts = await Router02.getAmountsOut(amountOut, path)
       const amountOutMin = amounts[1]; // 0
       tx = await routerForTransactions.swapExactETHForTokens(amountOutMin, path, userAddress.value, ethers.MaxUint256, { value: amountOut }
@@ -1450,10 +1438,10 @@ const trading = async () => {
       let path = [];
       let amountIn_;
       if (isSorted.value) {
-        path = [getCurrentAddressB(), getCurrentAddressA()];
+        path = [reserve1.value, reserve0.value];
         amountIn_ = amountOut
       } else {
-        path = [getCurrentAddressA(), getCurrentAddressB()];
+        path = [reserve0.value, reserve1.value];
         amountIn_ = amountIn
       }
       const amounts = await Router02.getAmountsOut(amountIn_, path);
@@ -1461,7 +1449,7 @@ const trading = async () => {
       tx = await routerForTransactions.swapExactTokensForTokens(amountIn_, amountOutMin, path, userAddress.value, ethers.MaxUint256)
     } else if (state == 4) {
       // 精确买入  usdt在上面/mnt在下面
-      const path = [getCurrentAddressA(), getCurrentAddressB()];
+      const path = [reserve0.value, reserve1.value];
       const ret = await Router02.getAmountsIn(amountOut, path)
       const amountInMax = ret[0]; //ret[0]
       tx = await routerForTransactions.swapTokensForExactETH(amountOut, amountInMax, path, userAddress.value, ethers.MaxUint256,
@@ -1469,7 +1457,7 @@ const trading = async () => {
     }
     else if (state == 5) {
       //不精确卖出  mnt在上面,usdt在下面
-      const path = [getCurrentAddressB(), getCurrentAddressA()];
+      const path = [reserve1.value, reserve0.value];
       const amounts = await Router02.getAmountsIn(amountIn, path);
       const amountInMin = amounts[0]
       tx = await routerForTransactions.swapETHForExactTokens(amountIn, path, userAddress.value, ethers.MaxUint256,
@@ -1481,10 +1469,10 @@ const trading = async () => {
       let path = [];
       let amountOut_;
       if (isSorted.value) {
-        path = [getCurrentAddressB(), getCurrentAddressA()];
+        path = [reserve1.value, reserve0.value];
         amountOut_ = amountIn
       } else {
-        path = [getCurrentAddressA(), getCurrentAddressB()];
+        path = [reserve0.value, reserve1.value];
         amountOut_ = amountOut
       }
       const ret = await Router02.getAmountsIn(amountOut_, path)
@@ -1505,7 +1493,10 @@ const trading = async () => {
   } catch (error) {
     console.error("An error occurred during the transaction:", error);
     ElMessage.error('交易失败');
-  }
+  }finally {
+      // 关闭 loading 动画
+      loading.close();
+    }
 }
 
 </script>
