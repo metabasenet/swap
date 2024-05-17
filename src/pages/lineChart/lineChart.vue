@@ -7,12 +7,29 @@
                 <el-row :gutter="10">
                     <el-col :span="16" style="margin:auto" :xs="24" :sm="24" :md="14" :lg="14">
                         <div class="liquidity-box">
-                            <div class="chart-btn">
-                                <el-button type="primary" @click="changePeriod('month')">monthLine</el-button>
-                                <el-button type="primary" @click="changePeriod('week')">weekLine</el-button>
-                                <el-button type="primary" @click="changePeriod('day')">dayLine</el-button>
-                                <el-button type="primary" @click="changePeriod('hour')">hourLine</el-button>
-                                <el-button type="primary" @click="changePeriod('minute')">minuteLine</el-button>
+                            <div>
+                                <div class="title_header">
+                                    <svg-icon name="bnb"></svg-icon>
+                                    <span>{{tokenAname}}</span>/<span>{{tokenBname}}</span>
+                                    <!-- <div class="sort_box">
+                                        <el-button text icon="Switch" circle size="large" />
+                                    </div> -->
+                                </div>
+                                <div class="chart-btn">
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(1)">
+                                        <h2 style="color: #fff;">1S</h2>
+                                        </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(2)"><h3 style="color: #fff;">1M</h3></el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(3)"><h3 style="color: #fff;">1H</h3></el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(4)"><h3 style="color: #fff;">1D</h3></el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(5)"><h3 style="color: #fff;">1mouth</h3></el-button>
+                                    <!-- <el-button type="primary" style="margin-top:5px" @click="changePeriod('week')">weekLine</el-button> -->
+                                </div>
                             </div>
                             <div ref="chartRef" style="height: 320px;width:100%">
                             </div>
@@ -28,72 +45,61 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
+import { useRoute } from 'vue-router';
+import { getLinePrice } from '@/api/linechart';
+import { getTokens } from '@/api/Liquiditys'
+const route = useRoute();
 const chartRef = ref(null)
 let chartInstance = null;
 const upColor = '#ec0000';
 const downColor = '#00da3c';
-// const rawData = [
-//     ['2023-01-01', 100, 105, 95, 103, 123456],
-//     ['2023-01-02', 90, 105, 80, 103, 1230],
-//     ['2023-01-03', 20, 80, 40, 100, 7894],
-//     ['2023-01-04', 60, 90, 50, 105, 32156],
-// ];
-
-// function splitData(rawData) {
-//     let categoryData = [];
-//     let values = [];
-//     let volumes = [];
-//     for (let i = 0; i < rawData.length; i++) {
-//         categoryData.push(rawData[i][0]);
-//         values.push([rawData[i][1], rawData[i][2], rawData[i][3], rawData[i][4]]);
-//         volumes.push([rawData[i][0], rawData[i][4]]);
-//     }
-//     return {
-//         categoryData: categoryData,
-//         values: values,
-//         volumes: volumes,
-//     };
-// }
-
-
-// function calculateMA(dayCount, data) {
-//     const result = [];
-//     for (let i = 0; i < data.values.length; i++) {
-//         if (i < dayCount) {
-//             result.push(null);
-//             continue;
-//         }
-//         let sum = 0;
-//         for (let j = 0; j < dayCount; j++) {
-//             sum += data.values[i - j][1];
-//         }
-//         result.push(sum / dayCount);
-//     }
-//     return result;
-// }
-function changePeriod(period) {
-
-    // fetchData(period).then(newData => {
-
-    //     updateChart(newData);
-    // });
+// const time = ref(1);
+const page = ref(1)
+const pageSize = ref(1000)
+const tokenA = ref(route.params.tokenA)
+const tokenB = ref(route.params.tokenB)
+const tokenAname = ref('')
+const tokenBname = ref('')
+let data = [];
+const findName = async(token)=>{
+    const res = await getTokens();
+    const foundItem = res.data.find(item => item.contractaddress === token);
+    return foundItem.ercsymbol
 }
-
-// function updateChart(newData) {
-
-//   option.xAxis.data = newData.xAxisData;
-//   option.series[0].data = newData.seriesData;
-
-// //   chartInstance.setOption(option);
-// }
-
-const setChartOptions = () => {
-    // const data = splitData(rawData);
-
+async function updateTokenNames() {
+  tokenAname.value = await findName(tokenA.value);
+  tokenBname.value = await findName(tokenB.value);
+}
+updateTokenNames()
+// 计算移动平均线
+function calculateMA(data, n) {
+    let sum = 0;
+    return data.map((item, index) => {
+        sum += item.last;
+        if (index < n) {
+            return '';
+        } else {
+            sum -= data[index - n].last;
+            return (sum / n).toFixed(2);
+        }
+    });
+}
+// 切换时间周期的函数
+const changePeriod = async (time) => {
+    // 根据所选的时间周期更新图表数据
+    // 假设 fetchData 是用来获取数据的异步函数
+    const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value)
+    data = res.data.list
+    // 使用新的数据更新图表
+    setChartOptions(data)
+}
+changePeriod(1)
+// 设置图表选项
+const setChartOptions = async (data) => {
     const option = {
-        title: {
-            text: 'Daily K chart',
-        },
+        // title: {
+        //     text: '日K线图',
+        // },
         // animation: false,
         // legend: {
         //     bottom: 10,
@@ -102,7 +108,7 @@ const setChartOptions = () => {
         // },
         tooltip: {
             trigger: 'axis',
-
+            // 坐标轴的指示器
             axisPointer: {
                 type: 'cross'
             },
@@ -180,7 +186,7 @@ const setChartOptions = () => {
             {
                 type: 'category',
                 // data: data.categoryData,
-                data: ['2019-12-3', '2019-12-4', '2019-12-5', '2019-12-6'],
+                data: data.map(item => item.time),
                 // boundaryGap: false,
                 // axisLine: { onZero: false },
                 // splitLine: { show: false },
@@ -205,7 +211,9 @@ const setChartOptions = () => {
         ],
         yAxis: [
             {
+                // 缩放
                 scale: true,
+                // 分割一个空间
                 splitArea: {
                     show: true
                 }
@@ -231,9 +239,13 @@ const setChartOptions = () => {
                 show: true,
                 // xAxisIndex: [0, 1],
                 type: 'slider',
-                top: '85%',
-                // start: 98,
-                // end: 100  
+                // top: '85%',
+                // startValue: data.length - 30,
+                // endValue: data.length
+                // 从98%开始
+                // start: 98,或者用startValue: data.length - 30
+                // 到100%结束
+                // end: 100  或者用endValue: data.length
             }
         ],
         series: [
@@ -241,12 +253,9 @@ const setChartOptions = () => {
                 // name: 'Dow-Jones index',
                 type: 'candlestick',
                 // data: data.values,
-                data: [
-                    [20, 23, 19, 28],
-                    [23, 27, 21, 31],
-                    [22, 19, 25, 16],
-                    [20, 23, 19, 28],
-                ],
+                data: data.map(item => {
+                    return [item.first, item.last, item.min, item.max]
+                }),
                 itemStyle: {
                     color: upColor,
                     color0: downColor,
@@ -256,7 +265,8 @@ const setChartOptions = () => {
             },
             // {
             //     name: 'MA5',
-            //     data: calculateMA(5, data),
+            //     type: 'line',
+            //     data: calculateMA(data, 5),
             //     smooth: true,
             //     lineStyle: {
             //         opacity: 0.5
@@ -265,7 +275,7 @@ const setChartOptions = () => {
             // {
             //     name: 'MA20',
             //     type: 'line',
-            //     data: calculateMA(20, data),
+            //     data: calculateMA(data, 20),
             //     smooth: true,
             //     lineStyle: {
             //         opacity: 0.5
@@ -289,17 +299,18 @@ const setChartOptions = () => {
             // }
         ],
     };
-
+    // 如果图表实例已存在，则更新选项
     if (chartInstance) {
         chartInstance.setOption(option);
     } else {
 
+        // 否则，初始化图表实例并设置选项
         chartInstance = echarts.init(chartRef.value);
         chartInstance.setOption(option);
     }
+
 };
 onMounted(() => {
-    setChartOptions();
 });
 </script>
 
@@ -324,8 +335,12 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     margin-bottom: 7px;
+    flex-wrap: wrap;
 }
-
+.title_header{
+    display: flex;
+    align-items: center;
+}
 @media (min-width: 768px) {
     .responsive-aside {
         width: 3vw;

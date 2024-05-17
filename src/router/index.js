@@ -59,9 +59,10 @@ const routes = [
     props:true
   },
   {
-    path: '/linechart',
+    path: '/linechart/:tokenA/:tokenB',
     name: 'linechart',
     component: () => import('../pages/lineChart/lineChart.vue'),
+    props:true
   },
   {
     path: '/:pathMatch(.*)*',

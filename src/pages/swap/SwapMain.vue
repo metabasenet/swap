@@ -31,8 +31,9 @@
                               <!-- <img style="width:21px;height:22px;" src="/moneyBangs.svg" alt=""> -->
                             </el-button>
                           </el-tooltip>
-                          <el-button text>
-                            <router-link to="/linechart"><svg-icon name="brokeline"></svg-icon></router-link>
+                          <el-button text @click="tolineChart">
+                            <svg-icon
+                                  name="brokeline"></svg-icon>
                           </el-button>
                           <el-tooltip effect="dark" content="Check out the top traded tokens" placement="bottom">
                             <el-button text><svg-icon name="fueloil"></svg-icon></el-button>
@@ -97,7 +98,11 @@
                                   <CopyDocument />
                                 </el-icon></el-button>
                             </el-tooltip>
-
+                            <el-tooltip content="Add token" placement="top">
+                              <el-button text plain size="small" @click="addToken">
+                                <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
+                              </el-button>
+                            </el-tooltip>
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceB
                               }}</span></el-button>
@@ -139,6 +144,11 @@
                               <el-button text plain size="small" @click="copyTokenAddress"><el-icon>
                                   <CopyDocument />
                                 </el-icon></el-button>
+                            </el-tooltip>
+                            <el-tooltip content="Add token" placement="top">
+                              <el-button text plain size="default" @click="addToken">
+                                <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
+                              </el-button>
                             </el-tooltip>
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceB
@@ -198,13 +208,13 @@
                       </el-col>
                       <el-col :span="24">
                         <div class="swap_footer_button">
-                          <div>
+                          <!-- <div>
                             <span style="color:#a88efc;font-weight:bold;font-size:14px">Slippage
                               Tolerance</span><el-button text plain><el-icon>
                                 <EditPen />
                               </el-icon></el-button>
                           </div>
-                          <span style="color:#1fc7d4;font-weight:bold">1%</span>
+                          <span style="color:#1fc7d4;font-weight:bold">1%</span> -->
                         </div>
                         <div v-if="!isConnect">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
@@ -336,7 +346,7 @@
                         </div>
                       </el-col> -->
                     </el-row>
-                    <el-dialog v-model="dialogVisible">
+                    <!-- <el-dialog v-model="dialogVisible">
                       <template #header>
                         <h2 class="dialog_title">Select a Token</h2>
                       </template>
@@ -369,7 +379,7 @@
                           </div>
                         </el-col>
                       </el-row>
-                    </el-dialog>
+                    </el-dialog> -->
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="TWAP" name="TWAP">
@@ -434,7 +444,7 @@
                               <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
                                 :value="item.contractaddress" />
                             </el-select>
-                            <el-tooltip content="Copy TokenAddress" placement="top">
+                            <el-tooltip content="Copy ContractAddress" placement="top">
                               <el-button text plain size="default" @click="copyTokenAddress"><el-icon>
                                   <CopyDocument />
                                 </el-icon></el-button>
@@ -519,9 +529,6 @@
                           <el-input v-model="reserve0swap" @input="update0" type="textarea" resize="none"
                             input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px" :rows="3"
                             placeholder="0.0" class="input-area"></el-input>
-                          <!-- <div class="result-area" v-if="reserve0swap">
-                            <span>~{{ reserve0swap }} USD</span>
-                          </div> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header">
@@ -961,7 +968,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import router from '@/router'
 import { ElMessage, ElLoading } from 'element-plus'
 import MetamaskService from '@/components/MetamaskService';
@@ -980,14 +987,14 @@ const select2 = ref('')
 const input2 = ref('')
 const value2 = ref(true)
 const sliderValue = ref(0)
-const seachDialog = ref('')
+// const seachDialog = ref('')
 const isSorted = ref(false)
 const isConnect = ref("")
 const optionsA = ref([])
 const optionsB = ref([])
 const userBalanceA = ref('')
 const userBalanceB = ref('')
-const tableData = ref([])
+// const tableData = ref([])
 const copiedText = ref("");
 const isAdequacy = ref(false);
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
@@ -1004,6 +1011,7 @@ const topriceA = ref(0);
 const topriceB = ref(0);
 const BalanceAs = ref(0);
 const BalanceBs = ref(0);
+const getToken = ref({})
 // const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
 const userAddress = ref('')
 let state = 1;
@@ -1012,6 +1020,42 @@ const sortAssets = () => {
   reserve1swap.value = '';
   reserve0swap.value = '';
   ifapprove();
+}
+const addToken = async () => {
+  getToken.value = optionsB.value.find(item => item.contractaddress === reserve1.value);
+  console.log(getToken.value);
+  const token = {
+    address: reserve1.value,
+    symbol: getToken.value.ercsymbol,
+    decimals: getToken.value.decimals,
+  }
+  try {
+    await ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: token
+      }
+    });
+    ElMessage.success("添加代币成功")
+  } catch (error) {
+    ElMessage.error("添加代币失败")
+    console.log(error);
+  }
+}
+const tolineChart = ()=>{
+  if(reserve0.value && reserve1.value){
+    router.push({
+    name:'linechart',
+    params:{
+      tokenA:isSorted ? reserve1.value : reserve0.value,
+      tokenB:isSorted ? reserve0.value : reserve1.value,
+    }
+  })
+  }else{
+    ElMessage.warning('Please select two tokens.')
+  }
+  
 }
 const monitorValueA = async (newValue) => {
   reserve0swap.value = '';
@@ -1051,6 +1095,7 @@ const monitorValueB = async (newValue) => {
   }
   ifapprove();
 }
+//判断某个合约,需不需要授权
 const ifapprove = async (reserve) => {
   if (isSorted.value) {
     const token = new ethers.Contract(reserve1.value, config.erc20, readProvider);
@@ -1433,8 +1478,8 @@ const trading = async () => {
     }
     else if (state == 6) {
       //精确输出 普通交易对 输入下面计算上面
-     let path =[];
-     let amountOut_;
+      let path = [];
+      let amountOut_;
       if (isSorted.value) {
         path = [getCurrentAddressB(), getCurrentAddressA()];
         amountOut_ = amountIn
@@ -1462,8 +1507,7 @@ const trading = async () => {
     ElMessage.error('交易失败');
   }
 }
-onMounted(() => {
-})
+
 </script>
 
 <style scoped>

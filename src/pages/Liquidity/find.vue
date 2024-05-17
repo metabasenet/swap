@@ -69,13 +69,10 @@
                             </div>
                             <div class="addbutton">
                                 <p style="color:#280d5f;font-size:16px">You don’t have liquidity in this pair yet.</p>
-                                <el-button size="large" round color="#1fc7d4">
-                                    <router-link style="text-decoration: none;" :to="{
-                              name: 'v2add',
-                              params: { tokenA: reserve0,tokenB: reserve1 },
-                            }"><span
+                                <el-button size="large" round color="#1fc7d4" @click="toV2Add">
+                                   <span
                                             class="button_span">Add
-                                            Liquidity</span></router-link>
+                                            Liquidity</span>
                                 </el-button>
                             </div>
                         </div>
@@ -147,18 +144,19 @@
 
 <script setup>
 import { ref } from 'vue'
+import router from '@/router'
 import { getTokens } from '@/api/Liquiditys'
 import { ElMessage } from 'element-plus';
+import { config } from "@/const/config";
 const dialogVisible = ref(false);
 const searchDialog = ref('');
-
 const tokenA = ref('BNB')
 const tokenB = ref('Select a Token')
 const tableData = ref([])
 const optionsA = ref([])
 const optionsB = ref([])
-const reserve0 = ref("0x70de61B87C6BEC577C30B8A37810C652Ead68ea5");//USDT
-const reserve1 = ref("0xAf5eFec32837E3A609e7272C0A2fE19652Cf3e56");//MNB
+const reserve0 = ref(config.usdt_addr);//USDT
+const reserve1 = ref(config.wmnt_addr);//MNB
 const isTokenA = ref(false)
 const monitorValueA = (newValue) => {
     if (newValue === reserve1.value) {
@@ -166,7 +164,6 @@ const monitorValueA = (newValue) => {
         ElMessage.warning('This token is already selected for the other field.')
         return;
     }
-
 }
 const monitorValueB = (newValue) => {
     if (newValue === reserve0.value) {
@@ -175,12 +172,26 @@ const monitorValueB = (newValue) => {
         return;
     }
 }
-const openDialog = (isTokenAVal) => {
-    console.log(isTokenAVal);
-    dialogVisible.value = true;
-    isTokenA.value = isTokenAVal;
-    getTokenList();
+const toV2Add = ()=>{
+  if(reserve0.value && reserve1.value){
+    router.push({
+    name:'v2add',
+    params:{
+      tokenA:reserve0.value,
+      tokenB:reserve1.value,
+    }
+  })
+  }else{
+    ElMessage.warning('Please select two tokens.')
+  }
+  
 }
+// const openDialog = (isTokenAVal) => {
+//     console.log(isTokenAVal);
+//     dialogVisible.value = true;
+//     isTokenA.value = isTokenAVal;
+//     getTokenList();
+// }
 // const getSwapPair = async()=>{
 //     const res = await getSwapPairs(page.value,pageSize.value);
 //     tableData.value = res.data.list;
@@ -196,18 +207,18 @@ const getTokenList = async () => {
     }
 }
 getTokenList();
-const handleCurrentChange = (value) => {
-    let tokenToCheck = isTokenA.value ? tokenB : tokenA;
-    let tokenToUpdate = isTokenA.value ? tokenA : tokenB;
-    if (tokenToCheck.value !== 'Select a Token' && value.ercsymbol === tokenToCheck.value) {
-        // alert("This token is already selected for the other field.");
-        ElMessage.warning('This token is already selected for the other field.')
-        return;
-    }
-    tokenToUpdate.value = value.ercsymbol;
-    console.log(tokenToUpdate.value);
-    dialogVisible.value = false;
-}
+// const handleCurrentChange = (value) => {
+//     let tokenToCheck = isTokenA.value ? tokenB : tokenA;
+//     let tokenToUpdate = isTokenA.value ? tokenA : tokenB;
+//     if (tokenToCheck.value !== 'Select a Token' && value.ercsymbol === tokenToCheck.value) {
+//         // alert("This token is already selected for the other field.");
+//         ElMessage.warning('This token is already selected for the other field.')
+//         return;
+//     }
+//     tokenToUpdate.value = value.ercsymbol;
+//     console.log(tokenToUpdate.value);
+//     dialogVisible.value = false;
+// }
 </script>
 
 <style scoped>

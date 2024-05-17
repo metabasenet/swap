@@ -10,7 +10,7 @@
                             <div class="liquidity-title">
                                 <div class="back_title">
                                     <el-button text>
-                                        <router-link to="/liquidity"> <svg-icon name="back">
+                                        <router-link to="/find"> <svg-icon name="back">
                                             </svg-icon></router-link>
                                     </el-button>
                                     <div style="margin-left:10px">
@@ -33,8 +33,8 @@
                                                     <ArrowDown />
                                                 </el-icon>
                                             </el-button> -->
-                                            <el-select v-model="tokenA" @change="monitorValueA" size="default"
-                                                style="width:45%;">
+                                            <el-select v-model="reserve0" @change="monitorValueA" size="default"
+                                                style="width:100%;">
                                                 <template #prefix>
                                                     <div>
                                                         <svg-icon name="bnb" width="1.5rem" height="1.5rem"
@@ -58,7 +58,7 @@
                                                     <ArrowDown />
                                                 </el-icon>
                                             </el-button> -->
-                                            <el-select v-model="tokenB" @change="monitorValueB" placeholder="Select"
+                                            <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select"
                                                 size="default" style="width: 100%">
                                                 <template #prefix>
                                                     <div>
@@ -70,7 +70,7 @@
                                                     :label="item.ercsymbol" :value="item.contractaddress" />
                                             </el-select>
                                         </div>
-                                        <el-button color="#faf9fa" class="custom-button" round style="width:100%;"
+                                        <!-- <el-button color="#faf9fa" class="custom-button" round style="width:100%;"
                                             @click="dialogVisible = true">
                                             <div class="icon-title">
                                                 <span class="find_span">V2LP - 0.25 fee tier</span>
@@ -80,52 +80,57 @@
                                                         <ArrowDown />
                                                     </el-icon></span>
                                             </el-button>
-                                        </el-button>
+                                        </el-button> -->
                                         <p class="add_leftP">DEPOSIT AMOUNT</p>
                                         <div class="main_header">
-                                            <el-button text plain @click="dialogVisible = true">
+                                            <el-button text plain>
                                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem"
                                                     style="margin-right:5px"></svg-icon>
-                                                <h2 style="color:black">BNB<el-icon>
-                                                        <CaretBottom />
-                                                    </el-icon></h2>
+                                                <h2 style="color:black">{{ reserve0Name }}</h2>
                                             </el-button>
-                                            <el-button text plain><span
-                                                    style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
+                                            <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{
+                                                userBalanceA }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
-                                            <el-input v-model="inputValue" type="textarea" resize="none"
+                                            <el-input v-model="reserve0Input" @input="update0" type="textarea"
+                                                resize="none"
                                                 input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px"
                                                 :rows="3" placeholder="0.0" class="input-area"></el-input>
-                                            <div class="result-area" v-if="inputValue">
+                                            <!-- <div class="result-area" v-if="inputValue">
                                                 <span>~{{ inputValue }} USD</span>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="main_header">
                                             <div>
-                                                <el-button text plain @click="dialogVisible = true">
+                                                <el-button text plain>
                                                     <svg-icon name="bnb" width="1.5rem" height="1.5rem"
                                                         style="margin-right:5px"></svg-icon>
-                                                    <h2 style="color:black">USDT<el-icon>
-                                                            <CaretBottom />
-                                                        </el-icon></h2>
+                                                    <h2 style="color:black">{{ reserve1Name }}</h2>
                                                 </el-button>
-                                                <el-button text size="large"><el-icon>
-                                                        <CopyDocument />
-                                                    </el-icon></el-button>
-                                                <el-button text size="large"><svg-icon
-                                                        name="fox"></svg-icon></el-button>
+                                                <el-tooltip content="Copy TokenAddress" placement="top">
+                                                    <el-button text style="margin-left:0" size="small"
+                                                        @click="copyTokenAddress"><el-icon>
+                                                            <CopyDocument />
+                                                        </el-icon></el-button>
+                                                </el-tooltip>
+                                                <el-tooltip content="Add token" placement="top">
+                                                    <el-button text plain style="margin-left:0" size="small"
+                                                        @click="addToken">
+                                                        <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
+                                                    </el-button>
+                                                </el-tooltip>
                                             </div>
-                                            <el-button text plain><span
-                                                    style="color:rgb(122, 110, 170)">Balance:0</span></el-button>
+                                            <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{
+                                                userBalanceB }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
-                                            <el-input v-model="inputValue" type="textarea" resize="none"
+                                            <el-input v-model="reserve1Input" @input="update1" type="textarea"
+                                                resize="none"
                                                 input-style="background-color:#eeeaf4;border-radius: 15px;padding-left:16px"
                                                 :rows="3" placeholder="0.0" class="input-area"></el-input>
-                                            <div class="result-area" v-if="inputValue">
+                                            <!-- <div class="result-area" v-if="inputValue">
                                                 <span>~{{ inputValue }} USD</span>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </el-col>
@@ -134,7 +139,7 @@
                                         <svg-icon name="dolphin" width="8rem" height="8rem">
                                         </svg-icon>
                                         <p class="add_right_p">Your position will appear here.</p>
-                                        <div class="price_boxs">
+                                        <!-- <div class="price_boxs">
                                             <div class="price_box">
                                                 <p>Min Price</p>
                                                 <div class="minprice">
@@ -169,7 +174,7 @@
                                                 </div>
                                                 <p>USDT per BNB</p>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <!-- <el-button v-if="!isConnect" color="#1fc7d4" class="amount_button" round style="width:90%;"
                                             @click="connectWallet">
                                             <h2 style="color: #fff;">Connect Wallet</h2>
@@ -177,12 +182,12 @@
                                         <el-button v-else color="#e9eaeb" class="amount_button" round style="width:90%;">
                                             <h2 style="color: #bdc2c4;">Enter an amount</h2>
                                         </el-button> -->
-                                        <el-button color="#1fc7d4" class="amount_button" round style="width:40%;"
-                                            @click="connectWallet">
-                                            <h2 style="color: #fff;">Add Liquidity</h2>
+                                        <el-button v-if="!isapprove" color="#1fc7d4" class="amount_button" round
+                                            style="width:40%;" @click="approve">
+                                            <h2 style="color: #fff;">授权</h2>
                                         </el-button>
-                                        <el-button color="#1fc7d4" class="amount_button" round style="width:40%;"
-                                            @click="connectWallet">
+                                        <el-button v-else color="#1fc7d4" class="amount_button" round style="width:40%;"
+                                            @click="addLiquidity">
                                             <h2 style="color: #fff;">Add Liquidity</h2>
                                         </el-button>
                                     </div>
@@ -242,19 +247,35 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { getTokens } from '@/api/Liquiditys'
+import { ElMessage, ElLoading } from 'element-plus';
 import MetamaskService from '@/components/MetamaskService';
-const route = useRouter();
-const tokenA = ref('');
-const tokenB = ref('')
+import { ethers, parseEther, formatEther } from "ethers";
+import { config } from "@/const/config";
+const route = useRoute();
+const reserve0 = ref(route.params.tokenA);
+const reserve1 = ref(route.params.tokenB);
+const reserve0Input = ref('');
+const reserve1Input = ref('');
+const reserve0Name = ref("");
+const reserve1Name = ref("");
 const optionsA = ref([])
 const optionsB = ref([])
 const dialogVisible = ref(false);
 const seachDialog = ref('');
 const inputValue = ref('');
 const isConnect = ref("");
+const readProvider = new ethers.JsonRpcProvider(config.rpc);
+const writeProvider = new ethers.BrowserProvider(window.ethereum);
+const Router02 = new ethers.Contract(config.router02_addr, config.router02, readProvider);
+const userAddress = ref('')
+const userBalanceA = ref('')
+const userBalanceB = ref('')
+const copiedText = ref("");
+const getToken = ref({})
+const isapprove = ref(false);
 const tableData = ref([
     {
         date: '2016-05-03',
@@ -273,31 +294,258 @@ const tableData = ref([
         name: 'Tom',
     },
 ])
-
+const findName = async (token) => {
+    const res = await getTokens();
+    const foundItem = res.data.find(item => item.contractaddress === token);
+    return foundItem.ercsymbol
+}
+async function updateTokenNames() {
+    reserve0Name.value = await findName(reserve0.value);
+    reserve1Name.value = await findName(reserve1.value);
+}
+updateTokenNames()
+const getBalance = async () => {
+    try {
+        const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
+        const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
+        let balanceA;
+        if (reserve0.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+            balanceA = await readProvider.getBalance(userAddress.value)
+        } else {
+            balanceA = await tokenContractA.balanceOf(userAddress.value);
+        }
+        let balanceB;
+        if (reserve1.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+            balanceB = await readProvider.getBalance(userAddress.value);
+        } else {
+            balanceB = await tokenContractB.balanceOf(userAddress.value);
+        }
+        // BalanceAs.value = balanceA;
+        // BalanceBs.value = balanceB;
+        userBalanceA.value = parseFloat(formatEther(balanceA)).toFixed(6);
+        userBalanceB.value = parseFloat(formatEther(balanceB)).toFixed(6);
+    } catch (error) {
+        console.log(error);
+    }
+}
 const connectWallet = async () => {
     if (typeof window.ethereum !== "undefined") {
         try {
             const { provider, signer, account } = await MetamaskService.connectWallet();
             isConnect.value = account;
+            userAddress.value = account;
         } catch (error) {
         }
     }
 }
-const monitorValueA = (newValue) => {
-    if (newValue === tokenB.value) {
-        tokenA.value = '';
+connectWallet()
+const monitorValueA = async (newValue) => {
+    if (newValue === reserve1.value) {
+        reserve0.value = '';
         ElMessage.warning('This token is already selected for the other field.')
         return;
+    }
+    reserve0Name.value = await findName(newValue);
+    reserve0Input.value = "";
+    reserve1Input.value = "";
+    getBalance()
+    ifapprove()
+}
+const monitorValueB = async (newValue) => {
+    if (newValue === reserve0.value) {
+        reserve1.value = '';
+        ElMessage.warning('This token is already selected for the other field.')
+        return;
+    }
+    reserve1Name.value = await findName(newValue);
+    getBalance()
+    ifapprove()
+}
+const update0 = async () => {
+    if (!userBalanceA.value) {
+        getBalance()
+    }
+    if (reserve0Input.value == "" || reserve0Input.value == 0) {
+        reserve0Input.value == ""
+        reserve1Input.value = "";
+        return;
+    }
+    const path = [reserve0.value, reserve1.value];
+    const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
+    const p_addr = await factory.getPair(...path)
+    if (p_addr === ethers.ZeroAddress) {
+        // ElMessage.warning('当前交易对池子没有建立,请手动输入价格');
+    } else {
+        const amountIn = parseEther(reserve0Input.value);
+        const amounts = await Router02.getAmountsOut(amountIn, path);
+        const amountOutMin = amounts[1];
+        reserve1Input.value = formatEther(amountOutMin);
+    }
+    ifapprove()
+}
+const update1 = async () => {
+    if (!userBalanceA.value) {
+        getBalance()
+    }
+    if (reserve1Input.value == "" || reserve1Input.value == 0) {
+        reserve0Input.value = "";
+        reserve1Input.value == "";
+        return;
+    }
+    const path = [reserve0.value, reserve1.value];
+    const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
+    const p_addr = await factory.getPair(...path)
+    if (p_addr === ethers.ZeroAddress) {
+        // ElMessage.warning('当前交易对池子没有建立,请手动输入价格');
+    } else {
+        const amountOut = parseEther(reserve1Input.value);
+        const amounts = await Router02.getAmountsIn(amountOut, path);
+        const amountInMax = amounts[0];
+        reserve0Input.value = formatEther(amountInMax);
+    }
+    ifapprove()
+}
+const copyTokenAddress = () => {
+    if (!reserve1.value) {
+        ElMessage.warning('Please select a token to swap.');
+        reserve1Input.value = '';
+        return
+    } else {
+        copiedText.value = reserve1.value
+        navigator.clipboard.writeText(copiedText.value)
+            .then(() => {
+                ElMessage.success('Copy successful!');
+            })
+            .catch(err => {
+                console.error('Copy failed:', err);
+                ElMessage.error('Copy failed, please copy manually!');
+            });
     }
 
 }
-const monitorValueB = (newValue) => {
-    if (newValue === tokenA.value) {
-        tokenB.value = '';
-        ElMessage.warning('This token is already selected for the other field.')
-        return;
+const addToken = async () => {
+    getToken.value = optionsB.value.find(item => item.contractaddress === reserve1.value);
+    console.log(getToken.value);
+    const token = {
+        address: reserve1.value,
+        symbol: getToken.value.ercsymbol,
+        decimals: getToken.value.decimals,
+    }
+    try {
+        await ethereum.request({
+            method: "wallet_watchAsset",
+            params: {
+                type: "ERC20",
+                options: token
+            }
+        });
+        ElMessage.success("添加代币成功")
+    } catch (error) {
+        ElMessage.error("添加代币失败")
+        console.log(error);
     }
 }
+//判断代币是否授权
+const ifapprove = async () => {
+    const tokenA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
+    const tokenB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
+    const result = await tokenA.allowance(userAddress.value, config.router02_addr)
+    const res = await tokenB.allowance(userAddress.value, config.router02_addr)
+    console.log(res);
+    if (result === ethers.MaxUint256 && res === ethers.MaxUint256) {
+        isapprove.value = true;
+    } else {
+        isapprove.value = false;
+    }
+
+
+}
+const approve = async () => {
+    if (!isapprove.value) {
+        const loading = ElLoading.service({
+            lock: true,
+            text: '正在授权，请稍候...',
+            background: 'rgba(0, 0, 0, 0.7)',
+        });
+        const signer = await writeProvider.getSigner();
+        const TokenA = new ethers.Contract(reserve0.value, config.erc20, signer);
+        const TokenB = new ethers.Contract(reserve1.value, config.erc20, signer);
+        try {
+            const txa = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
+            const txb = await TokenB.approve(config.router02_addr, ethers.MaxUint256);
+            await txa.wait();
+            await txb.wait();
+            ElMessage.success('授权成功')
+            ifapprove();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            // 关闭 loading 动画
+            loading.close();
+        }
+    }
+}
+const addLiquidity = async () => {
+    const loading = ElLoading.service({
+        lock: true,
+        text: '正在添加流动性，请稍候...',
+        background: 'rgba(0, 0, 0, 0.7)',
+    });
+    const overrides = {
+        gasLimit: 9999999
+    }
+    const signer = await writeProvider.getSigner();
+    const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
+    try {
+        if (reserve0.value === config.wmnt_addr || reserve1.value === config.wmnt_addr) {
+            if (reserve0.value === config.wmnt_addr) {
+                await routerForTransactions.addLiquidityETH(
+                    reserve1.value,
+                    parseEther(reserve1Input.value),
+                    0,
+                    0,
+                    userAddress.value,
+                    ethers.MaxUint256,
+                    { value: parseEther(reserve0Input.value), ...overrides }
+                )
+                
+            } else {
+                await routerForTransactions.addLiquidityETH(
+                    reserve0.value,
+                    parseEther(reserve0Input.value),
+                    0,
+                    0,
+                    userAddress.value,
+                    ethers.MaxUint256,
+                    { value: parseEther(reserve1Input.value), ...overrides }
+                )
+            }
+            ElMessage.success("Liquidity added successfully.")
+        } else {
+            await routerForTransactions.addLiquidity(
+                reserve0.value,
+                reserve1.value,
+                parseEther(reserve0Input.value),
+                parseEther(reserve1Input.value),
+                0,
+                0,
+                userAddress.value,
+                ethers.MaxUint256,
+                overrides
+            )
+            ElMessage.success("Liquidity added successfully.")
+        }
+
+    } catch (error) {
+        console.log(error
+        )
+        ElMessage.error("Liquidity failure.")
+    }finally {
+      // 关闭 loading 动画
+      loading.close();
+    }
+}
+
 const getTokenList = async () => {
     try {
         const res = await getTokens();
@@ -308,11 +556,6 @@ const getTokenList = async () => {
     }
 }
 getTokenList();
-onMounted(() => {
-    console.log('-----------',route);
-    // tokenA.value = route.params.tokenA;
-    // tokenB.value = route.params.tokenB;
-})
 </script>
 
 <style scoped>
@@ -468,11 +711,11 @@ onMounted(() => {
 }
 
 .main_header {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .input-with-result {
