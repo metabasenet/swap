@@ -31,8 +31,7 @@
                             </el-button>
                           </el-tooltip>
                           <el-button text @click="tolineChart">
-                            <svg-icon
-                                  name="brokeline"></svg-icon>
+                            <svg-icon name="brokeline"></svg-icon>
                           </el-button>
                           <el-tooltip effect="dark" content="Check out the top traded tokens" placement="bottom">
                             <el-button text><svg-icon name="fueloil"></svg-icon></el-button>
@@ -101,7 +100,7 @@
                           <el-button type="success" icon="Sort" circle size="large" @click="sortAssets" />
                         </div>
                       </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="!isSorted">
+                      <el-col :span="24"  class="bnb_header" v-show="!isSorted">
                         <div class="main_header">
                           <div>
                             <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
@@ -134,7 +133,7 @@
                             placeholder="0.0" class="input-area"></el-input>
                         </div>
                       </el-col>
-                      <el-col :span="24" class="bnb_header" v-show="isSorted">
+                      <el-col :span="24"  class="bnb_header" v-show="isSorted">
                         <div class="main_header">
                           <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
                             style="width: 170px">
@@ -290,19 +289,19 @@ const addToken = async () => {
     console.log(error);
   }
 }
-const tolineChart = ()=>{
-  if(reserve0.value && reserve1.value){
+const tolineChart = () => {
+  if (reserve0.value && reserve1.value) {
     router.push({
-    name:'linechart',
-    params:{
-      tokenA:isSorted ? reserve1.value : reserve0.value,
-      tokenB:isSorted ? reserve0.value : reserve1.value,
-    }
-  })
-  }else{
+      name: 'linechart',
+      params: {
+        tokenA: isSorted.value ? reserve1.value : reserve0.value,
+        tokenB: isSorted.value ? reserve0.value : reserve1.value,
+      }
+    })
+  } else {
     ElMessage.warning('Please select two tokens.')
   }
-  
+
 }
 const monitorValueA = async (newValue) => {
   reserve0swap.value = '';
@@ -452,7 +451,7 @@ const getCurrentercsymbolB = () => {
   }
 }
 const update0 = async () => {
- 
+
   priceA.value = getCurrentercsymbolA();
   priceB.value = getCurrentercsymbolB();
   if (reserve0swap.value == "" || reserve0swap.value == 0) {
@@ -740,10 +739,10 @@ const trading = async () => {
   } catch (error) {
     console.error("An error occurred during the transaction:", error);
     ElMessage.error('交易失败');
-  }finally {
-      // 关闭 loading 动画
-      loading.close();
-    }
+  } finally {
+    // 关闭 loading 动画
+    loading.close();
+  }
 }
 
 </script>
@@ -863,7 +862,6 @@ const trading = async () => {
   justify-content: space-around;
   padding: 15px 10px;
 }
-
 .swap_header_button {
   display: flex;
   justify-content: flex-end;

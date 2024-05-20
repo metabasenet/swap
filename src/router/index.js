@@ -59,6 +59,12 @@ const routes = [
     props:true
   },
   {
+    path: '/remove',
+    name: 'remove',
+    component: () => import('../pages/Liquidity/removeLiquidity.vue'),
+    props:true
+  },
+  {
     path: '/linechart/:tokenA/:tokenB',
     name: 'linechart',
     component: () => import('../pages/lineChart/lineChart.vue'),

@@ -11,7 +11,7 @@
             </el-menu-item>
             <el-menu-item index="/swap">Swap</el-menu-item>
           <el-menu-item index="/v2add">Liquidity</el-menu-item>
-          <el-menu-item index="3">Remove liquidity</el-menu-item>
+          <el-menu-item index="/remove">Remove liquidity</el-menu-item>
           </el-menu>
         </el-col>
         <el-col :span="10" :xs="19" :sm="19" :md="10" :lg="10">

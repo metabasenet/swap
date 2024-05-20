@@ -10,7 +10,7 @@
                             <div class="liquidity-title">
                                 <div class="back_title">
                                     <el-button text>
-                                        <router-link to="/find"> <svg-icon name="back">
+                                        <router-link to="/swap"> <svg-icon name="back">
                                             </svg-icon></router-link>
                                     </el-button>
                                     <div style="margin-left:10px">
@@ -291,17 +291,15 @@ const tableData = ref([
         name: 'Tom',
     },
 ])
-const findName = async (token) => {
-    const res = await getTokens();
-    const foundItem = res.data.find(item => item.contractaddress === token);
+const findName = async (data,token) => {
+    const foundItem = data.find(item => item.contractaddress === token);
     return foundItem.ercsymbol
 }
 async function updateTokenNames() {
-    reserve0Name.value = await findName(reserve0.value);
-    reserve1Name.value = await findName(reserve1.value);
+    reserve0Name.value = await findName(optionsA.value,reserve0.value);
+    reserve1Name.value = await findName(optionsB.value,reserve1.value);
    await getBalance()
 }
-updateTokenNames()
 const getBalance = async () => {
     try {
         
@@ -344,7 +342,7 @@ const monitorValueA = async (newValue) => {
         ElMessage.warning('This token is already selected for the other field.')
         return;
     }
-    reserve0Name.value = await findName(newValue);
+    reserve0Name.value = await findName(optionsA.value,newValue);
     reserve0Input.value = "";
     reserve1Input.value = "";
     getBalance()
@@ -356,7 +354,7 @@ const monitorValueB = async (newValue) => {
         ElMessage.warning('This token is already selected for the other field.')
         return;
     }
-    reserve1Name.value = await findName(newValue);
+    reserve1Name.value = await findName(optionsB.value,newValue);
     getBalance()
     ifapprove()
 }
@@ -377,7 +375,6 @@ const update0 = async () => {
         const amountOutMin = amounts[1];
         reserve1Input.value = formatEther(amountOutMin);
     }
-    ifapprove()
 }
 const update1 = async () => {
     if (reserve1Input.value == "" || reserve1Input.value == 0) {
@@ -396,7 +393,6 @@ const update1 = async () => {
         const amountInMax = amounts[0];
         reserve0Input.value = formatEther(amountInMax);
     }
-    ifapprove()
 }
 const copyTokenAddress = () => {
     if (!reserve1.value) {
@@ -440,14 +436,10 @@ const addToken = async () => {
 }
 //判断代币是否授权
 const ifapprove = async () => {
-    console.log(reserve0.value);
     const tokenA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
-    console.log(tokenA);
     const tokenB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
     const result = await tokenA.allowance(userAddress.value, config.router02_addr)
-    console.log(result);
     const res = await tokenB.allowance(userAddress.value, config.router02_addr)
-    console.log(res);
     if (result === ethers.MaxUint256 && res === ethers.MaxUint256) {
         isapprove.value = true;
     } else {
@@ -547,6 +539,8 @@ const getTokenList = async () => {
         const res = await getTokens();
         optionsA.value = res.data;
         optionsB.value = res.data;
+        await updateTokenNames();
+        await  ifapprove()
     } catch (error) {
         console.log(error);
     }

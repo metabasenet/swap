@@ -68,7 +68,9 @@ const findName = async(token)=>{
 }
 async function updateTokenNames() {
   tokenAname.value = await findName(tokenA.value);
+  console.log(tokenAname.value);
   tokenBname.value = await findName(tokenB.value);
+  console.log(tokenBname.value);
 }
 updateTokenNames()
 // 计算移动平均线
