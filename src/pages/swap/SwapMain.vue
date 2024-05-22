@@ -41,11 +41,11 @@
                           <el-button text><svg-icon name="reset"></svg-icon></el-button>
                         </div>
                       </el-col>
-                      <el-col :span="24" class="bnb_header">
+                      <el-col :span="24" class="bnb_header" :class="{ a: true, a1: isSorted }">
                         <div class="main_header">
-                          <div :class="{ a: true, a1: isSorted }">
-                            <el-select v-model="tokenSelectA" @change="monitorValueA" placeholder="Select"
-                              size="default" style="width: 170px">
+                          <div>
+                            <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
+                              style="width: 170px">
                               <template #prefix>
                                 <div>
                                   <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
@@ -69,12 +69,12 @@
                           <el-button type="success" icon="Sort" circle size="large" @click="sortAssets" />
                         </div>
                       </el-col>
-                      <el-col :span="24" class="bnb_header">
+                      <el-col :span="24" class="bnb_header" :class="{ a: true, a2: isSorted }">
                         <div class="main_header">
                           <div class="tokenB">
-                            <div :class="{ a: true, a2: isSorted }">
-                              <el-select v-model="tokenSelectB" @change="monitorValueB" placeholder="Select"
-                                size="default" style="width: 170px">
+                            <div>
+                              <el-select v-model="reserve1" @change="monitorValueB" placeholder="Select" size="default"
+                                style="width: 170px">
                                 <template #prefix>
                                   <div>
                                     <svg-icon name="bnb" width="1.6rem" height="1.6rem"
@@ -145,7 +145,8 @@
                             <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
                           </div>
                         </div>
-                        <div v-else-if="isapprove || tokenSelectA === config.wmnt_addr">
+                        <div
+                          v-else-if="isapprove || (isSorted ? reserve1 === config.wmnt_addr : reserve0 === config.wmnt_addr)">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
                             <h2 style="color: #fff;">Trading</h2>
                           </el-button>
@@ -192,30 +193,15 @@ const tokenSelectA = ref('')
 const tokenSelectB = ref('')
 const tokenInputA = ref('')
 const tokenInputB = ref('')
-const reserve0swap = ref('')
-const reserve1swap = ref('')
 const isSorted = ref(false)
 const sortAssets = async () => {
   isSorted.value = !isSorted.value;
-  reserve1swap.value = '';
-  reserve0swap.value = '';
-  if (isSorted.value) {
-    const tempA = tokenSelectA.value;
-    const tempB = tokenSelectB.value;
-    tokenSelectA.value = tempB;
-    tokenSelectB.value = tempA;
-    tokenInputA.value = reserve1swap.value;
-    tokenInputB.value = reserve0swap.value;
-  } else {
-    const tempA = tokenSelectA.value;
-    const tempB = tokenSelectB.value;
-    tokenSelectA.value = tempB;
-    tokenSelectB.value = tempA;
-    tokenInputA.value = reserve0swap.value;
-    tokenInputB.value = reserve1swap.value;
-  }
-  ifapprove();
-  getBalance();
+  tokenInputA.value = '';
+  tokenInputB.value = '';
+  isSorted.value ? tokenSelectA.value = reserve1.value : tokenSelectA.value = reserve0.value;
+  isSorted.value ? tokenSelectB.value = reserve0.value : tokenSelectB.value = reserve1.value;
+  await getBalance();
+  await ifapprove();
 }
 const getToken = ref({})
 const addToken = async () => {
@@ -256,15 +242,15 @@ const tolineChart = () => {
 const monitorValueA = async (newValue) => {
   tokenInputA.value = '';
   tokenInputB.value = '';
-  if (tokenSelectA.value === newValue) {
-    if (newValue === tokenSelectB.value) {
-      tokenSelectA.value = '';
+  if (reserve0.value === newValue) {
+    if (newValue === reserve1.value) {
+      reserve0.value = '';
       ElMessage.warning('This token is already selected for the other field.')
       return;
     }
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(tokenSelectA.value, tokenSelectB.value)
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对池子没有建立');
     tokenSelectA.value = '';
@@ -276,18 +262,18 @@ const monitorValueA = async (newValue) => {
 const monitorValueB = async (newValue) => {
   tokenInputA.value = '';
   tokenInputB.value = '';
-  if (tokenSelectB.value === newValue) {
-    if (newValue === tokenSelectA.value) {
-      tokenSelectB.value = '';
+  if (reserve1.value === newValue) {
+    if (newValue === reserve0.value) {
+      reserve1.value = '';
       ElMessage.warning('This token is already selected for the other field.')
       return;
     }
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(tokenSelectA.value, tokenSelectB.value)
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对池子没有建立');
-    tokenSelectB.value = '';
+    reserve1.value = '';
     return
   }
   ifapprove();
@@ -296,23 +282,33 @@ const monitorValueB = async (newValue) => {
 const isapprove = ref(false);
 //判断某个合约,是否授权
 const ifapprove = async () => {
-  const token = new ethers.Contract(tokenSelectA.value, config.erc20, readProvider);
-  const result = await token.allowance(userAddress.value, config.router02_addr)
-  if (result === ethers.MaxUint256) {
-    isapprove.value = true;
+  if (isSorted.value) {
+    const token = new ethers.Contract(reserve1.value, config.erc20, readProvider);
+    const result = await token.allowance(userAddress.value, config.router02_addr)
+    if (result === ethers.MaxUint256) {
+      isapprove.value = true;
+    } else {
+      isapprove.value = false;
+    }
   } else {
-    isapprove.value = false;
+    const token = new ethers.Contract(reserve0.value, config.erc20, readProvider);
+    const result = await token.allowance(userAddress.value, config.router02_addr)
+
+    if (result === ethers.MaxUint256) {
+      isapprove.value = true;
+    } else {
+      isapprove.value = false;
+    }
   }
 }
-
 const copiedText = ref("");
 const copyTokenAddress = () => {
-  if (!tokenSelectB.value) {
+  if (!reserve1.value) {
     ElMessage.warning('Please select a token to swap.');
     tokenInputB.value = '';
     return
   } else {
-    copiedText.value = tokenSelectB.value
+    copiedText.value = reserve1.value
     navigator.clipboard.writeText(copiedText.value)
       .then(() => {
         ElMessage.success('Copy successful!');
@@ -357,16 +353,16 @@ const BalanceAs = ref(0);
 const BalanceBs = ref(0);
 const getBalance = async () => {
   try {
-    const tokenContractA = new ethers.Contract(tokenSelectA.value, config.erc20, readProvider);
-    const tokenContractB = new ethers.Contract(tokenSelectB.value, config.erc20, readProvider);
+    const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
+    const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
     let balanceA;
-    if (tokenSelectA.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+    if (reserve0.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
       balanceA = await readProvider.getBalance(userAddress.value)
     } else {
       balanceA = await tokenContractA.balanceOf(userAddress.value);
     }
     let balanceB;
-    if (tokenSelectB.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+    if (reserve1.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
       balanceB = await readProvider.getBalance(userAddress.value);
     } else {
       balanceB = await tokenContractB.balanceOf(userAddress.value);
@@ -391,13 +387,13 @@ const handleClick = (tab) => {
   }
 }
 const getCurrentercsymbolA = () => {
-  const selectedOption = optionsA.value.find(option => option.contractaddress === tokenSelectA.value)
+  const selectedOption = optionsA.value.find(option => option.contractaddress === reserve0.value)
   if (selectedOption) {
     return selectedOption.ercsymbol
   }
 }
 const getCurrentercsymbolB = () => {
-  const selectedOption = optionsB.value.find(option => option.contractaddress === tokenSelectB.value)
+  const selectedOption = optionsA.value.find(option => option.contractaddress === reserve1.value)
   if (selectedOption) {
     return selectedOption.ercsymbol
   }
@@ -415,49 +411,69 @@ const update0 = async () => {
   if (tokenInputA.value == "" || tokenInputA.value == 0) {
     tokenInputB.value = "";
     return;
-  } else if (!tokenSelectA.value || !tokenSelectB.value) {
+  } else if (!reserve0.value || !reserve1.value) {
     ElMessage.warning('Please select a token to swap.');
     tokenInputA.value = '';
     return
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(tokenSelectA.value, tokenSelectB.value)
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   const uniswapV2Pair1 = new ethers.Contract(p_addr, config.UniswapV2Pair, readProvider);
   const res = await uniswapV2Pair1.getReserves();
   const reserveA_Number = Number(res[0]);
   const reserveB_Number = Number(res[1]);
-  if (tokenSelectA.value > tokenSelectB.value) {
+  if (reserve0.value > reserve1.value) {
+    
     topriceB.value = reserveA_Number / reserveB_Number;
     topriceA.value = reserveB_Number / reserveA_Number;
   } else {
+    
     topriceA.value = reserveA_Number / reserveB_Number;
     topriceB.value = reserveB_Number / reserveA_Number;
   }
   try {
-    if (tokenSelectA.value == config.usdt_addr && tokenSelectB.value == config.wmnt_addr) {
-      state = 1;
-    } else if (tokenSelectA.value == config.wmnt_addr && tokenSelectB.value == config.usdt_addr) {
-      state = 2;
+    if (isSorted.value) {
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+        state = 5;//5
+      } else {
+        state = 6;
+      }
     } else {
-      state = 3;
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+        state = 1;//1
+      } else {
+        state = 3;//3
+      }
     }
     // 输入上面 计算下面的值
-    const path = [tokenSelectA.value, tokenSelectB.value];
+    const path = [reserve0.value, reserve1.value];
     const amountIn = parseEther(tokenInputA.value);
     const amounts = await Router02.getAmountsOut(amountIn, path);
     const amountOutMin = amounts[1];
     tokenInputB.value = formatEther(amountOutMin);
-    const amountIns = parseEther(tokenInputA.value);
-    if (BalanceAs.value >= amountIns) {
-      isAdequacy.value = true
+    if (isSorted.value) {
+      const amountOuts = parseEther(tokenInputB.value);
+      if (BalanceBs.value >= amountOuts) {
+        isAdequacy.value = true
+      } else {
+        isAdequacy.value = false;
+        tokenInputA.value = '';
+        tokenInputB.value = '';
+        ElMessage.warning('用户余额不足')
+        return
+      }
     } else {
-      isAdequacy.value = false;
-      tokenInputA.value = '';
-      tokenInputB.value = '';
-      ElMessage.warning('用户余额不足')
-      return
+      const amountIn = parseEther(tokenInputA.value);
+      if (BalanceAs.value >= amountIn) {
+        isAdequacy.value = true
+      } else {
+        isAdequacy.value = false;
+        tokenInputA.value = '';
+        tokenInputB.value = '';
+        ElMessage.warning('用户余额不足')
+        return
+      }
     }
-
     if (tokenInputA.value == "" || tokenInputA.value == 0) {
       tokenInputB.value = "";
       return true;
@@ -473,44 +489,68 @@ const update1 = async () => {
   if (tokenInputB.value == "" || tokenInputB.value == 0) {
     tokenInputA.value = "";
     return;
-  } else if (!tokenSelectB.value || !tokenSelectA.value) {
+  } else if (!reserve1.value || !reserve0.value) {
     ElMessage.warning('Please select a token to swap.');
     tokenInputB.value = '';
     return
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
-  const p_addr = await factory.getPair(tokenSelectA.value, tokenSelectB.value)
+  const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   const uniswapV2Pair1 = new ethers.Contract(p_addr, config.UniswapV2Pair, readProvider);
   const res = await uniswapV2Pair1.getReserves();
   const reserveA_Number = Number(res[0]);
   const reserveB_Number = Number(res[1]);
-  topriceA.value = reserveA_Number / reserveB_Number;
-  topriceB.value = reserveB_Number / reserveA_Number;
+  if (reserve0.value > reserve1.value) {
+    topriceB.value = reserveA_Number / reserveB_Number;
+    topriceA.value = reserveB_Number / reserveA_Number;
+  } else {
+    topriceA.value = reserveA_Number / reserveB_Number;
+    topriceB.value = reserveB_Number / reserveA_Number;
+  }
   if (p_addr === ethers.ZeroAddress) {
     ElMessage.warning('当前交易对没有匹配');
   }
   try {
-    if (tokenSelectA.value == config.usdt_addr && tokenSelectB.value == config.wmnt_addr) {
-      state = 4;
-    } else if (tokenSelectA.value == config.wmnt_addr && tokenSelectB.value == config.usdt_addr) {
-      state = 5;
+    if (isSorted.value) {
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+        state = 2;//2
+      } else {
+        state = 3;
+      }
     } else {
-      state = 6;
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+        state = 4;
+      } else {
+        state = 6;
+      }
     }
-    const path = [tokenSelectA.value, tokenSelectB.value];
+    const path = [reserve0.value, reserve1.value];
     const amountOut = parseEther(tokenInputB.value);
     const amounts = await Router02.getAmountsIn(amountOut, path);
     const amountInMax = amounts[0];
     tokenInputA.value = formatEther(amountInMax);
-    const amountOuts = parseEther(tokenInputB.value);
-    if (BalanceBs.value >= amountOuts) {
-      isAdequacy.value = true
+    if (isSorted.value) {
+      const amountOuts = parseEther(tokenInputB.value);
+      if (BalanceBs.value >= amountOuts) {
+        isAdequacy.value = true
+      } else {
+        isAdequacy.value = false;
+        tokenInputA.value = '';
+        tokenInputB.value = '';
+        ElMessage.warning('用户余额不足')
+        return
+      }
     } else {
-      isAdequacy.value = false;
-      tokenInputA.value = '';
-      tokenInputB.value = '';
-      ElMessage.warning('用户余额不足')
-      return
+      const amountIn = parseEther(tokenInputA.value);
+      if (BalanceAs.value >= amountIn) {
+        isAdequacy.value = true
+      } else {
+        isAdequacy.value = false;
+        tokenInputA.value = '';
+        tokenInputB.value = '';
+        ElMessage.warning('用户余额不足')
+        return
+      }
     }
     if (tokenInputB.value == "" || tokenInputB.value == 0) {
       tokenInputA.value = "";
@@ -532,19 +572,36 @@ const approve = async () => {
     text: '正在授权，请稍候...',
     background: 'rgba(0, 0, 0, 0.7)',
   });
-  const tokenA_addr = tokenSelectA.value;
-  const signer = await writeProvider.getSigner();
-  const TokenA = new ethers.Contract(tokenA_addr, config.erc20, signer);
-  try {
-    const tx = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
-    await tx.wait();
-    ElMessage.success('授权成功')
-    ifapprove();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    // 关闭 loading 动画
-    loading.close();
+  if (isSorted.value) {
+    const tokenB_addr = reserve1.value
+    const signer = await writeProvider.getSigner();
+    const TokenB = new ethers.Contract(tokenB_addr, config.erc20, signer);
+    try {
+      const tx = await TokenB.approve(config.router02_addr, ethers.MaxUint256);
+      await tx.wait();
+      ElMessage.success('授权成功')
+      ifapprove();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // 关闭 loading 动画
+      loading.close();
+    }
+  } else {
+    const tokenA_addr = reserve0.value;
+    const signer = await writeProvider.getSigner();
+    const TokenA = new ethers.Contract(tokenA_addr, config.erc20, signer);
+    try {
+      const tx = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
+      await tx.wait();
+      ElMessage.success('授权成功')
+      ifapprove();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // 关闭 loading 动画
+      loading.close();
+    }
   }
 }
 
@@ -567,54 +624,67 @@ const trading = async () => {
       throw new Error("MetaMask not detected");
     }
     let tx;
-    const amountA = parseEther(tokenInputA.value);
-    const amountB = parseEther(tokenInputB.value);
+    const amountIn = parseEther(tokenInputA.value);
+    const amountOut = parseEther(tokenInputB.value);
     if (state == 1) {
       //不精确买入  usdt上面  mnt下面
-      const path = [tokenSelectA.value, tokenSelectB.value];
-      const amounts = await Router02.getAmountsOut(amountA, path)
+      const path = [reserve0.value, reserve1.value];
+      const amounts = await Router02.getAmountsOut(amountIn, path)
       const amountOutMin = amounts[1]; // 0
-      tx = await routerForTransactions.swapExactTokensForETH(amountA, amountOutMin, path, userAddress.value, ethers.MaxUint256);
+      tx = await routerForTransactions.swapExactTokensForETH(amountIn, amountOutMin, path, userAddress.value, ethers.MaxUint256);
 
     } else if (state == 2) {
       //精确卖出ETH  mnt上面 usdt下面
-      const path = [tokenSelectA.value, tokenSelectB.value];
-      const amounts = await Router02.getAmountsOut(amountA, path)
+      const path = [reserve1.value, reserve0.value];
+      const amounts = await Router02.getAmountsOut(amountOut, path)
       const amountOutMin = amounts[1]; // 0
-      tx = await routerForTransactions.swapExactETHForTokens(amountOutMin, path, userAddress.value, ethers.MaxUint256, { value: amountA }
+      tx = await routerForTransactions.swapExactETHForTokens(amountOutMin, path, userAddress.value, ethers.MaxUint256, { value: amountOut }
       );
     } else if (state == 3) {
       //精确输入 普通交易对 输入上面计算下面
       let path = [];
-      path = [tokenSelectA.value, tokenSelectB.value];
-      const amounts = await Router02.getAmountsOut(amountA, path);
+      let amountIn_;
+      if (isSorted.value) {
+        path = [reserve1.value, reserve0.value];
+        amountIn_ = amountOut
+      } else {
+        path = [reserve0.value, reserve1.value];
+        amountIn_ = amountIn
+      }
+      const amounts = await Router02.getAmountsOut(amountIn_, path);
       const amountOutMin = amounts[1];
-      tx = await routerForTransactions.swapExactTokensForTokens(amountA, amountOutMin, path, userAddress.value, ethers.MaxUint256)
+      tx = await routerForTransactions.swapExactTokensForTokens(amountIn_, amountOutMin, path, userAddress.value, ethers.MaxUint256)
     } else if (state == 4) {
       // 精确买入  usdt在上面/mnt在下面
-      const path = [tokenSelectA.value, tokenSelectB.value];
-      const ret = await Router02.getAmountsIn(amountB, path)
+      const path = [reserve0.value, reserve1.value];
+      const ret = await Router02.getAmountsIn(amountOut, path)
       const amountInMax = ret[0]; //ret[0]
-      tx = await routerForTransactions.swapTokensForExactETH(amountB, amountInMax, path, userAddress.value, ethers.MaxUint256,
+      tx = await routerForTransactions.swapTokensForExactETH(amountOut, amountInMax, path, userAddress.value, ethers.MaxUint256,
       );
     }
     else if (state == 5) {
       //不精确卖出  mnt在上面,usdt在下面
-      console.log(amountB);
-      const path = [tokenSelectA.value, tokenSelectB.value];
-      const amounts = await Router02.getAmountsIn(amountB, path);
+      const path = [reserve1.value, reserve0.value];
+      const amounts = await Router02.getAmountsIn(amountIn, path);
       const amountInMin = amounts[0]
-      tx = await routerForTransactions.swapETHForExactTokens(amountB, path, userAddress.value, ethers.MaxUint256,
+      tx = await routerForTransactions.swapETHForExactTokens(amountIn, path, userAddress.value, ethers.MaxUint256,
         { value: amountInMin }
       );
     }
     else if (state == 6) {
       //精确输出 普通交易对 输入下面计算上面
       let path = [];
-      path = [tokenSelectA.value, tokenSelectB.value];
-      const ret = await Router02.getAmountsIn(amountB, path)
+      let amountOut_;
+      if (isSorted.value) {
+        path = [reserve1.value, reserve0.value];
+        amountOut_ = amountIn
+      } else {
+        path = [reserve0.value, reserve1.value];
+        amountOut_ = amountOut
+      }
+      const ret = await Router02.getAmountsIn(amountOut_, path)
       const amountInMax = ret[0]
-      tx = await routerForTransactions.swapTokensForExactTokens(amountB, amountInMax, path, userAddress.value, ethers.MaxUint256
+      tx = await routerForTransactions.swapTokensForExactTokens(amountOut_, amountInMax, path, userAddress.value, ethers.MaxUint256
       );
     }
     if (tx) {
@@ -753,12 +823,14 @@ const trading = async () => {
   justify-content: space-around;
   padding: 15px 10px;
 }
-.tokenB{
+
+.tokenB {
   display: flex;
   align-items: center;
 }
+
 .a {
-  transition: transform 1.1s;
+  transition: transform 1s;
 }
 
 .a1 {
