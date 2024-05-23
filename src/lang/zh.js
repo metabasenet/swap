@@ -38,6 +38,7 @@ const zh ={
         swap:'兑换',
         addLiquidity:'流动性',
         removeLiquidity:'移除流动性',
+        connect:'连接',
         quit:'断开',
     },
     footer:{

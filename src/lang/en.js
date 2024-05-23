@@ -39,6 +39,7 @@ const en ={
         swap:'Swap',
         addLiquidity:'Liquidity',
         removeLiquidity:'Remove Liquidity',
+        connect:'Connect',
         quit:'Disconnect',
     },
     footer:{

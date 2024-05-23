@@ -10,7 +10,7 @@
                             <div>
                                 <div class="title_header">
                                     <svg-icon name="bnb"></svg-icon>
-                                    <span>{{tokenAname}}</span>/<span>{{tokenBname}}</span>
+                                    <span>{{ tokenAname }}</span>/<span>{{ tokenBname }}</span>
                                     <!-- <div class="sort_box">
                                         <el-button text icon="Switch" circle size="large" />
                                     </div> -->
@@ -19,21 +19,31 @@
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="timeSharing">
                                         <h2 style="color: #fff;">TS</h2>
-                                        </el-button>
+                                    </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(2)"><h3 style="color: #fff;">1M</h3></el-button>
+                                        @click="changePeriod(2)">
+                                        <h3 style="color: #fff;">1M</h3>
+                                    </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(3)"><h3 style="color: #fff;">1H</h3></el-button>
+                                        @click="changePeriod(3)">
+                                        <h3 style="color: #fff;">1H</h3>
+                                    </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(4)"><h3 style="color: #fff;">1D</h3></el-button>
-                                        <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(5)"><h3 style="color: #fff;">1W</h3></el-button>
+                                        @click="changePeriod(4)">
+                                        <h3 style="color: #fff;">1D</h3>
+                                    </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(6)"><h3 style="color: #fff;">1mouth</h3></el-button>
+                                        @click="changePeriod(5)">
+                                        <h3 style="color: #fff;">1W</h3>
+                                    </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(6)">
+                                        <h3 style="color: #fff;">1mouth</h3>
+                                    </el-button>
                                     <!-- <el-button type="primary" style="margin-top:5px" @click="changePeriod('week')">weekLine</el-button> -->
                                 </div>
                             </div>
-                            <div ref="chartRef" style="height: 320px;width:100%">
+                            <div ref="chartRef" class="chart-container" style="height: 320px;width:100%;">
                             </div>
                         </div>
                     </el-col>
@@ -48,7 +58,7 @@
 import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
-import { getLinePrice,getLinePriceFlow } from '@/api/linechart';
+import { getLinePrice, getLinePriceFlow } from '@/api/linechart';
 import { getTokens } from '@/api/Liquiditys'
 const route = useRoute();
 const chartRef = ref(null)
@@ -63,16 +73,16 @@ const tokenB = ref(route.params.tokenB)
 const tokenAname = ref('')
 const tokenBname = ref('')
 let data = [];
-const findName = async(token)=>{
+const findName = async (token) => {
     const res = await getTokens();
     const foundItem = res.data.find(item => item.contractaddress === token);
     return foundItem.ercsymbol
 }
 async function updateTokenNames() {
-  tokenAname.value = await findName(tokenA.value);
-  console.log(tokenAname.value);
-  tokenBname.value = await findName(tokenB.value);
-  console.log(tokenBname.value);
+    tokenAname.value = await findName(tokenA.value);
+    console.log(tokenAname.value);
+    tokenBname.value = await findName(tokenB.value);
+    console.log(tokenBname.value);
 }
 updateTokenNames()
 // 计算移动平均线
@@ -89,7 +99,7 @@ function calculateMA(data, n) {
     });
 }
 // 曲线图
-const timeSharing = async()=>{
+const timeSharing = async () => {
     const res = await getLinePriceFlow(tokenA.value, tokenB.value, page.value, pageSize.value)
     data = res.data.list
     // 使用新的数据更新图表
@@ -323,9 +333,9 @@ const setChartOptions = async (data) => {
                 // startValue: data.length - 30,
                 // endValue: data.length
                 // 从98%开始
-                // start: 98,或者用startValue: data.length - 30
-                // 到100%结束
-                // end: 100  或者用endValue: data.length
+                // start: 90,
+                // // 到100%结束
+                // end: 100
             }
         ],
         series: [
@@ -401,7 +411,7 @@ onMounted(() => {
 }
 
 .responsive-aside {
-    width: 3vw;
+    width: 2vw;
     transition: width 0.5s ease;
 }
 
@@ -417,10 +427,12 @@ onMounted(() => {
     margin-bottom: 7px;
     flex-wrap: wrap;
 }
-.title_header{
+
+.title_header {
     display: flex;
     align-items: center;
 }
+
 @media (min-width: 768px) {
     .responsive-aside {
         width: 3vw;
@@ -436,7 +448,24 @@ onMounted(() => {
     }
 
     .liquidity-box {
+        padding: 10px;
+        /* 进一步减少内边距 */
+        /* 可以考虑添加box-sizing属性，确保padding不会增加元素的总宽度 */
+        box-sizing: border-box;
+    }
+
+    .responsive-aside {
+        width: 0vw;
+        opacity: 0.5;
+        /* background-color: #fff;  */
+    }
+
+    .liquidity-box {
         padding: 13px;
+    }
+
+    .chart-container {
+        overflow-x: auto;
     }
 }
 </style>

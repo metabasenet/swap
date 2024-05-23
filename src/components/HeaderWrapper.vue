@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="10" :xs="19" :sm="19" :md="10" :lg="10">
           <div class="header-right">
-            <el-button text size="large"><svg-icon name="rabbit"></svg-icon><span
+            <el-button class="price_button" text size="large"><svg-icon name="rabbit"></svg-icon><span
                 class="price_header">$2.801</span></el-button>
             <el-dropdown @command="handleCommand">
               <el-button text>
@@ -47,11 +47,11 @@
               </template>
             </el-dropdown> -->
             <el-button v-if="!isConnect" color="#1fc7d4" class="custom-button" @click="connectWallet" round>
-              <h3 style="color: #fff;">{{ $t('Swap.connect') }}</h3>
+              <h3 style="color: #fff;">{{ $t('header.connect') }}</h3>
             </el-button>
             <el-button v-else color="#eff4f5" class="custom-buttons" round>
                 <svg-icon name="purse" style="margin-right:5px"></svg-icon>
-                <h3 style="color: black;">{{ isConnect }}</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
+                <h3 class="button_h3" style="color: black;">{{ isConnect }}</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
               </el-button>
             <!-- <el-dropdown v-else style="width:130px">
               <el-button color="#eff4f5" class="custom-buttons" round>
@@ -216,5 +216,12 @@ connectWallet()
   .button_h3 {
     display: none;
   }
+  .el-button+.el-button{
+    margin-left:0px
+  }
+  .price_button{
+    display: none;
+  }
+  
 }
 </style>
