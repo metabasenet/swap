@@ -28,67 +28,39 @@
                 <el-row class="footerbox-center">
                     <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>ECOSYSTEM</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Trade</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Earn</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Game</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">NFT</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Tokenomics</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">CAKE Emission Projection</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Merchandise</el-link>
+                            <h4>{{ $t('footer.github') }}</h4>
+                            <el-link href="https://github.com/metabasenet" target="_blank" :underline="false">to {{ $t('footer.github') }}<svg-icon name="github" style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
                     <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>BUSINESS</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Farms And Syrup Pools</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">IFO</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">NFT Marketplace</el-link>
-                            
+                            <h4>{{ $t('footer.telegram') }}</h4>
+                            <el-link href="https://t.me/www_metabasenet_club" target="_blank" :underline="false">to {{ $t('footer.telegram') }}<svg-icon name="flybook" style="margin-left:5px"></svg-icon></el-link> 
                         </div>
                     </el-col>
                     <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>DEVELOPERS</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Contributing</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Github</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Bug Bounty.</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">V4</el-link>
+                            <h4>{{ $t('footer.twitter') }}</h4>
+                            <el-link href="https://x.com/Jkaorr?t=Lb8tUaBP1m701lSfx7KGOQ&s=09" target="_blank" :underline="false">to {{ $t('footer.twitter') }}<svg-icon name="twitter" style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
                     <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center footer-Products">
-                            <h4>SUPPORT</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Contact<el-icon>
-                                    <Position />
-                                </el-icon></el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Troubleshooting<el-icon>
-                                    <Position />
-                                </el-icon></el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Documentation</el-link>
+                            <h4>{{ $t('footer.faceBook') }}</h4>
+                            <el-link href="https://www.facebook.com/profile.php?id=61559045363979&mibextid=ZbWKwL" target="_blank" :underline="false">to {{ $t('footer.faceBook') }} <svg-icon name="facebook" style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
                     <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
-                            <h4>ABOUT</h4>
-                            <el-link href="https://element-plus.org" :underline="false">Terms Of Service</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Blog</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Brand Assets</el-link>
-                            <el-link href="https://element-plus.org" :underline="false">Careers<el-icon>
-                                    <Promotion />
-                                </el-icon> </el-link>
+                            <h4>{{ $t('footer.mntBrowser') }}</h4>
+                            <el-link href="https://main.metabasenet.site/" target="_blank" :underline="false">to {{ $t('footer.mntBrowser') }}<svg-icon name="globe" style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
                     <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center rabbits">
-                            <svg-icon name="rabbits" width="2rem" height="2rem"></svg-icon><h2>PancakeSwap</h2>
+                            <svg-icon name="rabbits"  width="2rem" height="2rem"></svg-icon><h2>PancakeSwap</h2>
                         </div>
                     </el-col>
-                    <div class="footer_icon">
-                               <el-button text plain> <svg-icon name="twitter"></svg-icon></el-button>
-                               <el-button text plain> <svg-icon name="flybook"></svg-icon></el-button>
-                               <el-button text plain> <svg-icon name="github"></svg-icon></el-button>
-                            </div>
                 </el-row>
                 <el-row class="footer-box">
                     <el-col :span="24">

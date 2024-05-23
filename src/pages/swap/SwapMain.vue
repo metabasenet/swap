@@ -16,16 +16,16 @@
                 <el-tab-pane name="MARKET">
                   <template #label>
                     <span class="custom-tabs-label">
-                      <span>MARKET</span>
+                      <span>{{$t('Swap.market')}}</span>
                     </span>
                   </template>
                   <div>
                     <el-row :gutter="10">
                       <el-col :span="24" class="swap_header">
-                        <h1 style="color:black;font-size:20px">Swap</h1>
-                        <p>Trade tokens in an instant</p>
+                        <h1 style="color:black;font-size:20px">{{ $t('Swap.swap') }}</h1>
+                        <p>{{ $t('Swap.swap_title') }}</p>
                         <div class="swap_header_button">
-                          <el-tooltip effect="dark" content="Buy crypto with fiat." placement="bottom">
+                          <el-tooltip effect="dark" :content="$t('Swap.moneybag')" placement="bottom">
                             <el-button text>
                               <svg-icon name="moneyBangs" width="1.5rem" height="1.6rem"></svg-icon>
                             </el-button>
@@ -33,7 +33,7 @@
                           <el-button text @click="tolineChart">
                             <svg-icon name="brokeline"></svg-icon>
                           </el-button>
-                          <el-tooltip effect="dark" content="Check out the top traded tokens" placement="bottom">
+                          <el-tooltip effect="dark" :content="$t('Swap.fueloil')" placement="bottom">
                             <el-button text><svg-icon name="fueloil"></svg-icon></el-button>
                           </el-tooltip>
                           <el-button text><svg-icon name="settings"></svg-icon></el-button>
@@ -55,7 +55,7 @@
                                 :value="item.contractaddress" />
                             </el-select>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceA
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{ userBalanceA
                               }}</span></el-button>
                         </div>
                         <div class="input-with-result">
@@ -85,18 +85,18 @@
                                   :value="item.contractaddress" />
                               </el-select>
                             </div>
-                            <el-tooltip content="Copy TokenAddress" placement="top">
+                            <el-tooltip :content="$t('Swap.copy_tokenaddress')" placement="top">
                               <el-button text plain size="small" @click="copyTokenAddress"><el-icon>
                                   <CopyDocument />
                                 </el-icon></el-button>
                             </el-tooltip>
-                            <el-tooltip content="Add token" placement="top">
+                            <el-tooltip :content="$t('Swap.add_token')" placement="top">
                               <el-button text plain size="default" @click="addToken">
                                 <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
                               </el-button>
                             </el-tooltip>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{ userBalanceB
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{ userBalanceB
                               }}</span></el-button>
                         </div>
                         <div class="input-with-result">
@@ -107,7 +107,7 @@
                       </el-col>
                       <el-col :span="24">
                         <div v-if="tokenInputA || tokenInputB" class="swap_footer_button swap_footer_refresh">
-                          <span style="color:#a88efc;font-weight:bold">Price</span>
+                          <span style="color:#a88efc;font-weight:bold">{{$t('Swap.price')}}</span>
                           <div>
                             <span v-if="showConversion" style="color:black;">1 {{ priceA }} <svg-icon name="conversion"
                                 width="0.8rem" height="0.8rem"></svg-icon> {{ topriceB }} {{ priceB }}</span>
@@ -124,36 +124,36 @@
                         <div v-if="!userAddress">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
                             @click="connectWallet">
-                            <h2 style="color: #fff;">Connect Wallet</h2>
+                            <h2 style="color: #fff;">{{$t('Swap.connect')}}</h2>
                           </el-button>
                           <div class="Crypto">
-                            <span>Insufficient Funds? </span>
-                            <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
+                            <span>{{ $t('Swap.Insufficient') }} </span>
+                            <router-link to="swap" style="color:#1fc7d4">{{ $t('Swap.buy_crypto') }}</router-link>
                           </div>
                         </div>
                         <div v-else-if="userAddress && !tokenInputA">
                           <el-button color="#e9eaeb" class="custom-button" round style="width:100%;">
-                            <h2 style="color: #bdc2c4;">Enter an amount</h2>
+                            <h2 style="color: #bdc2c4;">{{ $t('Swap.Enter_amount') }}</h2>
                           </el-button>
                         </div>
                         <div v-else-if="userAddress && tokenInputA && !isAdequacy">
                           <el-button color="#e9eaeb" class="custom-button" round style="width:100%;">
-                            <h2 style="color: #bdc2c4;">Insufficient balance</h2>
+                            <h2 style="color: #bdc2c4;">{{ $t('Swap.Insufficient_balance') }}</h2>
                           </el-button>
                           <div class="Crypto">
-                            <span>Insufficient Funds? </span>
-                            <router-link to="swap" style="color:#1fc7d4">Buy Crypto here.</router-link>
+                            <span>{{ $t('Swap.Insufficient') }}</span>
+                            <router-link to="swap" style="color:#1fc7d4">{{ $t('Swap.buy_crypto') }}</router-link>
                           </div>
                         </div>
                         <div
                           v-else-if="isapprove || (isSorted ? reserve1 === config.wmnt_addr : reserve0 === config.wmnt_addr)">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
-                            <h2 style="color: #fff;">Trading</h2>
+                            <h2 style="color: #fff;">{{$t('Swap.Trading')}}</h2>
                           </el-button>
                         </div>
                         <div v-else>
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="approve">
-                            <h2 style="color: #fff;">授权</h2>
+                            <h2 style="color: #fff;">{{$t('Swap.accredit')}}</h2>
                           </el-button>
                         </div>
                       </el-col>
@@ -183,7 +183,9 @@ import { ElMessage, ElLoading } from 'element-plus'
 import MetamaskService from '@/components/MetamaskService';
 import { ethers, parseEther, formatEther } from "ethers";
 import { config } from "@/const/config";
+import { useI18n } from 'vue-i18n'
 import { getTokens } from '@/api/Liquiditys'
+const { t } = useI18n()
 const showConversion = ref(false)
 const activeName = ref('MARKET');
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
@@ -219,9 +221,9 @@ const addToken = async () => {
         options: token
       }
     });
-    ElMessage.success("添加代币成功")
+    ElMessage.success(t('Swap.addtoken_success'))
   } catch (error) {
-    ElMessage.error("添加代币失败")
+    ElMessage.error(t('Swap.addtoken_error'))
     console.log(error);
   }
 }
@@ -235,7 +237,7 @@ const tolineChart = () => {
       }
     })
   } else {
-    ElMessage.warning('Please select two tokens.')
+    ElMessage.warning(t('Swap.select_token'))
   }
 
 }
@@ -245,14 +247,14 @@ const monitorValueA = async (newValue) => {
   if (reserve0.value === newValue) {
     if (newValue === reserve1.value) {
       reserve0.value = '';
-      ElMessage.warning('This token is already selected for the other field.')
+      ElMessage.warning(t('Swap.token_field'))
       return;
     }
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
   const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   if (p_addr === ethers.ZeroAddress) {
-    ElMessage.warning('当前交易对池子没有建立');
+    ElMessage.warning(t('Swap.pool_transaticon'));
     tokenSelectA.value = '';
     return
   }
@@ -265,14 +267,14 @@ const monitorValueB = async (newValue) => {
   if (reserve1.value === newValue) {
     if (newValue === reserve0.value) {
       reserve1.value = '';
-      ElMessage.warning('This token is already selected for the other field.')
+      ElMessage.warning(t('Swap.token_field'))
       return;
     }
   }
   const factory = new ethers.Contract(config.factoryAddr, config.UniswapV2Factory, readProvider);
   const p_addr = await factory.getPair(reserve0.value, reserve1.value)
   if (p_addr === ethers.ZeroAddress) {
-    ElMessage.warning('当前交易对池子没有建立');
+    ElMessage.warning(t('Swap.pool_transaticon'));
     reserve1.value = '';
     return
   }
@@ -304,18 +306,18 @@ const ifapprove = async () => {
 const copiedText = ref("");
 const copyTokenAddress = () => {
   if (!reserve1.value) {
-    ElMessage.warning('Please select a token to swap.');
+    ElMessage.warning(t('Swap.copy_token'));
     tokenInputB.value = '';
     return
   } else {
     copiedText.value = reserve1.value
     navigator.clipboard.writeText(copiedText.value)
       .then(() => {
-        ElMessage.success('Copy successful!');
+        ElMessage.success(t('Swap.copy_success'));
       })
       .catch(err => {
         console.error('Copy failed:', err);
-        ElMessage.error('Copy failed, please copy manually!');
+        ElMessage.error(t('Swap.copy_failed'));
       });
   }
 
@@ -412,7 +414,7 @@ const update0 = async () => {
     tokenInputB.value = "";
     return;
   } else if (!reserve0.value || !reserve1.value) {
-    ElMessage.warning('Please select a token to swap.');
+    ElMessage.warning(t('Swap.token_select'));
     tokenInputA.value = '';
     return
   }
@@ -423,11 +425,9 @@ const update0 = async () => {
   const reserveA_Number = Number(res[0]);
   const reserveB_Number = Number(res[1]);
   if (reserve0.value > reserve1.value) {
-    
     topriceB.value = reserveA_Number / reserveB_Number;
     topriceA.value = reserveB_Number / reserveA_Number;
   } else {
-    
     topriceA.value = reserveA_Number / reserveB_Number;
     topriceB.value = reserveB_Number / reserveA_Number;
   }
@@ -459,7 +459,7 @@ const update0 = async () => {
         isAdequacy.value = false;
         tokenInputA.value = '';
         tokenInputB.value = '';
-        ElMessage.warning('用户余额不足')
+        ElMessage.warning(t('Swap.Insufficient_balance'))
         return
       }
     } else {
@@ -470,7 +470,7 @@ const update0 = async () => {
         isAdequacy.value = false;
         tokenInputA.value = '';
         tokenInputB.value = '';
-        ElMessage.warning('用户余额不足')
+        ElMessage.warning(t('Swap.Insufficient_balance'))
         return
       }
     }
@@ -480,7 +480,7 @@ const update0 = async () => {
     }
   } catch (err) {
     console.log(err);
-    ElMessage.error("输入的金额不对")
+    ElMessage.error(t('Swap.input_money'))
   }
 }
 const update1 = async () => {
@@ -490,7 +490,7 @@ const update1 = async () => {
     tokenInputA.value = "";
     return;
   } else if (!reserve1.value || !reserve0.value) {
-    ElMessage.warning('Please select a token to swap.');
+    ElMessage.warning(t('Swap.token_select'));
     tokenInputB.value = '';
     return
   }
@@ -508,7 +508,7 @@ const update1 = async () => {
     topriceB.value = reserveB_Number / reserveA_Number;
   }
   if (p_addr === ethers.ZeroAddress) {
-    ElMessage.warning('当前交易对没有匹配');
+    ElMessage.warning(t('Swap.not_match'));
   }
   try {
     if (isSorted.value) {
@@ -537,7 +537,7 @@ const update1 = async () => {
         isAdequacy.value = false;
         tokenInputA.value = '';
         tokenInputB.value = '';
-        ElMessage.warning('用户余额不足')
+        ElMessage.warning(t('Swap.Insufficient_balance'))
         return
       }
     } else {
@@ -548,7 +548,7 @@ const update1 = async () => {
         isAdequacy.value = false;
         tokenInputA.value = '';
         tokenInputB.value = '';
-        ElMessage.warning('用户余额不足')
+        ElMessage.warning(t('Swap.Insufficient_balance'))
         return
       }
     }
@@ -558,7 +558,7 @@ const update1 = async () => {
     }
   } catch (err) {
     console.log(err);
-    ElMessage.error("输入的金额不对")
+    ElMessage.error(t('Swap.input_money'))
     tokenInputA.value = '';
     tokenInputB.value = '';
   }
@@ -569,7 +569,7 @@ const clickRefresh = () => {
 const approve = async () => {
   const loading = ElLoading.service({
     lock: true,
-    text: '正在授权，请稍候...',
+    text: t('Swap.authorizing'),
     background: 'rgba(0, 0, 0, 0.7)',
   });
   if (isSorted.value) {
@@ -579,10 +579,11 @@ const approve = async () => {
     try {
       const tx = await TokenB.approve(config.router02_addr, ethers.MaxUint256);
       await tx.wait();
-      ElMessage.success('授权成功')
+      ElMessage.success(t('Swap.accredit_success'))
       ifapprove();
     } catch (error) {
       console.log(error);
+      ElMessage.error(t('Swap.accredit_error'))
     } finally {
       // 关闭 loading 动画
       loading.close();
@@ -594,10 +595,11 @@ const approve = async () => {
     try {
       const tx = await TokenA.approve(config.router02_addr, ethers.MaxUint256);
       await tx.wait();
-      ElMessage.success('授权成功')
+      ElMessage.success(t('Swap.accredit_success'))
       ifapprove();
     } catch (error) {
       console.log(error);
+      ElMessage.error(t('Swap.accredit_error'))
     } finally {
       // 关闭 loading 动画
       loading.close();
@@ -612,7 +614,7 @@ const trading = async () => {
   }
   const loading = ElLoading.service({
     lock: true,
-    text: '正在交易，请稍候...',
+    text: t('Swap.beTrading'),
     background: 'rgba(0, 0, 0, 0.7)',
   });
   const signer = await writeProvider.getSigner();
@@ -692,14 +694,14 @@ const trading = async () => {
       console.log("Transaction successful:", receipt);
       tokenInputA.value = "";
       tokenInputB.value = "";
-      ElMessage.success('Successful transaction');
+      ElMessage.success(t('Swap.trading_success'));
       getBalance()
     } else {
       console.error("Transaction was not sent.");
     }
   } catch (error) {
     console.error("An error occurred during the transaction:", error);
-    ElMessage.error('交易失败');
+    ElMessage.error(t('Swap.trading_error'));
   } finally {
     // 关闭 loading 动画
     loading.close();
@@ -817,7 +819,7 @@ const trading = async () => {
 }
 
 .bnb_header {
-  /* height: 11.75rem; */
+  height: 9.75rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -834,11 +836,11 @@ const trading = async () => {
 }
 
 .a1 {
-  transform: translate(0, 13rem);
+  transform: translate(0, 13.5rem);
 }
 
 .a2 {
-  transform: translate(0, -13rem);
+  transform: translate(0, -13.9rem);
 }
 
 .swap_header_button {

@@ -50,6 +50,9 @@ importers:
       vue-echarts:
         specifier: ^6.7.1
         version: 6.7.2(@vue/runtime-core@3.4.23)(echarts@5.5.0)(vue@3.4.23(typescript@5.4.5))
+      vue-i18n:
+        specifier: 10.0.0-alpha.5
+        version: 10.0.0-alpha.5(vue@3.4.23(typescript@5.4.5))
       vue-router:
         specifier: ^4.3.0
         version: 4.3.2(vue@3.4.23(typescript@5.4.5))
@@ -962,6 +965,18 @@ packages:
 
   '@humanwhocodes/object-schema@1.2.1':
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
+
+  '@intlify/core-base@10.0.0-alpha.5':
+    resolution: {integrity: sha512-IGqPBZuv5eK7ncH44fweONM9uDEcZuhy5E19OGngABEuRNmCfwIGGgNDOGSj3IBgc8g3zUydrkNgrjZ6/YnUWA==}
+    engines: {node: '>= 16'}
+
+  '@intlify/message-compiler@10.0.0-alpha.5':
+    resolution: {integrity: sha512-8Fr+1EsuxaCRWrrj3ZQ22DQU4vQzBxDHMMlLcN/6uM3R3kObTc0+Ip6EFrHXTsNm5LGETxlJlpi328U1dth/aA==}
+    engines: {node: '>= 16'}
+
+  '@intlify/shared@10.0.0-alpha.5':
+    resolution: {integrity: sha512-uCXI2IM9B2fwR7whGJ+DNBGxI02cSgD4E0ItY1ls++Vubrt92rD86o/9AUb9S/6jyK2hy3kFaTzublQIylMAsA==}
+    engines: {node: '>= 16'}
 
   '@jridgewell/gen-mapping@0.3.5':
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
@@ -4830,6 +4845,12 @@ packages:
   vue-hot-reload-api@2.3.4:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
 
+  vue-i18n@10.0.0-alpha.5:
+    resolution: {integrity: sha512-JsZM5VPBjkveVP28P+cgKXumlTL9wduzucE9UraTxwvHwvSMukqkjLUSbUdeUup539t2obHiIWVgvApA7YXRwQ==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      vue: ^3.0.0
+
   vue-loader@15.11.1:
     resolution: {integrity: sha512-0iw4VchYLePqJfJu9s62ACWUXeSqM30SQqlIftbYWM3C+jpPcEHKSPUZBLjSF9au4HTHQ/naF6OGnO3Q/qGR3Q==}
     peerDependencies:
@@ -6144,6 +6165,18 @@ snapshots:
       - supports-color
 
   '@humanwhocodes/object-schema@1.2.1': {}
+
+  '@intlify/core-base@10.0.0-alpha.5':
+    dependencies:
+      '@intlify/message-compiler': 10.0.0-alpha.5
+      '@intlify/shared': 10.0.0-alpha.5
+
+  '@intlify/message-compiler@10.0.0-alpha.5':
+    dependencies:
+      '@intlify/shared': 10.0.0-alpha.5
+      source-map-js: 1.2.0
+
+  '@intlify/shared@10.0.0-alpha.5': {}
 
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
@@ -10419,6 +10452,13 @@ snapshots:
       - supports-color
 
   vue-hot-reload-api@2.3.4: {}
+
+  vue-i18n@10.0.0-alpha.5(vue@3.4.23(typescript@5.4.5)):
+    dependencies:
+      '@intlify/core-base': 10.0.0-alpha.5
+      '@intlify/shared': 10.0.0-alpha.5
+      '@vue/devtools-api': 6.6.1
+      vue: 3.4.23(typescript@5.4.5)
 
   vue-loader@15.11.1(@vue/compiler-sfc@3.4.23)(css-loader@6.11.0(webpack@5.91.0))(lodash@4.17.21)(react@16.14.0)(webpack@5.91.0):
     dependencies:

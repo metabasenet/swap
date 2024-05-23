@@ -17,8 +17,8 @@
                                 </div>
                                 <div class="chart-btn">
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(1)">
-                                        <h2 style="color: #fff;">1S</h2>
+                                        @click="timeSharing">
+                                        <h2 style="color: #fff;">TS</h2>
                                         </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(2)"><h3 style="color: #fff;">1M</h3></el-button>
@@ -26,8 +26,10 @@
                                         @click="changePeriod(3)"><h3 style="color: #fff;">1H</h3></el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(4)"><h3 style="color: #fff;">1D</h3></el-button>
+                                        <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(5)"><h3 style="color: #fff;">1W</h3></el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(5)"><h3 style="color: #fff;">1mouth</h3></el-button>
+                                        @click="changePeriod(6)"><h3 style="color: #fff;">1mouth</h3></el-button>
                                     <!-- <el-button type="primary" style="margin-top:5px" @click="changePeriod('week')">weekLine</el-button> -->
                                 </div>
                             </div>
@@ -46,7 +48,7 @@
 import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
-import { getLinePrice } from '@/api/linechart';
+import { getLinePrice,getLinePriceFlow } from '@/api/linechart';
 import { getTokens } from '@/api/Liquiditys'
 const route = useRoute();
 const chartRef = ref(null)
@@ -86,6 +88,83 @@ function calculateMA(data, n) {
         }
     });
 }
+// 曲线图
+const timeSharing = async()=>{
+    const res = await getLinePriceFlow(tokenA.value, tokenB.value, page.value, pageSize.value)
+    data = res.data.list
+    // 使用新的数据更新图表
+    setcurveOptions(data)
+}
+timeSharing()
+const setcurveOptions = async (data) => {
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            // 坐标轴的指示器
+            axisPointer: {
+                type: 'cross'
+            },
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                const obj = {
+                    top: 10
+                };
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: data.map(item => item.time),
+            },
+
+        ],
+        yAxis: [
+            {
+                // 缩放
+                scale: true,
+                // 分割一个空间
+                splitArea: {
+                    show: true
+                }
+            },
+        ],
+        dataZoom: [
+            {
+                show: true,
+                // xAxisIndex: [0, 1],
+                type: 'slider',
+            }
+        ],
+        series: [
+            {
+                type: 'line',
+                smooth: true,
+                lineStyle: {
+                    color: '#1fc7d4'
+                },
+                symbol: 'none',//隐藏小圆点
+                data: data.map(item => item.rate)
+            },
+        ],
+    };
+    // 如果图表实例已存在，则更新选项
+    if (chartInstance) {
+        chartInstance.setOption(option);
+    } else {
+
+        // 否则，初始化图表实例并设置选项
+        chartInstance = echarts.init(chartRef.value);
+        chartInstance.setOption(option);
+    }
+
+};
 // 切换时间周期的函数
 const changePeriod = async (time) => {
     // 根据所选的时间周期更新图表数据
@@ -95,8 +174,7 @@ const changePeriod = async (time) => {
     // 使用新的数据更新图表
     setChartOptions(data)
 }
-changePeriod(1)
-// 设置图表选项
+// 设置K线图表选项
 const setChartOptions = async (data) => {
     const option = {
         // title: {

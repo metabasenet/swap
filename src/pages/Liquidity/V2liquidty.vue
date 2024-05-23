@@ -14,7 +14,7 @@
                                             </svg-icon></router-link>
                                     </el-button>
                                     <div style="margin-left:10px">
-                                        <p>Add V2 Liquidity</p>
+                                        <p>{{$t('addV2.addV2')}}</p>
                                     </div>
                                 </div>
                                 <el-button text><svg-icon name="settings"></svg-icon></el-button>
@@ -22,7 +22,7 @@
                             <el-row>
                                 <el-col :span="6" :xs="24" :sm="24" :md="12" :lg="12">
                                     <div class="add_left">
-                                        <p class="add_leftP">CHOOSE TOKEN PAIR</p>
+                                        <p class="add_leftP">{{$t('addV2.choose_token')}}</p>
                                         <div class="addv2_button">
                                             <!-- <el-button color="#eeeaf4" class="custom-button" round style="width:45%;"
                                                 @click="dialogVisible = true">
@@ -81,14 +81,14 @@
                                                     </el-icon></span>
                                             </el-button>
                                         </el-button> -->
-                                        <p class="add_leftP">DEPOSIT AMOUNT</p>
+                                        <p class="add_leftP">{{$t('addV2.deposit')}}</p>
                                         <div class="main_header">
                                             <el-button text plain>
                                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem"
                                                     style="margin-right:5px"></svg-icon>
                                                 <h2 style="color:black">{{ reserve0Name }}</h2>
                                             </el-button>
-                                            <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{
+                                            <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{
                                                 userBalanceA }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
@@ -120,7 +120,7 @@
                                                     </el-button>
                                                 </el-tooltip>
                                             </div>
-                                            <el-button text plain><span style="color:rgb(122, 110, 170)">Balance:{{
+                                            <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{
                                                 userBalanceB }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
@@ -138,7 +138,7 @@
                                     <div class="add_right">
                                         <svg-icon name="dolphin" width="8rem" height="8rem">
                                         </svg-icon>
-                                        <p class="add_right_p">Your position will appear here.</p>
+                                        <p class="add_right_p">{{$t('addV2.position')}}</p>
                                         <!-- <div class="price_boxs">
                                             <div class="price_box">
                                                 <p>Min Price</p>
@@ -184,11 +184,11 @@
                                         </el-button> -->
                                         <el-button v-if="!isapprove" color="#1fc7d4" class="amount_button" round
                                             style="width:40%;" @click="approve">
-                                            <h2 style="color: #fff;">授权</h2>
+                                            <h2 style="color: #fff;">{{$t('Swap.accredit')}}</h2>
                                         </el-button>
                                         <el-button v-else color="#1fc7d4" class="amount_button" round style="width:40%;"
                                             @click="addLiquidity">
-                                            <h2 style="color: #fff;">Add Liquidity</h2>
+                                            <h2 style="color: #fff;">{{$t('addV2.addV2')}}</h2>
                                         </el-button>
                                     </div>
                                 </el-col>
@@ -724,7 +724,7 @@ getTokenList();
     color: #280d5f;
     font-weight: 600;
     font-size: 20px;
-
+    margin: 15px;
 }
 
 .price_box {

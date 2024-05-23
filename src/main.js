@@ -11,6 +11,7 @@ import './permisstion';
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
+import i18n from './lang';
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
@@ -19,6 +20,7 @@ app.component('v-chart', ECharts)
 app.use(ElementPlus, { size: 'small', zIndex: 3000 })
 app.use(router);
 app.use(pinia);
+app.use(i18n);
 app.use(MyGlobalComponentsPlugin);
 app.mount('#app')
 

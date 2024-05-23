@@ -8,7 +8,7 @@
                     <el-col :span="10" style="margin:auto" :xs="24" :sm="24" :md="12" :lg="12">
                         <div class="liquidity-box">
                             <div class="liquidity-title">
-                                <h1 style="color:black">remove Liquidity</h1>
+                                <h1 style="color:black">{{ $t('header.removeLiquidity') }}</h1>
                                 <div>
                                     <el-button text><svg-icon name="countdown"></svg-icon></el-button>
                                     <el-button text><svg-icon name="settings"></svg-icon></el-button>
@@ -16,7 +16,7 @@
                             </div>
                             <el-table :data="tableData" size="default" style="width: 100%"
                                 :row-style="{ height: '70px' }">
-                                <el-table-column prop="hash" label="币对" width="180" align="center">
+                                <el-table-column prop="hash" :label="$t('remove.transaction_pair')" width="180" align="center">
                                     <template v-slot="scope">
                                         <span style="font-size: 14.4992px; color: #0784C3;">{{ scope.row.token0Symbol
                                             }}<el-icon>
@@ -24,7 +24,7 @@
                                             </el-icon>{{ scope.row.token1Symbol }}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="userMobility" label="当前用户流动性" width="180" align="center">
+                                <el-table-column prop="userMobility" :label="$t('remove.user_liquidity')" width="180" align="center">
                                     <template v-slot="scope">
                                         <el-tooltip :content="scope.row.userMobility">
                                             <span style="font-size: 14.4992px; color: #0784C3;">{{
@@ -33,14 +33,14 @@
                                         </el-tooltip>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="pairNumber" label="移除数量" width="180" align="center">
+                                <el-table-column prop="pairNumber" :label="$t('remove.number')" width="180" align="center">
                                     <template v-slot="scope">
                                         <el-input v-model="scope.row.pairNumber"
                                             style="font-size: 14.4992px; color: #0784C3;" size="small"
                                             @input="pairNumberChange(scope.row)"></el-input>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="address" label="移除" width="150" align="center">
+                                <el-table-column prop="address" :label="$t('remove.remove')" width="150" align="center">
                                     <template #default="scope">
                                         <el-button size="small" type="danger" @click="removeLiquidity(scope.row)">
                                             Delete
@@ -63,6 +63,8 @@ import { ref } from 'vue'
 import { ethers, parseEther, formatEther } from "ethers";
 import { getSwapPairs } from '@/api/Liquiditys'
 import { ElMessage, ElLoading } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
 const writeProvider = new ethers.BrowserProvider(window.ethereum);
 const tableData = ref([]);
@@ -113,13 +115,13 @@ const pairNumberChange = (data) => {
     // 使用正则表达式检查pairNumberStr是否只包含数字
     if (!/^\d+$/.test(pairNumberStr)) {
         data.pairNumber = "";
-        ElMessage.error("只允许输入有效的数字");
+        ElMessage.error(t('remove.input'));
         return;
     }
     const pairNumber = Number(pairNumberStr);
     if (pairNumber > Number(data.userMobility)) {
         data.pairNumber = "";
-        ElMessage.error("移除数量不能大于当前用户总的流动性");
+        ElMessage.error(t('remove.remove_input'));
     }
 }
 //判断代币是否授权
@@ -140,7 +142,7 @@ const ifapprove = async (row) => {
 const approve = async (row) => {
     const loading = ElLoading.service({
         lock: true,
-        text: '正在授权，请稍候...',
+        text: t('Swap.authorizing'),
         background: 'rgba(0, 0, 0, 0.7)',
     });
     const signer = await writeProvider.getSigner();
@@ -150,10 +152,11 @@ const approve = async (row) => {
     try {
         const tx = await Token.approve(config.router02_addr, ethers.MaxUint256);
         await tx.wait();
-        ElMessage.success('授权成功')
+        ElMessage.success(t('Swap.accredit_success'))
         ifapprove(row);
     } catch (error) {
         console.log(error);
+        ElMessage.error(t('Swap.accredit_error'))
     } finally {
         // 关闭 loading 动画
         loading.close();
@@ -166,7 +169,7 @@ const removeLiquidity = async (row) => {
     if (isapprove.value) {
         const loading = ElLoading.service({
             lock: true,
-            text: '正在移除流动性，请稍候...',
+            text: t('Swap.remove_liquidity'),
             background: 'rgba(0, 0, 0, 0.7)',
         });
         const overrides = {
@@ -180,10 +183,11 @@ const removeLiquidity = async (row) => {
             } else {
                 await deleteRouter02.removeLiquidity(row.token0Address, row.token1Address, parseEther(row.pairNumber), 0, 0, userAddress.value, ethers.MaxUint256, overrides)
             }
-            ElMessage.success('移除成功');
+            ElMessage.success(t('Swap.remove_success'));
             getSwapPair();
         } catch (error) {
             console.log(error);
+            ElMessage.error(t('Swap.remove_error'));
         } finally {
             // 关闭 loading 动画
             loading.close();
