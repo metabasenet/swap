@@ -23,47 +23,49 @@
                 <svg-icon name="globe" width="1.6rem" height="1.6rem"></svg-icon>
               </el-button>
               <template #dropdown>
-                <el-dropdown-menu >
-                  <el-dropdown-item  command="en"><span class="english">English</span></el-dropdown-item>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="en"><span class="english">English</span></el-dropdown-item>
                   <el-dropdown-item command="zh"><span class="english">简体中文</span></el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
             <el-button text><svg-icon name="settings" width="1.6rem" height="1.6rem"></svg-icon></el-button>
             <el-button text><svg-icon name="notification" width="1.6rem" height="1.6rem"></svg-icon></el-button>
-            <el-dropdown>
+            <el-button color="#eff4f5" round class="custom-buttons" style="margin-right:10px;">
+                <svg-icon name="bnb" style="margin-right:5px"></svg-icon>
+                <h3 class="button_h3">BNB Chain</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
+              </el-button>
+            <!-- <el-dropdown>
               <el-button color="#eff4f5" round style="margin-right:10px;width:100%">
                 <svg-icon name="bnb" style="margin-right:5px"></svg-icon>
                 <h3 class="button_h3">BNB Chain</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>Action 1</el-dropdown-item>
-                  <el-dropdown-item>Action 2</el-dropdown-item>
-                  <el-dropdown-item>Action 3</el-dropdown-item>
-                  <el-dropdown-item>Action 4</el-dropdown-item>
                   <el-dropdown-item>Action 5</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
+            </el-dropdown> -->
             <el-button v-if="!isConnect" color="#1fc7d4" class="custom-button" @click="connectWallet" round>
               <h3 style="color: #fff;">{{ $t('Swap.connect') }}</h3>
             </el-button>
-            <el-dropdown v-else style="width:130px">
+            <el-button v-else color="#eff4f5" class="custom-buttons" round>
+                <svg-icon name="purse" style="margin-right:5px"></svg-icon>
+                <h3 style="color: black;">{{ isConnect }}</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
+              </el-button>
+            <!-- <el-dropdown v-else style="width:130px">
               <el-button color="#eff4f5" class="custom-buttons" round>
                 <svg-icon name="purse" style="margin-right:5px"></svg-icon>
                 <h3 style="color: black;">{{ isConnect }}</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>Action 1</el-dropdown-item>
-                  <el-dropdown-item>Action 2</el-dropdown-item>
-                  <el-dropdown-item>Action 3</el-dropdown-item>
-                  <el-dropdown-item>Action 4</el-dropdown-item>
-                  <el-dropdown-item>Action 5</el-dropdown-item>
+                  <el-dropdown-item>
+                    <span class="english">{{ $t('header.quit') }}</span> <svg-icon name="quit"></svg-icon>
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
+            </el-dropdown> -->
           </div>
         </el-col>
       </div>
@@ -72,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref} from 'vue'
 import MetamaskService from '@/components/MetamaskService';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n()
@@ -197,13 +199,15 @@ connectWallet()
   display: flex;
   align-items: center;
 }
-.english{
-  color:#280d5f;
-  font-size:14px;
+
+.english {
+  color: #280d5f;
+  font-size: 14px;
   padding: 15px 20px;
   font-weight: 600;
   font-family: Kanit, sans-serif;
 }
+
 @media (max-width: 768px) {
   .header-top {
     padding-right: 0;

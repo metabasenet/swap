@@ -39,6 +39,7 @@ const en ={
         swap:'Swap',
         addLiquidity:'Liquidity',
         removeLiquidity:'Remove Liquidity',
+        quit:'Disconnect',
     },
     footer:{
         github:'Git Hub',
