@@ -16,7 +16,7 @@
                 <el-tab-pane name="MARKET">
                   <template #label>
                     <span class="custom-tabs-label">
-                      <span>{{$t('Swap.market')}}</span>
+                      <span>{{ $t('Swap.market') }}</span>
                     </span>
                   </template>
                   <div>
@@ -55,7 +55,8 @@
                                 :value="item.contractaddress" />
                             </el-select>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{ userBalanceA
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
+                            userBalanceA
                               }}</span></el-button>
                         </div>
                         <div class="input-with-result">
@@ -96,7 +97,8 @@
                               </el-button>
                             </el-tooltip>
                           </div>
-                          <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{ userBalanceB
+                          <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
+                            userBalanceB
                               }}</span></el-button>
                         </div>
                         <div class="input-with-result">
@@ -107,7 +109,7 @@
                       </el-col>
                       <el-col :span="24">
                         <div v-if="tokenInputA || tokenInputB" class="swap_footer_button swap_footer_refresh">
-                          <span style="color:#a88efc;font-weight:bold">{{$t('Swap.price')}}</span>
+                          <span style="color:#a88efc;font-weight:bold">{{ $t('Swap.price') }}</span>
                           <div>
                             <span v-if="showConversion" style="color:black;">1 {{ priceA }} <svg-icon name="conversion"
                                 width="0.8rem" height="0.8rem"></svg-icon> {{ topriceB }} {{ priceB }}</span>
@@ -124,7 +126,7 @@
                         <div v-if="!userAddress">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;"
                             @click="connectWallet">
-                            <h2 style="color: #fff;">{{$t('Swap.connect')}}</h2>
+                            <h2 style="color: #fff;">{{ $t('Swap.connect') }}</h2>
                           </el-button>
                           <div class="Crypto">
                             <span>{{ $t('Swap.Insufficient') }} </span>
@@ -148,12 +150,12 @@
                         <div
                           v-else-if="isapprove || (isSorted ? reserve1 === config.wmnt_addr : reserve0 === config.wmnt_addr)">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
-                            <h2 style="color: #fff;">{{$t('Swap.Trading')}}</h2>
+                            <h2 style="color: #fff;">{{ $t('Swap.Trading') }}</h2>
                           </el-button>
                         </div>
                         <div v-else>
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="approve">
-                            <h2 style="color: #fff;">{{$t('Swap.accredit')}}</h2>
+                            <h2 style="color: #fff;">{{ $t('Swap.accredit') }}</h2>
                           </el-button>
                         </div>
                       </el-col>
@@ -185,12 +187,32 @@ import { ethers, parseEther, formatEther } from "ethers";
 import { config } from "@/const/config";
 import { useI18n } from 'vue-i18n'
 import { getTokens } from '@/api/Liquiditys'
+import { useRoute } from 'vue-router';
 const { t } = useI18n()
+const route = useRoute();
 const showConversion = ref(false)
 const activeName = ref('MARKET');
 const readProvider = new ethers.JsonRpcProvider(config.rpc);
 const writeProvider = new ethers.BrowserProvider(window.ethereum);
 const Router02 = new ethers.Contract(config.router02_addr, config.router02, readProvider)
+const optionsA = ref([])
+const optionsB = ref([])
+const tokenAQuery = route.query.tokenA;
+const tokenBQuery = route.query.tokenB;
+const hasTokenA = tokenAQuery !== undefined && tokenAQuery !== '';
+const hasTokenB = tokenBQuery !== undefined && tokenAQuery !== '';
+const reserve0 = ref(hasTokenA ? tokenAQuery : config.usdt_addr);
+const reserve1 = ref(hasTokenB ? tokenBQuery : config.wmnt_addr);//MNB
+const getSwapPair = async () => {
+  const res = await getTokens();
+  optionsA.value = res.data;
+  optionsB.value = res.data;
+  tokenSelectA.value = reserve0.value;
+  tokenSelectB.value = reserve1.value;
+  await getBalance()
+  await ifapprove();
+}
+getSwapPair();
 const tokenSelectA = ref('')
 const tokenSelectB = ref('')
 const tokenInputA = ref('')
@@ -242,6 +264,7 @@ const tolineChart = () => {
 
 }
 const monitorValueA = async (newValue) => {
+  console.log(newValue, reserve0.value);
   tokenInputA.value = '';
   tokenInputB.value = '';
   if (reserve0.value === newValue) {
@@ -258,6 +281,13 @@ const monitorValueA = async (newValue) => {
     tokenSelectA.value = '';
     return
   }
+  router.push({
+    path: '/swap',
+    query: {
+      tokenA: newValue,
+      tokenB: reserve1.value,
+    }
+  })
   ifapprove();
   await getBalance()
 }
@@ -278,6 +308,13 @@ const monitorValueB = async (newValue) => {
     reserve1.value = '';
     return
   }
+  router.push({
+    path: '/swap',
+    query: {
+      tokenA: reserve0.value,
+      tokenB: newValue,
+    }
+  })
   ifapprove();
   await getBalance()
 }
@@ -322,20 +359,7 @@ const copyTokenAddress = () => {
   }
 
 }
-const optionsA = ref([])
-const optionsB = ref([])
-const reserve0 = ref(config.usdt_addr);//USDT
-const reserve1 = ref(config.wmnt_addr);//MNB
-const getSwapPair = async () => {
-  const res = await getTokens();
-  optionsA.value = res.data;
-  optionsB.value = res.data;
-  tokenSelectA.value = reserve0.value;
-  tokenSelectB.value = reserve1.value;
-  await getBalance()
-  await ifapprove();
-}
-getSwapPair();
+
 const userAddress = ref('')
 const connectWallet = async () => {
   if (typeof window.ethereum !== "undefined") {
