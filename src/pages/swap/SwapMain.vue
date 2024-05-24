@@ -48,11 +48,24 @@
                               style="width: 170px">
                               <template #prefix>
                                 <div>
-                                  <svg-icon name="bnb" width="1.5rem" height="1.5rem" style="margin-top:5px"></svg-icon>
+                                  <svg-icon v-if="reserve0 == config.usdt_addr" name="usdt" width="1.5rem"
+                                    height="1.5rem" style="margin-top:5px"></svg-icon>
+                                  <img v-if="reserve0 == config.wmnt_addr" src="/mnt.png" alt=""
+                                    style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
                                 </div>
                               </template>
                               <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                                :value="item.contractaddress" />
+                                :value="item.contractaddress">
+                                <span style="display: flex; align-items: center;">
+                                  <!-- 这里是图标组件 -->
+                                  <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
+                                    height="1.5rem" style=" margin-right: 10px;"></svg-icon>
+                                  <img v-if="item.contractaddress == config.wmnt_addr" src="/mnt.png" alt=""
+                                    style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
+                                  <!-- 显示选项标签 -->
+                                  {{ item.ercsymbol }}
+                                </span>
+                              </el-option>
                             </el-select>
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
@@ -78,12 +91,24 @@
                                 style="width: 170px">
                                 <template #prefix>
                                   <div>
-                                    <svg-icon name="bnb" width="1.6rem" height="1.6rem"
-                                      style="margin-top:5px"></svg-icon>
+                                    <svg-icon v-if="reserve1 == config.usdt_addr" name="usdt" width="1.5rem"
+                                      height="1.5rem" style="margin-top:5px"></svg-icon>
+                                    <img v-if="reserve1 == config.wmnt_addr" src="/mnt.png" alt=""
+                                      style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
                                   </div>
                                 </template>
                                 <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
-                                  :value="item.contractaddress" />
+                                  :value="item.contractaddress">
+                                  <span style="display: flex; align-items: center;">
+                                    <!-- 这里是图标组件 -->
+                                    <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
+                                      height="1.5rem" style=" margin-right: 10px;"></svg-icon>
+                                    <img v-if="item.contractaddress == config.wmnt_addr" src="/mnt.png" alt=""
+                                      style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
+                                    <!-- 显示选项标签 -->
+                                    {{ item.ercsymbol }}
+                                  </span>
+                                </el-option>
                               </el-select>
                             </div>
                             <el-tooltip :content="$t('Swap.copy_tokenaddress')" placement="top">
@@ -263,13 +288,13 @@ const tolineChart = () => {
   }
 
 }
+let selectA = reserve0.value
 const monitorValueA = async (newValue) => {
-  console.log(newValue, reserve0.value);
   tokenInputA.value = '';
   tokenInputB.value = '';
   if (reserve0.value === newValue) {
     if (newValue === reserve1.value) {
-      reserve0.value = '';
+      reserve0.value = selectA;
       ElMessage.warning(t('Swap.token_field'))
       return;
     }
@@ -291,12 +316,13 @@ const monitorValueA = async (newValue) => {
   ifapprove();
   await getBalance()
 }
+let selectB = reserve1.value
 const monitorValueB = async (newValue) => {
   tokenInputA.value = '';
   tokenInputB.value = '';
   if (reserve1.value === newValue) {
     if (newValue === reserve0.value) {
-      reserve1.value = '';
+      reserve1.value = selectB;
       ElMessage.warning(t('Swap.token_field'))
       return;
     }
