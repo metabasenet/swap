@@ -50,7 +50,7 @@
                                 <div>
                                   <svg-icon v-if="reserve0 == config.usdt_addr" name="usdt" width="1.5rem"
                                     height="1.5rem" style="margin-top:5px"></svg-icon>
-                                  <img v-if="reserve0 == config.wmnt_addr" src="/mnt.png" alt=""
+                                  <img v-if="reserve0 == config.mnt_addr" src="/mnt.png" alt=""
                                     style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
                                 </div>
                               </template>
@@ -60,7 +60,7 @@
                                   <!-- 这里是图标组件 -->
                                   <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
                                     height="1.5rem" style=" margin-right: 10px;"></svg-icon>
-                                  <img v-if="item.contractaddress == config.wmnt_addr" src="/mnt.png" alt=""
+                                  <img v-if="item.contractaddress == config.mnt_addr" src="/mnt.png" alt=""
                                     style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
                                   <!-- 显示选项标签 -->
                                   {{ item.ercsymbol }}
@@ -70,7 +70,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceA
-                              }}</span></el-button>
+                          }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputA" @input="update0" type="textarea" resize="none"
@@ -93,7 +93,7 @@
                                   <div>
                                     <svg-icon v-if="reserve1 == config.usdt_addr" name="usdt" width="1.5rem"
                                       height="1.5rem" style="margin-top:5px"></svg-icon>
-                                    <img v-if="reserve1 == config.wmnt_addr" src="/mnt.png" alt=""
+                                    <img v-if="reserve1 == config.mnt_addr" src="/mnt.png" alt=""
                                       style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
                                   </div>
                                 </template>
@@ -103,7 +103,7 @@
                                     <!-- 这里是图标组件 -->
                                     <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
                                       height="1.5rem" style=" margin-right: 10px;"></svg-icon>
-                                    <img v-if="item.contractaddress == config.wmnt_addr" src="/mnt.png" alt=""
+                                    <img v-if="item.contractaddress == config.mnt_addr" src="/mnt.png" alt=""
                                       style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
                                     <!-- 显示选项标签 -->
                                     {{ item.ercsymbol }}
@@ -124,7 +124,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceB
-                              }}</span></el-button>
+                          }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputB" @input="update1" type="textarea" resize="none"
@@ -173,7 +173,7 @@
                           </div>
                         </div>
                         <div
-                          v-else-if="isapprove || (isSorted ? reserve1 === config.wmnt_addr : reserve0 === config.wmnt_addr)">
+                          v-else-if="isapprove || (isSorted ? reserve1 === config.mnt_addr : reserve0 === config.mnt_addr)">
                           <el-button color="#1fc7d4" class="custom-button" round style="width:100%;" @click="trading">
                             <h2 style="color: #fff;">{{ $t('Swap.Trading') }}</h2>
                           </el-button>
@@ -227,7 +227,7 @@ const tokenBQuery = route.query.tokenB;
 const hasTokenA = tokenAQuery !== undefined && tokenAQuery !== '';
 const hasTokenB = tokenBQuery !== undefined && tokenAQuery !== '';
 const reserve0 = ref(hasTokenA ? tokenAQuery : config.usdt_addr);
-const reserve1 = ref(hasTokenB ? tokenBQuery : config.wmnt_addr);//MNB
+const reserve1 = ref(hasTokenB ? tokenBQuery : config.mnt_addr);//MNB
 const getSwapPair = async () => {
   const res = await getTokens();
   optionsA.value = res.data;
@@ -408,13 +408,13 @@ const getBalance = async () => {
     const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
     const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
     let balanceA;
-    if (reserve0.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+    if (reserve0.value.toLocaleLowerCase() === config.mnt_addr.toLocaleLowerCase()) {
       balanceA = await readProvider.getBalance(userAddress.value)
     } else {
       balanceA = await tokenContractA.balanceOf(userAddress.value);
     }
     let balanceB;
-    if (reserve1.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+    if (reserve1.value.toLocaleLowerCase() === config.mnt_addr.toLocaleLowerCase()) {
       balanceB = await readProvider.getBalance(userAddress.value);
     } else {
       balanceB = await tokenContractB.balanceOf(userAddress.value);
@@ -483,13 +483,13 @@ const update0 = async () => {
   }
   try {
     if (isSorted.value) {
-      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.mnt_addr) {
         state = 5;//5
       } else {
         state = 6;
       }
     } else {
-      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.mnt_addr) {
         state = 1;//1
       } else {
         state = 3;//3
@@ -562,13 +562,13 @@ const update1 = async () => {
   }
   try {
     if (isSorted.value) {
-      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.mnt_addr) {
         state = 2;//2
       } else {
         state = 3;
       }
     } else {
-      if (reserve0.value == config.usdt_addr && reserve1.value == config.wmnt_addr) {
+      if (reserve0.value == config.usdt_addr && reserve1.value == config.mnt_addr) {
         state = 4;
       } else {
         state = 6;
