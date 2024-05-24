@@ -14,7 +14,7 @@
                                             </svg-icon></router-link>
                                     </el-button>
                                     <div style="margin-left:10px">
-                                        <p>{{$t('addV2.addV2')}}</p>
+                                        <p>{{ $t('addV2.addV2') }}</p>
                                     </div>
                                 </div>
                                 <el-button text><svg-icon name="settings"></svg-icon></el-button>
@@ -22,7 +22,7 @@
                             <el-row>
                                 <el-col :span="6" :xs="24" :sm="24" :md="12" :lg="12">
                                     <div class="add_left">
-                                        <p class="add_leftP">{{$t('addV2.choose_token')}}</p>
+                                        <p class="add_leftP">{{ $t('addV2.choose_token') }}</p>
                                         <div class="addv2_button">
                                             <!-- <el-button color="#eeeaf4" class="custom-button" round style="width:45%;"
                                                 @click="dialogVisible = true">
@@ -81,15 +81,16 @@
                                                     </el-icon></span>
                                             </el-button>
                                         </el-button> -->
-                                        <p class="add_leftP">{{$t('addV2.deposit')}}</p>
+                                        <p class="add_leftP">{{ $t('addV2.deposit') }}</p>
                                         <div class="main_header">
                                             <el-button text plain>
                                                 <svg-icon name="bnb" width="1.5rem" height="1.5rem"
                                                     style="margin-right:5px"></svg-icon>
                                                 <h2 style="color:black">{{ reserve0Name }}</h2>
                                             </el-button>
-                                            <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{
-                                                userBalanceA }}</span></el-button>
+                                            <el-button text plain><span
+                                                    style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
+                                                        userBalanceA }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
                                             <el-input v-model="reserve0Input" @input="update0" type="textarea"
@@ -120,8 +121,9 @@
                                                     </el-button>
                                                 </el-tooltip>
                                             </div>
-                                            <el-button text plain><span style="color:rgb(122, 110, 170)">{{$t('Swap.balance')}}:{{
-                                                userBalanceB }}</span></el-button>
+                                            <el-button text plain><span
+                                                    style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
+                                                        userBalanceB }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
                                             <el-input v-model="reserve1Input" @input="update1" type="textarea"
@@ -138,7 +140,7 @@
                                     <div class="add_right">
                                         <svg-icon name="dolphin" width="8rem" height="8rem">
                                         </svg-icon>
-                                        <p class="add_right_p">{{$t('addV2.position')}}</p>
+                                        <p class="add_right_p">{{ $t('addV2.position') }}</p>
                                         <!-- <div class="price_boxs">
                                             <div class="price_box">
                                                 <p>Min Price</p>
@@ -184,11 +186,11 @@
                                         </el-button> -->
                                         <el-button v-if="!isapprove" color="#1fc7d4" class="amount_button" round
                                             style="width:40%;" @click="approve">
-                                            <h2 style="color: #fff;">{{$t('Swap.accredit')}}</h2>
+                                            <h2 style="color: #fff;">{{ $t('Swap.accredit') }}</h2>
                                         </el-button>
                                         <el-button v-else color="#1fc7d4" class="amount_button" round style="width:40%;"
                                             @click="addLiquidity">
-                                            <h2 style="color: #fff;">{{$t('addV2.addV2')}}</h2>
+                                            <h2 style="color: #fff;">{{ $t('addV2.addV2') }}</h2>
                                         </el-button>
                                     </div>
                                 </el-col>
@@ -254,7 +256,7 @@ import MetamaskService from '@/components/MetamaskService';
 import { ethers, parseEther, formatEther } from "ethers";
 import { config } from "@/const/config";
 const reserve0 = ref(config.usdt_addr);
-const reserve1 = ref(config.wmnt_addr);
+const reserve1 = ref(config.mnt_addr);
 const reserve0Input = ref('');
 const reserve1Input = ref('');
 const reserve0Name = ref("");
@@ -291,28 +293,28 @@ const tableData = ref([
         name: 'Tom',
     },
 ])
-const findName = async (data,token) => {
+const findName = async (data, token) => {
     const foundItem = data.find(item => item.contractaddress === token);
     return foundItem.ercsymbol
 }
 async function updateTokenNames() {
-    reserve0Name.value = await findName(optionsA.value,reserve0.value);
-    reserve1Name.value = await findName(optionsB.value,reserve1.value);
-   await getBalance()
+    reserve0Name.value = await findName(optionsA.value, reserve0.value);
+    reserve1Name.value = await findName(optionsB.value, reserve1.value);
+    await getBalance()
 }
 const getBalance = async () => {
     try {
-        
+
         const tokenContractA = new ethers.Contract(reserve0.value, config.erc20, readProvider);
         const tokenContractB = new ethers.Contract(reserve1.value, config.erc20, readProvider);
         let balanceA;
-        if (reserve0.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+        if (reserve0.value.toLocaleLowerCase() === config.mnt_addr.toLocaleLowerCase()) {
             balanceA = await readProvider.getBalance(userAddress.value)
         } else {
             balanceA = await tokenContractA.balanceOf(userAddress.value);
         }
         let balanceB;
-        if (reserve1.value.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+        if (reserve1.value.toLocaleLowerCase() === config.mnt_addr.toLocaleLowerCase()) {
             balanceB = await readProvider.getBalance(userAddress.value);
         } else {
             balanceB = await tokenContractB.balanceOf(userAddress.value);
@@ -342,7 +344,7 @@ const monitorValueA = async (newValue) => {
         ElMessage.warning('This token is already selected for the other field.')
         return;
     }
-    reserve0Name.value = await findName(optionsA.value,newValue);
+    reserve0Name.value = await findName(optionsA.value, newValue);
     reserve0Input.value = "";
     reserve1Input.value = "";
     getBalance()
@@ -354,7 +356,7 @@ const monitorValueB = async (newValue) => {
         ElMessage.warning('This token is already selected for the other field.')
         return;
     }
-    reserve1Name.value = await findName(optionsB.value,newValue);
+    reserve1Name.value = await findName(optionsB.value, newValue);
     getBalance()
     ifapprove()
 }
@@ -485,8 +487,8 @@ const addLiquidity = async () => {
     const signer = await writeProvider.getSigner();
     const routerForTransactions = new ethers.Contract(config.router02_addr, config.router02, signer);
     try {
-        if (reserve0.value === config.wmnt_addr || reserve1.value === config.wmnt_addr) {
-            if (reserve0.value === config.wmnt_addr) {
+        if (reserve0.value === config.mnt_addr || reserve1.value === config.mnt_addr) {
+            if (reserve0.value === config.mnt_addr) {
                 await routerForTransactions.addLiquidityETH(
                     reserve1.value,
                     parseEther(reserve1Input.value),
@@ -496,7 +498,7 @@ const addLiquidity = async () => {
                     ethers.MaxUint256,
                     { value: parseEther(reserve0Input.value), ...overrides }
                 )
-                
+
             } else {
                 await routerForTransactions.addLiquidityETH(
                     reserve0.value,
@@ -528,9 +530,9 @@ const addLiquidity = async () => {
         console.log(error
         )
         ElMessage.error("Liquidity failure.")
-    }finally {
-      // 关闭 loading 动画
-      loading.close();
+    } finally {
+        // 关闭 loading 动画
+        loading.close();
     }
 }
 
@@ -540,7 +542,7 @@ const getTokenList = async () => {
         optionsA.value = res.data;
         optionsB.value = res.data;
         await updateTokenNames();
-        await  ifapprove()
+        await ifapprove()
     } catch (error) {
         console.log(error);
     }

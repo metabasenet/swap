@@ -70,9 +70,8 @@
                             <div class="addbutton">
                                 <p style="color:#280d5f;font-size:16px">You don’t have liquidity in this pair yet.</p>
                                 <el-button size="large" round color="#1fc7d4" @click="toV2Add">
-                                   <span
-                                            class="button_span">Add
-                                            Liquidity</span>
+                                    <span class="button_span">Add
+                                        Liquidity</span>
                                 </el-button>
                             </div>
                         </div>
@@ -156,7 +155,7 @@ const tableData = ref([])
 const optionsA = ref([])
 const optionsB = ref([])
 const reserve0 = ref(config.usdt_addr);//USDT
-const reserve1 = ref(config.wmnt_addr);//MNB
+const reserve1 = ref(config.mnt_addr);//MNB
 const isTokenA = ref(false)
 const monitorValueA = (newValue) => {
     if (newValue === reserve1.value) {
@@ -172,19 +171,19 @@ const monitorValueB = (newValue) => {
         return;
     }
 }
-const toV2Add = ()=>{
-  if(reserve0.value && reserve1.value){
-    router.push({
-    name:'v2add',
-    params:{
-      tokenA:reserve0.value,
-      tokenB:reserve1.value,
+const toV2Add = () => {
+    if (reserve0.value && reserve1.value) {
+        router.push({
+            name: 'v2add',
+            params: {
+                tokenA: reserve0.value,
+                tokenB: reserve1.value,
+            }
+        })
+    } else {
+        ElMessage.warning('Please select two tokens.')
     }
-  })
-  }else{
-    ElMessage.warning('Please select two tokens.')
-  }
-  
+
 }
 // const openDialog = (isTokenAVal) => {
 //     console.log(isTokenAVal);

@@ -178,7 +178,7 @@ const removeLiquidity = async (row) => {
         const signer = await writeProvider.getSigner();
         const deleteRouter02 = new ethers.Contract(config.router02_addr, config.router02, signer);
         try {
-            if (row.token0Address.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase() || row.token1Address.toLocaleLowerCase() === config.wmnt_addr.toLocaleLowerCase()) {
+            if (row.token0Address.toLocaleLowerCase() === config.mnt_addr.toLocaleLowerCase() || row.token1Address.toLocaleLowerCase() === config.mnt_addr.toLocaleLowerCase()) {
                 await deleteRouter02.removeLiquidityETH(row.token0Address, parseEther(row.pairNumber), 0, 0, userAddress.value, ethers.MaxUint256, overrides)
             } else {
                 await deleteRouter02.removeLiquidity(row.token0Address, row.token1Address, parseEther(row.pairNumber), 0, 0, userAddress.value, ethers.MaxUint256, overrides)
