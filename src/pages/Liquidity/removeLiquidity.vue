@@ -5,10 +5,10 @@
             <el-aside class="responsive-aside"></el-aside>
             <el-main>
                 <el-row :gutter="10">
-                    <el-col :span="10" style="margin:auto" :xs="24" :sm="24" :md="12" :lg="12">
+                    <el-col :span="10" style="margin:auto" :xs="24" :sm="24" :md="14" :lg="14">
                         <div class="liquidity-box">
                             <div class="liquidity-title">
-                                <h1 style="color:black">{{ $t('header.removeLiquidity') }}</h1>
+                                <h2 style="color:rgb(122, 110, 170)">{{ $t('header.removeLiquidity') }}</h2>
                                 <div>
                                     <el-button text><svg-icon name="countdown"></svg-icon></el-button>
                                     <el-button text><svg-icon name="settings"></svg-icon></el-button>
@@ -16,31 +16,33 @@
                             </div>
                             <el-table :data="tableData" size="default" style="width: 100%"
                                 :row-style="{ height: '70px' }">
-                                <el-table-column prop="hash" :label="$t('remove.transaction_pair')" width="180" align="center">
+                                <el-table-column prop="hash" :label="$t('remove.transaction_pair')" align="center">
                                     <template v-slot="scope">
-                                        <span style="font-size: 14.4992px; color: #0784C3;">{{ scope.row.token0Symbol
+                                        <span style="font-size: 14.4992px; color: #212529;">{{ scope.row.token0Symbol
                                             }}<el-icon>
                                                 <Switch />
                                             </el-icon>{{ scope.row.token1Symbol }}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="userMobility" :label="$t('remove.user_liquidity')" width="180" align="center">
+                                <el-table-column prop="userMobility" :label="$t('remove.user_liquidity')"
+                                    align="center">
                                     <template v-slot="scope">
                                         <el-tooltip :content="scope.row.userMobility">
-                                            <span style="font-size: 14.4992px; color: #0784C3;">{{
+                                            <span style="font-size: 14.4992px; color: #212529;">{{
                                                 scope.row.userMobility
                                             }}</span>
                                         </el-tooltip>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="pairNumber" :label="$t('remove.number')" width="180" align="center">
+                                <el-table-column prop="pairNumber" :label="$t('remove.number')" width="170"
+                                    align="center">
                                     <template v-slot="scope">
                                         <el-input v-model="scope.row.pairNumber"
                                             style="font-size: 14.4992px; color: #0784C3;" size="small"
                                             @input="pairNumberChange(scope.row)"></el-input>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="address" :label="$t('remove.remove')" width="150" align="center">
+                                <el-table-column prop="address" :label="$t('remove.remove')" align="center">
                                     <template #default="scope">
                                         <el-button size="small" type="danger" @click="removeLiquidity(scope.row)">
                                             Delete
@@ -165,7 +167,7 @@ const approve = async (row) => {
 
 // 移除流动性
 const removeLiquidity = async (row) => {
-   await ifapprove(row)
+    await ifapprove(row)
     if (isapprove.value) {
         const loading = ElLoading.service({
             lock: true,
@@ -222,6 +224,12 @@ const removeLiquidity = async (row) => {
     padding: 10px;
     border-bottom: 1px solid #eee;
     margin-bottom: 20px;
+}
+
+:deep(.el-table--default .cell) {
+    font-size: 16px;
+    color: rgb(122, 110, 170);
+    font-weight: 500;
 }
 
 @media (min-width: 768px) {

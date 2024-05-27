@@ -37,12 +37,28 @@
                                                 style="width:100%;">
                                                 <template #prefix>
                                                     <div>
-                                                        <svg-icon name="bnb" width="1.5rem" height="1.5rem"
+                                                        <svg-icon v-if="reserve0 == config.usdt_addr" name="usdt"
+                                                            width="1.5rem" height="1.5rem"
                                                             style="margin-top:5px"></svg-icon>
+                                                        <img v-if="reserve0 == config.mnt_addr" src="/mnt.png" alt=""
+                                                            style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
                                                     </div>
                                                 </template>
                                                 <el-option v-for="item in optionsA" :key="item.contractaddress"
-                                                    :label="item.ercsymbol" :value="item.contractaddress" />
+                                                    :label="item.ercsymbol" :value="item.contractaddress">
+                                                    <span class="reserve0_span"
+                                                        style="display: flex; align-items: center;">
+                                                        <!-- 这里是图标组件 -->
+                                                        <svg-icon v-if="item.contractaddress == config.usdt_addr"
+                                                            name="usdt" width="1.5rem" height="1.5rem"
+                                                            style=" margin-right: 10px;"></svg-icon>
+                                                        <img v-if="item.contractaddress == config.mnt_addr"
+                                                            src="/mnt.png" alt=""
+                                                            style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
+                                                        <!-- 显示选项标签 -->
+                                                        {{ item.ercsymbol }}
+                                                    </span>
+                                                </el-option>
                                             </el-select>
                                             <div class="addPlus">
                                                 <el-icon size="large">
@@ -62,12 +78,28 @@
                                                 size="default" style="width: 100%">
                                                 <template #prefix>
                                                     <div>
-                                                        <svg-icon name="bnb" width="1.5rem" height="1.5rem"
+                                                        <svg-icon v-if="reserve1 == config.usdt_addr" name="usdt"
+                                                            width="1.5rem" height="1.5rem"
                                                             style="margin-top:5px"></svg-icon>
+                                                        <img v-if="reserve1 == config.mnt_addr" src="/mnt.png" alt=""
+                                                            style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
                                                     </div>
                                                 </template>
                                                 <el-option v-for="item in optionsB" :key="item.contractaddress"
-                                                    :label="item.ercsymbol" :value="item.contractaddress" />
+                                                    :label="item.ercsymbol" :value="item.contractaddress">
+                                                    <span class="reserve0_span"
+                                                        style="display: flex; align-items: center;">
+                                                        <!-- 这里是图标组件 -->
+                                                        <svg-icon v-if="item.contractaddress == config.usdt_addr"
+                                                            name="usdt" width="1.5rem" height="1.5rem"
+                                                            style=" margin-right: 10px;"></svg-icon>
+                                                        <img v-if="item.contractaddress == config.mnt_addr"
+                                                            src="/mnt.png" alt=""
+                                                            style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
+                                                        <!-- 显示选项标签 -->
+                                                        {{ item.ercsymbol }}
+                                                    </span>
+                                                </el-option>
                                             </el-select>
                                         </div>
                                         <!-- <el-button color="#faf9fa" class="custom-button" round style="width:100%;"
@@ -84,12 +116,14 @@
                                         <p class="add_leftP">{{ $t('addV2.deposit') }}</p>
                                         <div class="main_header">
                                             <el-button text plain>
-                                                <svg-icon name="bnb" width="1.5rem" height="1.5rem"
-                                                    style="margin-right:5px"></svg-icon>
+                                                <svg-icon v-if="reserve0Name == 'USDT'" name="usdt" width="1.5rem"
+                                                    height="1.5rem" style=" margin-right: 10px;"></svg-icon>
+                                                <img v-if="reserve0Name == 'MNT'" src="/mnt.png" alt=""
+                                                    style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
                                                 <h2 style="color:black">{{ reserve0Name }}</h2>
                                             </el-button>
-                                            <el-button text plain><span
-                                                    style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
+                                            <el-button text plain><span style="color:rgb(122, 110, 170)">{{
+                                                $t('Swap.balance') }}:{{
                                                         userBalanceA }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
@@ -104,8 +138,10 @@
                                         <div class="main_header">
                                             <div>
                                                 <el-button text plain>
-                                                    <svg-icon name="bnb" width="1.5rem" height="1.5rem"
-                                                        style="margin-right:5px"></svg-icon>
+                                                    <svg-icon v-if="reserve1Name == 'USDT'" name="usdt" width="1.5rem"
+                                                        height="1.5rem" style=" margin-right: 10px;"></svg-icon>
+                                                    <img v-if="reserve1Name == 'MNT'" src="/mnt.png" alt=""
+                                                        style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
                                                     <h2 style="color:black">{{ reserve1Name }}</h2>
                                                 </el-button>
                                                 <el-tooltip content="Copy TokenAddress" placement="top">
@@ -121,8 +157,8 @@
                                                     </el-button>
                                                 </el-tooltip>
                                             </div>
-                                            <el-button text plain><span
-                                                    style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
+                                            <el-button text plain><span style="color:rgb(122, 110, 170)">{{
+                                                $t('Swap.balance') }}:{{
                                                         userBalanceB }}</span></el-button>
                                         </div>
                                         <div class="input-with-result">
@@ -756,6 +792,17 @@ getTokenList();
 
 .amount_button {
     height: 50px;
+}
+
+.reserve0_span {
+    font-size: 15px;
+    color: #212529;
+    font-weight: 500;
+}
+:deep(.el-select__placeholder) {
+  color: #280d5f;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 @media (min-width: 768px) {

@@ -56,7 +56,7 @@
                               </template>
                               <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
                                 :value="item.contractaddress">
-                                <span style="display: flex; align-items: center;">
+                                <span class="reserve0_span" style="display: flex; align-items: center;">
                                   <!-- 这里是图标组件 -->
                                   <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
                                     height="1.5rem" style=" margin-right: 10px;"></svg-icon>
@@ -70,7 +70,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceA
-                          }}</span></el-button>
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputA" @input="update0" type="textarea" resize="none"
@@ -99,7 +99,7 @@
                                 </template>
                                 <el-option v-for="item in optionsB" :key="item.contractaddress" :label="item.ercsymbol"
                                   :value="item.contractaddress">
-                                  <span style="display: flex; align-items: center;">
+                                  <span class="reserve0_span" style="display: flex; align-items: center;">
                                     <!-- 这里是图标组件 -->
                                     <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
                                       height="1.5rem" style=" margin-right: 10px;"></svg-icon>
@@ -124,7 +124,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceB
-                          }}</span></el-button>
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputB" @input="update1" type="textarea" resize="none"
@@ -1024,6 +1024,12 @@ const trading = async () => {
   color: #280d5f;
   font-weight: 600;
   font-size: 16px;
+}
+
+.reserve0_span {
+  font-size: 15px;
+  color: #212529;
+  font-weight: 500;
 }
 
 @media (min-width: 768px) {
