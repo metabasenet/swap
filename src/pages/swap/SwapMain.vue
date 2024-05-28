@@ -25,48 +25,60 @@
                         <h1 style="color:black;font-size:20px">{{ $t('Swap.swap') }}</h1>
                         <p>{{ $t('Swap.swap_title') }}</p>
                         <div class="swap_header_button">
-                          <el-tooltip effect="dark" :content="$t('Swap.moneybag')" placement="bottom">
+                          <!-- <el-tooltip effect="dark" :content="$t('Swap.moneybag')" placement="bottom">
                             <el-button text>
                               <svg-icon name="moneyBangs" width="1.5rem" height="1.6rem"></svg-icon>
                             </el-button>
-                          </el-tooltip>
+                          </el-tooltip> -->
                           <el-button text @click="tolineChart">
                             <svg-icon name="brokeline"></svg-icon>
                           </el-button>
-                          <el-tooltip effect="dark" :content="$t('Swap.fueloil')" placement="bottom">
+                          <!-- <el-tooltip effect="dark" :content="$t('Swap.fueloil')" placement="bottom">
                             <el-button text><svg-icon name="fueloil"></svg-icon></el-button>
                           </el-tooltip>
                           <el-button text><svg-icon name="settings"></svg-icon></el-button>
                           <el-button text><svg-icon name="countdown"></svg-icon></el-button>
-                          <el-button text><svg-icon name="reset"></svg-icon></el-button>
+                          <el-button text><svg-icon name="reset"></svg-icon></el-button> -->
                         </div>
                       </el-col>
                       <el-col :span="24" class="bnb_header" :class="{ a: true, a1: isSorted }">
                         <div class="main_header">
-                          <div>
-                            <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
-                              style="width: 170px">
-                              <template #prefix>
-                                <div>
-                                  <svg-icon v-if="reserve0 == config.usdt_addr" name="usdt" width="1.5rem"
-                                    height="1.5rem" style="margin-top:5px"></svg-icon>
-                                  <img v-if="reserve0 == config.mnt_addr" src="/mnt.png" alt=""
-                                    style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
-                                </div>
-                              </template>
-                              <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
-                                :value="item.contractaddress">
-                                <span class="reserve0_span" style="display: flex; align-items: center;">
-                                  <!-- 这里是图标组件 -->
-                                  <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
-                                    height="1.5rem" style=" margin-right: 10px;"></svg-icon>
-                                  <img v-if="item.contractaddress == config.mnt_addr" src="/mnt.png" alt=""
-                                    style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
-                                  <!-- 显示选项标签 -->
-                                  {{ item.ercsymbol }}
-                                </span>
-                              </el-option>
-                            </el-select>
+                          <div class="tokenB">
+                            <div>
+                              <el-select v-model="reserve0" @change="monitorValueA" placeholder="Select" size="default"
+                                style="width: 170px">
+                                <template #prefix>
+                                  <div>
+                                    <svg-icon v-if="reserve0 == config.usdt_addr" name="usdt" width="1.5rem"
+                                      height="1.5rem" style="margin-top:5px"></svg-icon>
+                                    <img v-if="reserve0 == config.mnt_addr" src="/mnt.png" alt=""
+                                      style="width: 1.5rem; height: 1.5rem; margin-top: 5px">
+                                  </div>
+                                </template>
+                                <el-option v-for="item in optionsA" :key="item.contractaddress" :label="item.ercsymbol"
+                                  :value="item.contractaddress">
+                                  <span class="reserve0_span" style="display: flex; align-items: center;">
+                                    <!-- 这里是图标组件 -->
+                                    <svg-icon v-if="item.contractaddress == config.usdt_addr" name="usdt" width="1.5rem"
+                                      height="1.5rem" style=" margin-right: 10px;"></svg-icon>
+                                    <img v-if="item.contractaddress == config.mnt_addr" src="/mnt.png" alt=""
+                                      style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
+                                    <!-- 显示选项标签 -->
+                                    {{ item.ercsymbol }}
+                                  </span>
+                                </el-option>
+                              </el-select>
+                            </div>
+                            <el-tooltip :content="$t('Swap.copy_tokenaddress')" placement="top">
+                              <el-button text plain size="small" @click="copyTokenAddress"><el-icon>
+                                  <CopyDocument />
+                                </el-icon></el-button>
+                            </el-tooltip>
+                            <el-tooltip :content="$t('Swap.add_token')" placement="top">
+                              <el-button text plain size="default" @click="addTokenA">
+                                <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
+                              </el-button>
+                            </el-tooltip>
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceA
@@ -112,12 +124,12 @@
                               </el-select>
                             </div>
                             <el-tooltip :content="$t('Swap.copy_tokenaddress')" placement="top">
-                              <el-button text plain size="small" @click="copyTokenAddress"><el-icon>
+                              <el-button text plain size="small" @click="copyTokenBddress"><el-icon>
                                   <CopyDocument />
                                 </el-icon></el-button>
                             </el-tooltip>
                             <el-tooltip :content="$t('Swap.add_token')" placement="top">
-                              <el-button text plain size="default" @click="addToken">
+                              <el-button text plain size="default" @click="addTokenB">
                                 <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
                               </el-button>
                             </el-tooltip>
@@ -190,7 +202,7 @@
               </el-tabs>
             </div>
           </el-col>
-          <el-col :span="showSecondaryNavigation ? 16 : 0" v-if="showSecondaryNavigation" :xs="24" :sm="0" :md="0"
+          <el-col :span="showSecondaryNavigation ? 16 : 0" v-if="showSecondaryNavigation" :xs="0" :sm="0" :md="0"
             :lg="0">
             <div class="main_left main_footer">
               <router-view></router-view>
@@ -252,30 +264,63 @@ const sortAssets = async () => {
   await getBalance();
   await ifapprove();
 }
-const getToken = ref({})
-const addToken = async () => {
-  getToken.value = optionsB.value.find(item => item.contractaddress === tokenSelectB.value);
-  const token = {
-    address: tokenSelectB.value,
-    symbol: getToken.value.ercsymbol,
-    decimals: getToken.value.decimals,
+const getTokenA = ref({})
+const getTokenB = ref({})
+const addTokenB = async () => {
+  if (reserve1.value === config.mnt_addr) {
+    ElMessage.warning(t('Swap.addtoken_mnt'))
+    return;
+  } else {
+    getTokenB.value = optionsB.value.find(item => item.contractaddress === tokenSelectB.value);
+    const token = {
+      address: reserve1.value,
+      symbol: getTokenB.value.ercsymbol,
+      decimals: getTokenB.value.decimals,
+    }
+    try {
+      await ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: token
+        }
+      });
+      ElMessage.success(t('Swap.addtoken_success'))
+    } catch (error) {
+      ElMessage.error(t('Swap.addtoken_error'))
+      console.log(error);
+    }
   }
-  try {
-    await ethereum.request({
-      method: "wallet_watchAsset",
-      params: {
-        type: "ERC20",
-        options: token
-      }
-    });
-    ElMessage.success(t('Swap.addtoken_success'))
-  } catch (error) {
-    ElMessage.error(t('Swap.addtoken_error'))
-    console.log(error);
+}
+const addTokenA = async () => {
+  if (reserve0.value === config.mnt_addr) {
+    ElMessage.warning(t('Swap.addtoken_mnt'))
+    return;
+  } else {
+    getTokenA.value = optionsA.value.find(item => item.contractaddress === reserve0.value);
+    const token = {
+      address: reserve0.value,
+      symbol: getTokenA.value.ercsymbol,
+      decimals: getTokenA.value.decimals,
+    }
+    try {
+      await ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: token
+        }
+      });
+      ElMessage.success(t('Swap.addtoken_success'))
+    } catch (error) {
+      ElMessage.error(t('Swap.addtoken_error'))
+      console.log(error);
+    }
   }
 }
 const tolineChart = () => {
-  if (tokenSelectA.value && tokenSelectB.value) {
+  // 当前页面是移动端
+  if (isMobileDevice()) {
     router.push({
       name: 'linechart',
       params: {
@@ -283,11 +328,31 @@ const tolineChart = () => {
         tokenB: tokenSelectB.value,
       }
     })
-  } else {
-    ElMessage.warning(t('Swap.select_token'))
+  }
+  // 当前页面是PC端
+  else {
+    showSecondaryNavigation.value = !showSecondaryNavigation.value;
+    if (showSecondaryNavigation.value) {
+      router.push({
+        name: 'line',
+        params: {
+          tokenA: tokenSelectA.value,
+          tokenB: tokenSelectB.value,
+        }
+      })
+    }
   }
 
 }
+// 判断当前是在移动端还是PC端
+function isMobileDevice() {
+  // Regular expression to match common mobile user agent strings
+  const mobileRegex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+
+  // Check if the user agent matches the mobile regex
+  return mobileRegex.test(navigator.userAgent);
+}
+
 let selectA = reserve0.value
 const monitorValueA = async (newValue) => {
   tokenInputA.value = '';
@@ -368,6 +433,17 @@ const ifapprove = async () => {
 }
 const copiedText = ref("");
 const copyTokenAddress = () => {
+  copiedText.value = reserve0.value
+  navigator.clipboard.writeText(copiedText.value)
+    .then(() => {
+      ElMessage.success(t('Swap.copy_success'));
+    })
+    .catch(err => {
+      console.error('Copy failed:', err);
+      ElMessage.error(t('Swap.copy_failed'));
+    });
+}
+const copyTokenBddress = () => {
   if (!reserve1.value) {
     ElMessage.warning(t('Swap.copy_token'));
     tokenInputB.value = '';
@@ -430,13 +506,13 @@ const getBalance = async () => {
 const showSecondaryNavigation = ref(false);
 const handleClick = (tab) => {
   showSecondaryNavigation.value = tab === 'MARKET' ? false : true;
-  if (tab === 'TWAP') {
-    router.push('/swap/twap')
-  } else if (tab === 'LIMIT') {
-    router.push('/swap/limit');
-  } else if (tab === 'MARKET') {
-    router.push('/swap')
-  }
+  // if (tab === 'TWAP') {
+  //   router.push('/swap/twap')
+  // } else if (tab === 'LIMIT') {
+  //   router.push('/swap/limit');
+  // } else if (tab === 'MARKET') {
+  //   router.push('/swap')
+  // }
 }
 const getCurrentercsymbolA = () => {
   const selectedOption = optionsA.value.find(option => option.contractaddress === reserve0.value)

@@ -1,0 +1,334 @@
+<template>
+    <div>
+        <div class="main_right">
+            <div class="container_bgc"></div>
+            <el-aside class="responsive-aside"></el-aside>
+            <el-main>
+                <el-row :gutter="10">
+                    <el-col :span="24" style="margin:auto">
+                        <div class="liquidity-box">
+                            <div>
+                                <div class="title_header">
+                                    <svg-icon name="bnb"></svg-icon>
+                                    <span>{{ tokenAname }}</span>/<span>{{ tokenBname }}</span>
+                                </div>
+                                <div class="chart-btn">
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="timeSharing">
+                                        <h2 style="color: #fff;">TS</h2>
+                                    </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(2)">
+                                        <h3 style="color: #fff;">1M</h3>
+                                    </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(3)">
+                                        <h3 style="color: #fff;">1H</h3>
+                                    </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(4)">
+                                        <h3 style="color: #fff;">1D</h3>
+                                    </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(5)">
+                                        <h3 style="color: #fff;">1W</h3>
+                                    </el-button>
+                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
+                                        @click="changePeriod(6)">
+                                        <h3 style="color: #fff;">1mouth</h3>
+                                    </el-button>
+                                </div>
+                            </div>
+                            <div ref="chartRef" class="chart-container" style="height: 320px;width:100%;">
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-main>
+            <el-aside class="responsive-aside"></el-aside>
+        </div>
+    </div>
+</template>
+<script setup>
+import { ref, onMounted } from 'vue';
+import * as echarts from 'echarts';
+import { useRoute } from 'vue-router';
+import { getLinePrice, getLinePriceFlow } from '@/api/linechart';
+import { getTokens } from '@/api/Liquiditys'
+const route = useRoute();
+const chartRef = ref(null)
+let chartInstance = null;
+const upColor = '#ec0000';
+const downColor = '#00da3c';
+const page = ref(1)
+const pageSize = ref(1000)
+const tokenA = ref(route.params.tokenA)
+const tokenB = ref(route.params.tokenB)
+const tokenAname = ref('')
+const tokenBname = ref('')
+let data = [];
+const findName = async (token) => {
+    const res = await getTokens();
+    const foundItem = res.data.find(item => item.contractaddress === token);
+    return foundItem.ercsymbol
+}
+async function updateTokenNames() {
+    tokenAname.value = await findName(tokenA.value);
+    console.log(tokenAname.value);
+    tokenBname.value = await findName(tokenB.value);
+    console.log(tokenBname.value);
+}
+updateTokenNames()
+// 计算移动平均线
+function calculateMA(data, n) {
+    let sum = 0;
+    return data.map((item, index) => {
+        sum += item.last;
+        if (index < n) {
+            return '';
+        } else {
+            sum -= data[index - n].last;
+            return (sum / n).toFixed(2);
+        }
+    });
+}
+// 曲线图
+const timeSharing = async () => {
+    const res = await getLinePriceFlow(tokenA.value, tokenB.value, page.value, pageSize.value)
+    data = res.data.list
+    // 使用新的数据更新图表
+    setcurveOptions(data)
+}
+timeSharing()
+const setcurveOptions = async (data) => {
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            // 坐标轴的指示器
+            axisPointer: {
+                type: 'cross'
+            },
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                const obj = {
+                    top: 10
+                };
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: data.map(item => item.time),
+            },
+
+        ],
+        yAxis: [
+            {
+                // 缩放
+                scale: true,
+                // 分割一个空间
+                splitArea: {
+                    show: true
+                }
+            },
+        ],
+        dataZoom: [
+            {
+                show: true,
+                type: 'slider',
+            }
+        ],
+        series: [
+            {
+                type: 'line',
+                smooth: true,
+                lineStyle: {
+                    color: '#1fc7d4'
+                },
+                symbol: 'none',//隐藏小圆点
+                data: data.map(item => item.rate)
+            },
+        ],
+    };
+    // 如果图表实例已存在，则更新选项
+    if (chartInstance) {
+        chartInstance.setOption(option);
+    } else {
+
+        // 否则，初始化图表实例并设置选项
+        chartInstance = echarts.init(chartRef.value);
+        chartInstance.setOption(option);
+    }
+
+};
+// 切换时间周期的函数
+const changePeriod = async (time) => {
+    // 根据所选的时间周期更新图表数据
+    // 假设 fetchData 是用来获取数据的异步函数
+    const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value)
+    data = res.data.list
+    // 使用新的数据更新图表
+    setChartOptions(data)
+}
+// 设置K线图表选项
+const setChartOptions = async (data) => {
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            // 坐标轴的指示器
+            axisPointer: {
+                type: 'cross'
+            },
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                const obj = {
+                    top: 10
+                };
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: data.map(item => item.time),
+            },
+        ],
+        yAxis: [
+            {
+                // 缩放
+                scale: true,
+                // 分割一个空间
+                splitArea: {
+                    show: true
+                }
+            },
+        ],
+        dataZoom: [
+            {
+                show: true,
+                type: 'slider',
+            }
+        ],
+        series: [
+            {
+                type: 'candlestick',
+                data: data.map(item => {
+                    return [item.first, item.last, item.min, item.max]
+                }),
+                itemStyle: {
+                    color: upColor,
+                    color0: downColor,
+                    borderColor: undefined,
+                    borderColor0: undefined
+                }
+            },
+        ],
+    };
+    // 如果图表实例已存在，则更新选项
+    if (chartInstance) {
+        chartInstance.setOption(option);
+    } else {
+
+        // 否则，初始化图表实例并设置选项
+        chartInstance = echarts.init(chartRef.value);
+        chartInstance.setOption(option);
+    }
+
+};
+onMounted(() => {
+});
+</script>
+<style scoped>
+.container-xxl {
+    position: relative;
+    background-color: #ebf6ff;
+}
+
+.responsive-aside {
+    width: 2vw;
+    transition: width 0.5s ease;
+}
+
+.liquidity-box {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.chart-btn {
+    width: 47%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: auto;
+}
+
+.title_header {
+    display: flex;
+    align-items: center;
+}
+
+.el-tabs--border-card {
+    border-radius: 15px;
+}
+
+.currently_dont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+    .responsive-aside {
+        width: 3vw;
+        opacity: 0.5;
+        /* background-color: #fff;  */
+    }
+
+}
+
+@media (max-width: 768px) {
+    .el-main {
+        --el-main-padding: 5px;
+    }
+
+    .liquidity-box {
+        padding: 10px;
+        /* 进一步减少内边距 */
+        /* 可以考虑添加box-sizing属性，确保padding不会增加元素的总宽度 */
+        box-sizing: border-box;
+    }
+
+    .responsive-aside {
+        width: 0vw;
+        opacity: 0.5;
+        /* background-color: #fff;  */
+    }
+
+    .liquidity-box {
+        padding: 13px;
+    }
+
+    .chart-container {
+        overflow-x: auto;
+    }
+}
+</style>

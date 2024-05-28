@@ -14,8 +14,8 @@
                                     <el-button text><svg-icon name="settings"></svg-icon></el-button>
                                 </div>
                             </div>
-                            <el-table :data="tableData" size="default" style="width: 100%"
-                                :row-style="{ height: '70px' }">
+                            <el-table v-if="!isLoading" :data="tableData" size="default" style="width: 100%"
+                                :row-style="{ height: '70px' }" :row-class-name="rowClassName">
                                 <el-table-column prop="hash" :label="$t('remove.transaction_pair')" align="center">
                                     <template v-slot="scope">
                                         <span style="font-size: 14.4992px; color: #212529;">{{ scope.row.token0Symbol
@@ -74,12 +74,14 @@ const page = ref(1);
 const size = ref(100);
 const userAddress = ref("")
 const isapprove = ref("")
+const isLoading = ref(true);
 // 获取交易对
 const getSwapPair = async () => {
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const account = accounts[0];
     userAddress.value = account;
     tableData.value = [];
+    isLoading.value = true;
     const res = await getSwapPairs(page.value, size.value);
     const responseData = res.data.list;
     responseData.forEach(item => {
@@ -104,13 +106,22 @@ const getPairAll = async () => {
             const userMobility = await pairContract.balanceOf(signer.address);
             if (userMobility > 0) {
                 item.userMobility = formatEther(userMobility);
-            } else {
-                item.userMobility = "";
             }
         }
+
     } catch (error) {
         console.log(error);
+    } finally {
+        isLoading.value = false;
     }
+    console.log(tableData.value);
+}
+const rowClassName = ({ row }) => {
+    if (!row.userMobility) {
+        return 'hidden_row'
+    }
+    console.log('222');
+    return '';
 }
 const pairNumberChange = (data) => {
     const pairNumberStr = String(data.pairNumber).trim();
@@ -230,6 +241,10 @@ const removeLiquidity = async (row) => {
     font-size: 16px;
     color: rgb(122, 110, 170);
     font-weight: 500;
+}
+
+:deep(.hidden_row) {
+    display: none !important;
 }
 
 @media (min-width: 768px) {

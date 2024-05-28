@@ -7,7 +7,7 @@
             style="max-width: 800px" @select="handleSelect">
             <el-menu-item index="0">
               <svg-icon name="rabbit"></svg-icon>
-              <span class="PancakeSwap">PancakeSwap</span>
+              <span class="PancakeSwap">MntSwap</span>
             </el-menu-item>
             <el-menu-item index="/swap">{{ $t('header.swap') }}</el-menu-item>
             <el-menu-item index="/v2add">{{ $t('header.addLiquidity') }}</el-menu-item>
@@ -29,12 +29,12 @@
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-            <el-button text><svg-icon name="settings" width="1.6rem" height="1.6rem"></svg-icon></el-button>
-            <el-button text><svg-icon name="notification" width="1.6rem" height="1.6rem"></svg-icon></el-button>
-            <el-button color="#eff4f5" round class="custom-buttons" style="margin-right:10px;">
-                <svg-icon name="bnb" style="margin-right:5px"></svg-icon>
-                <h3 class="button_h3">BNB Chain</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
-              </el-button>
+            <!-- <el-button text><svg-icon name="settings" width="1.6rem" height="1.6rem"></svg-icon></el-button>
+            <el-button text><svg-icon name="notification" width="1.6rem" height="1.6rem"></svg-icon></el-button> -->
+            <!-- <el-button color="#eff4f5" round class="custom-buttons" style="margin-right:10px;">
+              <svg-icon name="bnb" style="margin-right:5px"></svg-icon>
+              <h3 class="button_h3">BNB Chain</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
+            </el-button> -->
             <!-- <el-dropdown>
               <el-button color="#eff4f5" round style="margin-right:10px;width:100%">
                 <svg-icon name="bnb" style="margin-right:5px"></svg-icon>
@@ -50,9 +50,10 @@
               <h3 style="color: #fff;">{{ $t('header.connect') }}</h3>
             </el-button>
             <el-button v-else color="#eff4f5" class="custom-buttons" round>
-                <svg-icon name="purse" style="margin-right:5px"></svg-icon>
-                <h3 class="button_h3" style="color: black;">{{ isConnect }}</h3><el-icon class="el-icon--right"><arrow-down /></el-icon>
-              </el-button>
+              <svg-icon name="purse" style="margin-right:5px"></svg-icon>
+              <h3 class="button_h3" style="color: black;">{{ isConnect }}</h3><el-icon
+                class="el-icon--right"><arrow-down /></el-icon>
+            </el-button>
             <!-- <el-dropdown v-else style="width:130px">
               <el-button color="#eff4f5" class="custom-buttons" round>
                 <svg-icon name="purse" style="margin-right:5px"></svg-icon>
@@ -74,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref} from 'vue'
+import { ref } from 'vue'
 import MetamaskService from '@/components/MetamaskService';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n()
@@ -216,12 +217,14 @@ connectWallet()
   .button_h3 {
     display: none;
   }
-  .el-button+.el-button{
-    margin-left:0px
+
+  .el-button+.el-button {
+    margin-left: 0px
   }
-  .price_button{
+
+  .price_button {
     display: none;
   }
-  
+
 }
 </style>
