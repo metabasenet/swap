@@ -214,9 +214,9 @@ connectWallet()
     padding-right: 0;
   }
 
-  .button_h3 {
+  /* .button_h3 {
     display: none;
-  }
+  } */
 
   .el-button+.el-button {
     margin-left: 0px
