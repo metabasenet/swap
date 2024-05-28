@@ -26,7 +26,7 @@
                     </el-col>
                 </el-row>
                 <el-row class="footerbox-center">
-                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                    <el-col :span="6" :xs="12" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
                             <h4>{{ $t('footer.github') }}</h4>
                             <el-link href="https://github.com/metabasenet" target="_blank" :underline="false">to {{
@@ -34,7 +34,7 @@
                                     style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                    <el-col :span="6" :xs="12" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
                             <h4>{{ $t('footer.telegram') }}</h4>
                             <el-link href="https://t.me/www_metabasenet_club" target="_blank" :underline="false">to {{
@@ -42,7 +42,7 @@
                                     style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                    <el-col :span="6" :xs="12" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
                             <h4>{{ $t('footer.twitter') }}</h4>
                             <el-link href="https://x.com/Jkaorr?t=Lb8tUaBP1m701lSfx7KGOQ&s=09" target="_blank"
@@ -50,15 +50,15 @@
                                     style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
-                        <div class="grid-content ep-bg-purple footer-center footer-Products">
+                    <el-col :span="6" :xs="12" :sm="12" :md="4" :lg="4">
+                        <div class="grid-content ep-bg-purple footer-center ">
                             <h4>{{ $t('footer.faceBook') }}</h4>
                             <el-link href="https://www.facebook.com/profile.php?id=61559045363979&mibextid=ZbWKwL"
                                 target="_blank" :underline="false">to {{ $t('footer.faceBook') }} <svg-icon
                                     name="facebook" style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                    <el-col :span="6" :xs="12" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center">
                             <h4>{{ $t('footer.mntBrowser') }}</h4>
                             <el-link href="https://main.metabasenet.site/" target="_blank" :underline="false">to {{
@@ -66,7 +66,7 @@
                                     style="margin-left:5px"></svg-icon></el-link>
                         </div>
                     </el-col>
-                    <el-col :span="6" :xs="24" :sm="12" :md="4" :lg="4">
+                    <el-col :span="6" :xs="12" :sm="12" :md="4" :lg="4">
                         <div class="grid-content ep-bg-purple footer-center rabbits">
                             <svg-icon name="rabbits" width="2rem" height="2rem"></svg-icon>
                             <h2>MntSwap</h2>
@@ -143,6 +143,7 @@
 
 .footer-center h4 {
     color: #a88efc;
+    margin-top: 20px;
 }
 
 .footer-center .el-button {
@@ -179,10 +180,11 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: 20px;
 }
 
 .footerbox-center {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
     border-bottom: 1px solid #e9ecef;
 }
 

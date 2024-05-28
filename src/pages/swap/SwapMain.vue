@@ -82,7 +82,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceA
-                              }}</span></el-button>
+                          }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputA" @input="update0" type="textarea" resize="none"
@@ -136,7 +136,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceB
-                              }}</span></el-button>
+                          }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputB" @input="update1" type="textarea" resize="none"
