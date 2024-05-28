@@ -68,5 +68,14 @@ const en = {
     remove_success: "Remove liquidity successfully",
     remove_error: "Remove liquidity error",
   },
+  line: {
+    error_data: "Data acquisition failure",
+    Real_time: "RT",
+    minutes: "M",
+    hours: "H",
+    day: "D",
+    weeks: "W",
+    month: "mouth",
+  },
 };
 export default en;

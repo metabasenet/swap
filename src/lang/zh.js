@@ -66,5 +66,14 @@ const zh = {
     remove_success: "移除流动性成功",
     remove_error: "移除流动性失败",
   },
+  line: {
+    error_data: "获取数据失败",
+    Real_time: "实时",
+    minutes: "分钟",
+    hours: "小时",
+    day: "天",
+    weeks: "周",
+    month: "月",
+  },
 };
 export default zh;

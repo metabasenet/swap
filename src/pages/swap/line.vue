@@ -15,27 +15,27 @@
                                 <div class="chart-btn">
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="timeSharing">
-                                        <h2 style="color: #fff;">TS</h2>
+                                        <h2 style="color: #fff;">{{ t('line.Real_time') }}</h2>
                                     </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(2)">
-                                        <h3 style="color: #fff;">1M</h3>
+                                        <h3 style="color: #fff;">1{{ t('line.minutes') }}</h3>
                                     </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(3)">
-                                        <h3 style="color: #fff;">1H</h3>
+                                        <h3 style="color: #fff;">1{{ t('line.hours') }}</h3>
                                     </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(4)">
-                                        <h3 style="color: #fff;">1D</h3>
+                                        <h3 style="color: #fff;">1{{ t('line.day') }}</h3>
                                     </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(5)">
-                                        <h3 style="color: #fff;">1W</h3>
+                                        <h3 style="color: #fff;">1{{ t('line.weeks') }}</h3>
                                     </el-button>
                                     <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
                                         @click="changePeriod(6)">
-                                        <h3 style="color: #fff;">1mouth</h3>
+                                        <h3 style="color: #fff;">1{{ t('line.month') }}</h3>
                                     </el-button>
                                 </div>
                             </div>
@@ -55,6 +55,9 @@ import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { getLinePrice, getLinePriceFlow } from '@/api/linechart';
 import { getTokens } from '@/api/Liquiditys'
+import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const route = useRoute();
 const chartRef = ref(null)
 let chartInstance = null;
@@ -172,10 +175,14 @@ const setcurveOptions = async (data) => {
 const changePeriod = async (time) => {
     // 根据所选的时间周期更新图表数据
     // 假设 fetchData 是用来获取数据的异步函数
-    const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value)
-    data = res.data.list
-    // 使用新的数据更新图表
-    setChartOptions(data)
+    try {
+        const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value)
+        data = res.data.list
+        // 使用新的数据更新图表
+        setChartOptions(data)
+    } catch (error) {
+        ElMessage.error(t('line.error_data'));
+    }
 }
 // 设置K线图表选项
 const setChartOptions = async (data) => {
