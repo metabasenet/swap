@@ -115,13 +115,27 @@
                                         </el-button> -->
                                         <p class="add_leftP">{{ $t('addV2.deposit') }}</p>
                                         <div class="main_header">
-                                            <el-button text plain>
-                                                <svg-icon v-if="reserve0Name == 'USDT'" name="usdt" width="1.5rem"
-                                                    height="1.5rem" style=" margin-right: 10px;"></svg-icon>
-                                                <img v-if="reserve0Name == 'MNT'" src="/mnt.png" alt=""
-                                                    style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
-                                                <h2 style="color:black">{{ reserve0Name }}</h2>
-                                            </el-button>
+                                            <div>
+                                                <el-button text plain>
+                                                    <svg-icon v-if="reserve0Name == 'USDT'" name="usdt" width="1.5rem"
+                                                        height="1.5rem" style=" margin-right: 10px;"></svg-icon>
+                                                    <img v-if="reserve0Name == 'MNT'" src="/mnt.png" alt=""
+                                                        style="width: 1.5rem; height: 1.5rem; margin-right: 10px">
+                                                    <h2 style="color:black">{{ reserve0Name }}</h2>
+                                                </el-button>
+                                                <el-tooltip content="Copy TokenAddress" placement="top">
+                                                    <el-button text style="margin-left:0" size="small"
+                                                        @click="copyTokenAddress"><el-icon>
+                                                            <CopyDocument />
+                                                        </el-icon></el-button>
+                                                </el-tooltip>
+                                                <el-tooltip content="Add token" placement="top">
+                                                    <el-button text plain style="margin-left:0" size="small"
+                                                        @click="addTokenA">
+                                                        <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
+                                                    </el-button>
+                                                </el-tooltip>
+                                            </div>
                                             <el-button text plain><span style="color:rgb(122, 110, 170)">{{
                                                 $t('Swap.balance') }}:{{
                                                         userBalanceA }}</span></el-button>
@@ -146,13 +160,13 @@
                                                 </el-button>
                                                 <el-tooltip content="Copy TokenAddress" placement="top">
                                                     <el-button text style="margin-left:0" size="small"
-                                                        @click="copyTokenAddress"><el-icon>
+                                                        @click="copyTokenBddress"><el-icon>
                                                             <CopyDocument />
                                                         </el-icon></el-button>
                                                 </el-tooltip>
                                                 <el-tooltip content="Add token" placement="top">
                                                     <el-button text plain style="margin-left:0" size="small"
-                                                        @click="addToken">
+                                                        @click="addTokenB">
                                                         <svg-icon name="fox" width="0.9rem" height="0.9rem"></svg-icon>
                                                     </el-button>
                                                 </el-tooltip>
@@ -291,6 +305,8 @@ import { ElMessage, ElLoading } from 'element-plus';
 import MetamaskService from '@/components/MetamaskService';
 import { ethers, parseEther, formatEther } from "ethers";
 import { config } from "@/const/config";
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const reserve0 = ref(config.usdt_addr);
 const reserve1 = ref(config.mnt_addr);
 const reserve0Input = ref('');
@@ -309,7 +325,6 @@ const userAddress = ref('')
 const userBalanceA = ref('')
 const userBalanceB = ref('')
 const copiedText = ref("");
-const getToken = ref({})
 const isapprove = ref(false);
 const tableData = ref([
     {
@@ -432,7 +447,19 @@ const update1 = async () => {
         reserve0Input.value = formatEther(amountInMax);
     }
 }
+
 const copyTokenAddress = () => {
+    copiedText.value = reserve0.value
+    navigator.clipboard.writeText(copiedText.value)
+        .then(() => {
+            ElMessage.success(t('Swap.copy_success'));
+        })
+        .catch(err => {
+            console.error('Copy failed:', err);
+            ElMessage.error(t('Swap.copy_failed'));
+        });
+}
+const copyTokenBddress = () => {
     if (!reserve1.value) {
         ElMessage.warning('Please select a token to swap.');
         reserve1Input.value = '';
@@ -450,26 +477,59 @@ const copyTokenAddress = () => {
     }
 
 }
-const addToken = async () => {
-    getToken.value = optionsB.value.find(item => item.contractaddress === reserve1.value);
-    console.log(getToken.value);
-    const token = {
-        address: reserve1.value,
-        symbol: getToken.value.ercsymbol,
-        decimals: getToken.value.decimals,
+const getTokenA = ref({})
+const getTokenB = ref({})
+const addTokenA = async () => {
+    if (reserve0.value === config.mnt_addr) {
+        ElMessage.warning(t('Swap.addtoken_mnt'))
+        return;
+    } else {
+        getTokenA.value = optionsA.value.find(item => item.contractaddress === reserve0.value);
+        const token = {
+            address: reserve0.value,
+            symbol: getTokenA.value.ercsymbol,
+            decimals: getTokenA.value.decimals,
+        }
+        try {
+            await ethereum.request({
+                method: "wallet_watchAsset",
+                params: {
+                    type: "ERC20",
+                    options: token
+                }
+            });
+            ElMessage.success(t('Swap.addtoken_success'))
+        } catch (error) {
+            ElMessage.error(t('Swap.addtoken_error'))
+            console.log(error);
+        }
     }
-    try {
-        await ethereum.request({
-            method: "wallet_watchAsset",
-            params: {
-                type: "ERC20",
-                options: token
-            }
-        });
-        ElMessage.success("添加代币成功")
-    } catch (error) {
-        ElMessage.error("添加代币失败")
-        console.log(error);
+}
+const addTokenB = async () => {
+    if (reserve1.value === config.mnt_addr) {
+        console.log('1111111');
+        ElMessage.warning(t('Swap.addtoken_mnt'))
+        return;
+    } else {
+        getTokenB.value = optionsB.value.find(item => item.contractaddress === reserve1.value);
+        const token = {
+            address: reserve1.value,
+            symbol: getTokenB.value.ercsymbol,
+            decimals: getTokenB.value.decimals,
+        }
+        try {
+            await ethereum.request({
+                method: "wallet_watchAsset",
+                params: {
+                    type: "ERC20",
+                    options: token
+                }
+            });
+            ElMessage.success(t('Swap.addtoken_success'))
+        } catch (error) {
+            ElMessage.error(t('Swap.addtoken_error'))
+            console.log(error);
+        }
     }
 }
 //判断代币是否授权
@@ -799,10 +859,11 @@ getTokenList();
     color: #212529;
     font-weight: 500;
 }
+
 :deep(.el-select__placeholder) {
-  color: #280d5f;
-  font-weight: 600;
-  font-size: 16px;
+    color: #280d5f;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 @media (min-width: 768px) {

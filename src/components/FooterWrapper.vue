@@ -6,7 +6,7 @@
                 <el-row class="footer-box">
                     <el-col :span="24">
                         <div class="grid-content ep-bg-purple footertop">
-                            <div class="footertop-left">
+                            <!-- <div class="footertop-left">
                                 <el-icon>
                                     <Message />
                                 </el-icon>
@@ -16,7 +16,7 @@
                                 <el-icon>
                                     <Discount />
                                 </el-icon>
-                            </div>
+                            </div> -->
                             <div>
                                 <el-backtop icon="Upload" :right="100" :bottom="100" />
                                 <!-- <el-icon><Upload /></el-icon> -->
