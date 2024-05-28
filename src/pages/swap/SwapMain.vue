@@ -271,7 +271,7 @@ const addTokenB = async () => {
     ElMessage.warning(t('Swap.addtoken_mnt'))
     return;
   } else {
-    getTokenB.value = optionsB.value.find(item => item.contractaddress === tokenSelectB.value);
+    getTokenB.value = optionsB.value.find(item => item.contractaddress === reserve1.value);
     const token = {
       address: reserve1.value,
       symbol: getTokenB.value.ercsymbol,
