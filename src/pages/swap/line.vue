@@ -265,7 +265,12 @@ const setChartOptions = async (data) => {
             {
                 type: 'candlestick',
                 data: data.map(item => {
-                    return [item.first, item.last, item.min, item.max]
+                    return [
+                        parseFloat(item.first.toFixed(4)),
+                        parseFloat(item.last.toFixed(4)),
+                        parseFloat(item.min.toFixed(4)),
+                        parseFloat(item.max.toFixed(4))
+                    ];
                 }),
                 itemStyle: {
                     color: upColor,
