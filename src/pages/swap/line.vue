@@ -11,30 +11,26 @@
                                 <div class="title_header">
                                     <svg-icon name="bnb"></svg-icon>
                                     <span>{{ tokenAname }}</span>/<span>{{ tokenBname }}</span>
+                                    <div style="margin-left:40px"><span>{{ t('line.Real_time') }} {{ t('Swap.price')
+                                            }}:</span> <span>${{ rtPrice }}</span></div>
                                 </div>
                                 <div class="chart-btn">
-                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="timeSharing">
+                                    <el-button :style="buttonStyle(1)" style="margin-top:5px;" @click="startChart(1)">
                                         <h2 style="color: #fff;">{{ t('line.Real_time') }}</h2>
                                     </el-button>
-                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(2)">
+                                    <el-button :style="buttonStyle(2)" style="margin-top:5px" @click="changePeriod(2)">
                                         <h3 style="color: #fff;">1{{ t('line.minutes') }}</h3>
                                     </el-button>
-                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(3)">
+                                    <el-button :style="buttonStyle(3)" style="margin-top:5px" @click="changePeriod(3)">
                                         <h3 style="color: #fff;">1{{ t('line.hours') }}</h3>
                                     </el-button>
-                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(4)">
+                                    <el-button :style="buttonStyle(4)" style="margin-top:5px" @click="changePeriod(4)">
                                         <h3 style="color: #fff;">1{{ t('line.day') }}</h3>
                                     </el-button>
-                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(5)">
+                                    <el-button :style="buttonStyle(5)" style="margin-top:5px" @click="changePeriod(5)">
                                         <h3 style="color: #fff;">1{{ t('line.weeks') }}</h3>
                                     </el-button>
-                                    <el-button type="primary" color="#1fc7d4" style="margin-top:5px"
-                                        @click="changePeriod(6)">
+                                    <el-button :style="buttonStyle(6)" style="margin-top:5px" @click="changePeriod(6)">
                                         <h3 style="color: #fff;">1{{ t('line.month') }}</h3>
                                     </el-button>
                                 </div>
@@ -50,7 +46,7 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import { useRoute } from 'vue-router';
 import { getLinePrice, getLinePriceFlow } from '@/api/linechart';
@@ -70,6 +66,10 @@ const tokenB = ref(route.params.tokenB)
 const tokenAname = ref('')
 const tokenBname = ref('')
 let data = [];
+let intervalId = null;
+let isAutoUpdating = ref(false);//控制是否自动更新
+let selectedButton = ref(1)
+let rtPrice = ref(0)
 const findName = async (token) => {
     const res = await getTokens();
     const foundItem = res.data.find(item => item.contractaddress === token);
@@ -95,14 +95,43 @@ function calculateMA(data, n) {
         }
     });
 }
+const startChart = async (buttonId) => {
+    selectedButton.value = buttonId;
+    await timeSharing()
+    startAutoUpdate()
+}
+const startAutoUpdate = () => {
+    isAutoUpdating.value = true;
+    if (!intervalId) { // 确保只设置一次定时器
+        intervalId = setInterval(timeSharing, 3000);
+    }
+};
+const stopAutoUpdate = () => {
+    isAutoUpdating.value = false;
+    clearInterval(intervalId);
+    intervalId = null; // 重置intervalId
+};
 // 曲线图
 const timeSharing = async () => {
+    // if (!isAutoUpdating.value) return;
     const res = await getLinePriceFlow(tokenA.value, tokenB.value, page.value, pageSize.value)
     data = res.data.list
     // 使用新的数据更新图表
     setcurveOptions(data)
+    if (data.length > 0) {
+        rtPrice.value = (data[data.length - 1].rate).toFixed(4)
+    }
 }
-timeSharing()
+//当前点击button的颜色
+const buttonStyle = (buttonId) => {
+    if (selectedButton.value === buttonId) {
+        return {
+            backgroundColor: '#9197f4'
+        }
+    } else {
+        return { backgroundColor: '#1fc7d4' }
+    }
+}
 const setcurveOptions = async (data) => {
     const option = {
         tooltip: {
@@ -151,12 +180,12 @@ const setcurveOptions = async (data) => {
         series: [
             {
                 type: 'line',
-                smooth: true,
+                // smooth: true,
                 lineStyle: {
                     color: '#1fc7d4'
                 },
                 symbol: 'none',//隐藏小圆点
-                data: data.map(item => item.rate)
+                data: data.map(item => parseFloat(item.rate.toFixed(4))),
             },
         ],
     };
@@ -173,6 +202,9 @@ const setcurveOptions = async (data) => {
 };
 // 切换时间周期的函数
 const changePeriod = async (time) => {
+    selectedButton.value = time;
+    // 停止自动更新
+    stopAutoUpdate();
     // 根据所选的时间周期更新图表数据
     // 假设 fetchData 是用来获取数据的异步函数
     try {
@@ -255,8 +287,15 @@ const setChartOptions = async (data) => {
     }
 
 };
-onMounted(() => {
+onMounted(async () => {
+    await timeSharing()
+    // 每3秒执行一次
+    startAutoUpdate(); // 开始自动更新
+
 });
+onUnmounted(() => {
+    stopAutoUpdate(); // 组件卸载时停止自动更新
+})
 </script>
 <style scoped>
 .container-xxl {

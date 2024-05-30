@@ -16,8 +16,8 @@
         </el-col>
         <el-col :span="10" :xs="19" :sm="19" :md="10" :lg="10">
           <div class="header-right">
-            <el-button class="price_button" text size="large"><svg-icon name="rabbit"></svg-icon><span
-                class="price_header">$2.801</span></el-button>
+            <!-- <el-button class="price_button" text size="large"><svg-icon name="rabbit"></svg-icon><span
+                class="price_header">$2.801</span></el-button> -->
             <el-dropdown @command="handleCommand">
               <el-button text>
                 <svg-icon name="globe" width="1.6rem" height="1.6rem"></svg-icon>
