@@ -469,10 +469,38 @@ const connectWallet = async () => {
       const { account } = await MetamaskService.connectWallet();
       userAddress.value = account;
     } catch (error) {
-
     }
   }
-
+  try {
+    if (typeof ethereum !== 'undefined') {
+      const provider = ethereum;
+      let chainName = location.hostname == config.domainUser_url ? 'MNT Mainnet' : 'MNT Testnet';
+      const chainId = location.hostname == config.domainUser_url ? import.meta.env.VITE_METABASE_MAINCHAIN_ID : import.meta.env.VITE_METABASE_MAINCHAIN_ID;
+      const blockExplorerUrls = location.hostname == config.domainUser_url ? config.rpc : config.rpc;
+      const rpcUrl = location.hostname == config.domainUser_url ? config.rpc : config.rpc;
+      await provider.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId,
+            rpcUrls: [rpcUrl],
+            chainName,
+            nativeCurrency: {
+              name: 'MNT',
+              symbol: 'MNT',
+              decimals: 18,
+            },
+            blockExplorerUrls: [blockExplorerUrls],
+          },
+        ],
+      });
+      await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId }] });
+    } else {
+      console.error('MetaMask is not installed!');
+    }
+  } catch (error) {
+    console.error('Error adding network:', error);
+  }
 }
 connectWallet()
 const userBalanceA = ref('')
