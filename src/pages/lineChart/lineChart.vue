@@ -117,7 +117,7 @@ const stopAutoUpdate = () => {
 const timeSharing = async () => {
     // if (!isAutoUpdating.value) return;
     const res = await getLinePriceFlow(tokenA.value, tokenB.value, page.value, pageSize.value)
-    data = res.data.list
+    data = res.data.list.reverse()
     // 使用新的数据更新图表
     setcurveOptions(data)
     if (data.length > 0) {
@@ -213,7 +213,7 @@ const changePeriod = async (time) => {
     // 假设 fetchData 是用来获取数据的异步函数
     try {
         const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value)
-        data = res.data.list
+        data = res.data.list.reverse()
         // 使用新的数据更新图表
         setChartOptions(data)
     } catch (error) {
