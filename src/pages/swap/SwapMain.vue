@@ -82,7 +82,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceA
-                          }}</span></el-button>
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputA" @input="update0" type="textarea" resize="none"
@@ -136,7 +136,7 @@
                           </div>
                           <el-button text plain><span style="color:rgb(122, 110, 170)">{{ $t('Swap.balance') }}:{{
                             userBalanceB
-                          }}</span></el-button>
+                              }}</span></el-button>
                         </div>
                         <div class="input-with-result">
                           <el-input v-model="tokenInputB" @input="update1" type="textarea" resize="none"
@@ -474,27 +474,30 @@ const connectWallet = async () => {
   try {
     if (typeof ethereum !== 'undefined') {
       const provider = ethereum;
-      let chainName = location.hostname == config.domainUser_url ? 'MNT Mainnet' : 'MNT Testnet';
+      let currentChainId = await provider.request({ method: 'eth_chainId' });
+      let chainName = location.hostname == config.domainUser_url ? 'MNT Mainnet' : 'MNT Mainnet';
       const chainId = location.hostname == config.domainUser_url ? import.meta.env.VITE_METABASE_MAINCHAIN_ID : import.meta.env.VITE_METABASE_MAINCHAIN_ID;
       const blockExplorerUrls = location.hostname == config.domainUser_url ? config.rpc : config.rpc;
       const rpcUrl = location.hostname == config.domainUser_url ? config.rpc : config.rpc;
-      await provider.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId,
-            rpcUrls: [rpcUrl],
-            chainName,
-            nativeCurrency: {
-              name: 'MNT',
-              symbol: 'MNT',
-              decimals: 18,
+      if (currentChainId !== chainId.toLowerCase()) {
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId,
+              rpcUrls: [rpcUrl],
+              chainName,
+              nativeCurrency: {
+                name: 'MNT',
+                symbol: 'MNT',
+                decimals: 18,
+              },
+              blockExplorerUrls: [blockExplorerUrls],
             },
-            blockExplorerUrls: [blockExplorerUrls],
-          },
-        ],
-      });
-      await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId }] });
+          ],
+        });
+        await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId }] });
+      }
     } else {
       console.error('MetaMask is not installed!');
     }
