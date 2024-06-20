@@ -69,7 +69,7 @@ const tokenAname = ref('')
 const tokenBname = ref('')
 let data = [];
 let intervalId = null;
-let isAutoUpdating = ref(false);//控制是否自动更新
+let isAutoUpdating = ref(false);
 let selectedButton = ref(1)
 let rtPrice = ref(0)
 const findName = async (token) => {
@@ -84,7 +84,7 @@ async function updateTokenNames() {
     console.log(tokenBname.value);
 }
 updateTokenNames()
-// 计算移动平均线
+// 
 function calculateMA(data, n) {
     let sum = 0;
     return data.map((item, index) => {
@@ -104,28 +104,26 @@ const startChart = async (buttonId) => {
 }
 const startAutoUpdate = () => {
     isAutoUpdating.value = true;
-    if (!intervalId) { // 确保只设置一次定时器
+    if (!intervalId) {
         intervalId = setInterval(timeSharing, 3000);
     }
 };
 const stopAutoUpdate = () => {
     isAutoUpdating.value = false;
     clearInterval(intervalId);
-    intervalId = null; // 重置intervalId
+    intervalId = null;
 };
-// 曲线图
 const timeSharing = async () => {
     // if (!isAutoUpdating.value) return;
     const res = await getLinePriceFlow(tokenA.value, tokenB.value, page.value, pageSize.value)
     data = res.data.list.reverse()
-    // 使用新的数据更新图表
+    // 
     setcurveOptions(data)
     if (data.length > 0) {
         rtPrice.value = (data[data.length - 1].rate).toFixed(4)
     }
 }
-timeSharing()
-//当前点击button的颜色
+//
 const buttonStyle = (buttonId) => {
     if (selectedButton.value === buttonId) {
         return {
@@ -139,7 +137,6 @@ const setcurveOptions = async (data) => {
     const option = {
         tooltip: {
             trigger: 'axis',
-            // 坐标轴的指示器
             axisPointer: {
                 type: 'cross'
             },
@@ -166,9 +163,9 @@ const setcurveOptions = async (data) => {
         ],
         yAxis: [
             {
-                // 缩放
+
                 scale: true,
-                // 分割一个空间
+
                 splitArea: {
                     show: true
                 }
@@ -188,43 +185,65 @@ const setcurveOptions = async (data) => {
                 lineStyle: {
                     color: '#1fc7d4'
                 },
-                symbol: 'none',//隐藏小圆点
+                symbol: 'none',
                 data: data.map(item => parseFloat(item.rate.toFixed(4))),
             },
         ],
     };
-    // 如果图表实例已存在，则更新选项
+
     if (chartInstance) {
         chartInstance.setOption(option);
     } else {
 
-        // 否则，初始化图表实例并设置选项
+
         chartInstance = echarts.init(chartRef.value);
         chartInstance.setOption(option);
     }
 
 };
-// 切换时间周期的函数
+
+const startAutoUpdates = () => {
+    isAutoUpdating.value = true;
+    if (!intervalId) {
+        intervalId = setInterval(() => getminutesData(2), 60000);
+    }
+};
+const stopAutoUpdates = () => {
+    isAutoUpdating.value = false;
+    clearInterval(intervalId);
+    intervalId = null;
+};
+
 const changePeriod = async (time) => {
     selectedButton.value = time;
-    // 停止自动更新
     stopAutoUpdate();
-    // 根据所选的时间周期更新图表数据
-    // 假设 fetchData 是用来获取数据的异步函数
+    stopAutoUpdates();
+    if (time === 2) {
+        startAutoUpdates()
+    }
     try {
         const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value)
         data = res.data.list.reverse()
-        // 使用新的数据更新图表
+
         setChartOptions(data)
     } catch (error) {
         ElMessage.error(t('line.error_data'));
     }
 }
-// 设置K线图表选项
+const getminutesData = async (time) => {
+    try {
+        const res = await getLinePrice(tokenA.value, tokenB.value, time, page.value, pageSize.value);
+        const datas = res.data.list.reverse();
+
+        setChartOptions(datas);
+    } catch (error) {
+        console.error('获取分钟数据失败:', error);
+    }
+}
 const setChartOptions = async (data) => {
     const option = {
         // title: {
-        //     text: '日K线图',
+        //     text: 'day K',
         // },
         // animation: false,
         // legend: {
@@ -234,7 +253,6 @@ const setChartOptions = async (data) => {
         // },
         tooltip: {
             trigger: 'axis',
-            // 坐标轴的指示器
             axisPointer: {
                 type: 'cross'
             },
@@ -337,9 +355,9 @@ const setChartOptions = async (data) => {
         ],
         yAxis: [
             {
-                // 缩放
+
                 scale: true,
-                // 分割一个空间
+
                 splitArea: {
                     show: true
                 }
@@ -368,9 +386,7 @@ const setChartOptions = async (data) => {
                 // top: '85%',
                 // startValue: data.length - 30,
                 // endValue: data.length
-                // 从98%开始
                 // start: 90,
-                // // 到100%结束
                 // end: 100
             }
         ],
@@ -430,12 +446,9 @@ const setChartOptions = async (data) => {
             // }
         ],
     };
-    // 如果图表实例已存在，则更新选项
     if (chartInstance) {
         chartInstance.setOption(option);
     } else {
-
-        // 否则，初始化图表实例并设置选项
         chartInstance = echarts.init(chartRef.value);
         chartInstance.setOption(option);
     }
@@ -443,12 +456,12 @@ const setChartOptions = async (data) => {
 };
 onMounted(async () => {
     await timeSharing()
-    // 每3秒执行一次
-    startAutoUpdate(); // 开始自动更新
+    startAutoUpdate();
 
 });
 onUnmounted(() => {
-    stopAutoUpdate(); // 组件卸载时停止自动更新
+    stopAutoUpdate();
+    stopAutoUpdates();
 })
 </script>
 
